@@ -1,4 +1,4 @@
-package com.excilys.domain;
+package main.java.com.excilys.domain;
 
 import java.util.Date;
 

@@ -1,4 +1,4 @@
-package com.excilys.DAO;
+package main.java.com.excilys.dao.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,14 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import com.excilys.domain.Company;
+import main.java.com.excilys.dao.CompanyDAO;
+import main.java.com.excilys.domain.Company;
 
-public class CompanyDAO {
-	protected CompanyDAO() {
+public class CompanyDAOImpl implements CompanyDAO {
+	protected CompanyDAOImpl() {
 	}
 	
 	public Company getOneCompany(int id){

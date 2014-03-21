@@ -1,4 +1,4 @@
-package com.excilys.DAO;
+package main.java.com.excilys.dao.impl;
 
 
 import java.sql.Connection;
@@ -10,30 +10,37 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.excilys.domain.Company;
-import com.excilys.domain.Computer;
+import main.java.com.excilys.dao.ComputerDAO;
+import main.java.com.excilys.domain.Company;
+import main.java.com.excilys.domain.Computer;
 
-public class ComputerDAO {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class ComputerDAOImpl implements ComputerDAO{
+
+	static final Logger LOG = LoggerFactory.getLogger(ComputerDAOImpl.class);
 	
-	protected ComputerDAO() {
+	protected ComputerDAOImpl() {
 	}
 	
 	public Computer getOneComputer(int id){
+		LOG.debug("start getOneComputer id="+id);
 		Computer comp = new Computer();
 		Connection conn = DaoFactory.getConnection();
 		ResultSet rs = null; 
 		PreparedStatement stmt = null;
 		try {
-			stmt = conn.prepareStatement("select cu.id as cuid, cu.name, cu.introduced, cu.discontinued, cu.company_id, ca.name as companyName ca from computer cu inner join company as ca on cu.company_id=ca.id where id=?");
+			stmt = conn.prepareStatement("select cu.id, cu.name, cu.introduced, cu.discontinued, cu.company_id, ca.name ca from computer as cu join company as ca on cu.company_id=ca.id where id=?");
 			stmt.setInt(1, id);
 			rs = stmt.executeQuery();
 			
 			while(rs.next()){
-				comp.setId(rs.getInt("id"));
-				comp.setName(rs.getString("name"));
-				comp.setIntroduced(rs.getDate("introduced"));
-				comp.setDiscontinued(rs.getDate("discontinued"));
-				comp.setCompany(new Company(rs.getInt("company_id"),rs.getString("companyName")));
+				comp.setId(rs.getInt(1));
+				comp.setName(rs.getString(2));
+				comp.setIntroduced(rs.getDate(3));
+				comp.setDiscontinued(rs.getDate(4));
+				comp.setCompany(new Company(rs.getInt(5),rs.getString(6)));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -44,26 +51,43 @@ public class ComputerDAO {
 	}
 	
 	public List<Computer> getAllComputer(){
+		if (LOG.isTraceEnabled()) {
+			LOG.trace("Test: TRACE level message.");
+		}
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Test: DEBUG level message.");
+		}
+		if (LOG.isInfoEnabled()) {
+			LOG.info("Test: INFO level message.");
+		}
+		if (LOG.isWarnEnabled()) {
+			LOG.warn("Test: WARN level message.");
+		}
+		if (LOG.isErrorEnabled()) {
+			LOG.error("Test: ERROR level message.");
+		}
 		List<Computer> comps = new ArrayList<Computer>();
 		Connection conn = DaoFactory.getConnection();
 		ResultSet rs = null;
 		Statement stmt = null;
 		try {
+			LOG.debug("Start getAllComputer");
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("select cu.id as cuid, cu.name, cu.introduced, cu.discontinued, cu.company_id, ca.name as companyName ca from computer cu inner join company as ca on cu.company_id=ca.id");
+			rs = stmt.executeQuery("select cu.id, cu.name, cu.introduced, cu.discontinued, cu.company_id, ca.name ca from computer as cu left join company as ca on cu.company_id=ca.id order by cu.id");
 			
 			while(rs.next()){
 				Computer comp = new Computer();
-				comp.setId(rs.getInt("id"));
-				comp.setName(rs.getString("name"));
-				comp.setIntroduced(rs.getDate("introduced"));
-				comp.setDiscontinued(rs.getDate("discontinued"));
-				comp.setCompany(new Company(rs.getInt("company_id"),rs.getString("companyName")));
+				comp.setId(rs.getInt(1));
+				comp.setName(rs.getString(2));
+				comp.setIntroduced(rs.getDate(3));
+				comp.setDiscontinued(rs.getDate(4));
+				comp.setCompany(new Company(rs.getInt(5),rs.getString(6)));
 				comps.add(comp);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally{
+			LOG.debug("Finally getAllComputer ListComputer");
 			DaoFactory.closeAll(conn, rs, stmt);
 		}
 

@@ -5,15 +5,22 @@
 	id="WebApp_ID" version="3.0">
 	<display-name>computer-database</display-name>
 	<servlet>
-		<description>
-		</description>
 		<display-name>DashboardServ</display-name>
 		<servlet-name>DashboardServlet</servlet-name>
-		<servlet-class>com.excilys.servlet.DashboardServlet</servlet-class>
+		<servlet-class>main.java.com.excilys.servlet.DashboardServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<display-name>AddComputer</display-name>
+		<servlet-name>AddComputerServlet</servlet-name>
+		<servlet-class>main.java.com.excilys.servlet.AddComputerServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>DashboardServlet</servlet-name>
-		<url-pattern>/Dashboard</url-pattern>
+		<url-pattern>/dashboard</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>AddComputerServlet</servlet-name>
+		<url-pattern>/addcomputer</url-pattern>
 	</servlet-mapping>
 	<resource-ref>
 		<description>Computer Database</description>

@@ -9,8 +9,8 @@
 <link href="css/main.css" rel="stylesheet" media="screen">
 </head>
 <body>
-	<header class="topbar">
+	<header class="navbar-inverse">
 		<h1 class="fill">
-			<a href="dashboard.jsp"> Application - Computer Database </a>
+			<a href="dashboard"> Application - Computer Database </a>
 		</h1>
 	</header>

@@ -1,8 +1,8 @@
-package com.excilys.wrapper;
+package main.java.com.excilys.wrapper;
 
 import java.util.List;
 
-import com.excilys.domain.Company;
+import main.java.com.excilys.domain.Company;
 
 public class CompanyWrapper{
 

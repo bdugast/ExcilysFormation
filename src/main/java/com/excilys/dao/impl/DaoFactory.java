@@ -1,4 +1,4 @@
-package com.excilys.DAO;
+package main.java.com.excilys.dao.impl;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -13,8 +13,8 @@ import javax.sql.DataSource;
 public class DaoFactory {
 
 	private static DaoFactory DF = null;
-	private static ComputerDAO computerDao = null;
-	private static CompanyDAO companyDao = null;
+	private static ComputerDAOImpl computerDao = null;
+	private static CompanyDAOImpl companyDao = null;
 
 	private DaoFactory() {
 	}
@@ -43,13 +43,13 @@ public class DaoFactory {
 		return conn;
 	}
 	
-	public static ComputerDAO getComputerDao(){
-		if(computerDao == null)	computerDao = new ComputerDAO();
+	public static ComputerDAOImpl getComputerDao(){
+		if(computerDao == null)	computerDao = new ComputerDAOImpl();
 		return computerDao;
 	}
 	
-	public static CompanyDAO getCompanyDao(){
-		if(companyDao == null)	companyDao = new CompanyDAO();
+	public static CompanyDAOImpl getCompanyDao(){
+		if(companyDao == null)	companyDao = new CompanyDAOImpl();
 		return companyDao;
 	}
 	
