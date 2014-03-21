@@ -1,8 +1,8 @@
-package org.excilys.wrapper;
+package com.excilys.wrapper;
 
 import java.util.List;
 
-import org.excilys.domain.Computer;
+import com.excilys.domain.Computer;
 
 public class ComputerWrapper {
 	List<Computer> computers;

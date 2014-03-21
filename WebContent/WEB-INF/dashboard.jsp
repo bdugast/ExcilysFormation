@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <section id="main">
-	<h1 id="homeTitle">Computers found</h1>
+	<h1 id="homeTitle">${fn:length(computers)} Computers found</h1>
 	<div id="actions">
 		<form action="" method="GET">
 			<input type="search" id="searchbox" name="search"
@@ -29,17 +29,12 @@
 				</tr>
 			</thead>
 			<tbody>
-			<c:set value="${companies}" var="companies"></c:set>
 			<c:forEach items="${computers}" var="computer">
 				<tr>
 					<td><a href="#" onclick=""><c:out value="${computer.name}"/></td>
 					<td><c:out value="${computer.introduced}"/></td>
 					<td><c:out value="${computer.discontinued}"/></td>
-					<td>
-						<%-- <c:if test="${computer.company_id != null}">
-							<c:out value="${companies[computer.company_id].name}"/>
-						</c:if> --%>
-					</td>
+					<td><c:out value="${computer.company.name}"/></td>
 				</tr>
 			</c:forEach>
 			</tbody>

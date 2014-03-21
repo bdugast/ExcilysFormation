@@ -1,6 +1,7 @@
-package org.excilys.DAO;
+package com.excilys.DAO;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -52,9 +53,10 @@ public class DaoFactory {
 		return companyDao;
 	}
 	
-	public static void closeAll(Connection conn, Statement stmt) {
+	public static void closeAll(Connection conn, ResultSet rs, Statement stmt) {
 		try {
 			if(conn != null) conn.close();
+			if(rs != null) rs.close();
 			if(stmt != null) stmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -1,4 +1,4 @@
-package org.excilys.domain;
+package com.excilys.domain;
 
 import java.util.Date;
 
@@ -7,21 +7,21 @@ public class Computer {
 	private String name;
 	private Date introduced;
 	private Date discontinued;
-	private int companyId;
-		 
+	private Company company;	 
+	 
 	public Computer() {
 		super();
 	}
 	public Computer(int id, String name, Date introduced, Date discontinued,
-			int company_id) {
+			Company company) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.introduced = introduced;
 		this.discontinued = discontinued;
-		this.companyId = company_id;
+		this.company = company;
 	}
-
+	
 	public int getId() {
 		return id;
 	}
@@ -46,13 +46,12 @@ public class Computer {
 	public void setDiscontinued(Date discontinued) {
 		this.discontinued = discontinued;
 	}
-	public int getCompanyId() {
-		return companyId;
+	public Company getCompany() {
+		return company;
 	}
-	public void setCompanyId(int companyId) {
-		this.companyId = companyId;
+	public void setCompany(Company company) {
+		this.company = company;
 	}
-	 
 	@Override
 	public boolean equals(Object obj) {
 		// TODO Auto-generated method stub
@@ -65,7 +64,7 @@ public class Computer {
 	}
 	@Override
 	public String toString() {
-		String computer = this.getClass().getName() + " = Id : " + id + ", name :" + name + ", introduced :" + introduced + ", discontinued :" + discontinued +", companyId :" + companyId;
+		String computer = this.getClass().getName() + " = Id : " + id + ", name :" + name + ", introduced :" + introduced + ", discontinued :" + discontinued +", company :" + company;
 		return computer;
 	}	
 }

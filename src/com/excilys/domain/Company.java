@@ -1,4 +1,4 @@
-package org.excilys.domain;
+package com.excilys.domain;
 
 public class Company {
 	private int id;

@@ -1,4 +1,4 @@
-package org.excilys.DAO;
+package com.excilys.DAO;
 
 
 import java.sql.Connection;
@@ -10,7 +10,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.excilys.domain.Computer;
+import com.excilys.domain.Company;
+import com.excilys.domain.Computer;
 
 public class ComputerDAO {
 	
@@ -20,34 +21,36 @@ public class ComputerDAO {
 	public Computer getOneComputer(int id){
 		Computer comp = new Computer();
 		Connection conn = DaoFactory.getConnection();
+		ResultSet rs = null; 
 		PreparedStatement stmt = null;
 		try {
-			stmt = conn.prepareStatement("select * from computer where id=?");
+			stmt = conn.prepareStatement("select cu.id as cuid, cu.name, cu.introduced, cu.discontinued, cu.company_id, ca.name as companyName ca from computer cu inner join company as ca on cu.company_id=ca.id where id=?");
 			stmt.setInt(1, id);
-			ResultSet rs = stmt.executeQuery();
+			rs = stmt.executeQuery();
 			
 			while(rs.next()){
 				comp.setId(rs.getInt("id"));
 				comp.setName(rs.getString("name"));
 				comp.setIntroduced(rs.getDate("introduced"));
 				comp.setDiscontinued(rs.getDate("discontinued"));
-				comp.setCompanyId(rs.getInt("company_id"));
+				comp.setCompany(new Company(rs.getInt("company_id"),rs.getString("companyName")));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally{
-			DaoFactory.closeAll(conn, stmt);
+			DaoFactory.closeAll(conn, rs, stmt);
 		}
 		return comp;
 	}
 	
 	public List<Computer> getAllComputer(){
-		List<Computer> comps = new ArrayList<>();
+		List<Computer> comps = new ArrayList<Computer>();
 		Connection conn = DaoFactory.getConnection();
+		ResultSet rs = null;
 		Statement stmt = null;
 		try {
 			stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("select * from computer");
+			rs = stmt.executeQuery("select cu.id as cuid, cu.name, cu.introduced, cu.discontinued, cu.company_id, ca.name as companyName ca from computer cu inner join company as ca on cu.company_id=ca.id");
 			
 			while(rs.next()){
 				Computer comp = new Computer();
@@ -55,76 +58,70 @@ public class ComputerDAO {
 				comp.setName(rs.getString("name"));
 				comp.setIntroduced(rs.getDate("introduced"));
 				comp.setDiscontinued(rs.getDate("discontinued"));
-				comp.setCompanyId(rs.getInt("company_id"));
+				comp.setCompany(new Company(rs.getInt("company_id"),rs.getString("companyName")));
 				comps.add(comp);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally{
-			DaoFactory.closeAll(conn, stmt);
+			DaoFactory.closeAll(conn, rs, stmt);
 		}
 
 		return comps;
 	}
 	
 
-	public int updateComputer(Computer comp){
+	public void updateComputer(Computer comp){
 		Connection conn = DaoFactory.getConnection();
 		PreparedStatement stmt = null;
-		int nbRows = 0;
 		
 		try {
 			stmt = conn.prepareStatement("udpate computer set name=?, introduced=?, discontinued=?, company_id=? where id=?");
 			stmt.setString(1, comp.getName());
 			stmt.setDate(2, (Date) comp.getIntroduced());
 			stmt.setDate(3, (Date) comp.getDiscontinued());
-			stmt.setInt(4, comp.getCompanyId());
+			stmt.setObject(4, comp.getCompany());
 			stmt.setInt(5, comp.getId());
 			
-			nbRows = stmt.executeUpdate();
+			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally{
-			DaoFactory.closeAll(conn, stmt);
+			DaoFactory.closeAll(conn, null, stmt);
 		}
-		return nbRows;
 	}
 	
-	public int addComputer(Computer comp){
+	public void createComputer(Computer comp){
 		Connection conn = DaoFactory.getConnection();
 		PreparedStatement stmt = null;
-		int nbRows = 0;
 		
 		try {
 			stmt = conn.prepareStatement("insert into computer values(null,?,?,?,?)");
 			stmt.setString(1, comp.getName());
 			stmt.setDate(2, (Date) comp.getIntroduced());
 			stmt.setDate(3, (Date) comp.getDiscontinued());
-			stmt.setInt(4, comp.getCompanyId());
+			stmt.setObject(4, comp.getCompany());
 			
-			nbRows = stmt.executeUpdate();
+			stmt.execute();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally{
-			DaoFactory.closeAll(conn, stmt);
+			DaoFactory.closeAll(conn, null, stmt);
 		}
-		return nbRows;
 	}
 	
-	public int deleteComputer(Computer comp){
+	public void deleteComputer(int id){
 		Connection conn = DaoFactory.getConnection();
 		PreparedStatement stmt = null;
-		int nbRows = 0;
 		
 		try {
 			stmt = conn.prepareStatement("delete from computer where id=?)");
-			stmt.setInt(1, comp.getId());
-			nbRows = stmt.executeUpdate();
+			stmt.setInt(1, id);
+			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally{
-			DaoFactory.closeAll(conn, stmt);
+			DaoFactory.closeAll(conn, null, stmt);
 		}
-		return nbRows;
 	}
 }

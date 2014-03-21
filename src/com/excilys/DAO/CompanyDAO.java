@@ -1,4 +1,4 @@
-package org.excilys.DAO;
+package com.excilys.DAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,9 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import org.excilys.domain.Company;
+import com.excilys.domain.Company;
 
 public class CompanyDAO {
 	protected CompanyDAO() {
@@ -17,11 +19,12 @@ public class CompanyDAO {
 	public Company getOneCompany(int id){
 		Company comp = new Company();
 		Connection conn = DaoFactory.getConnection();
+		ResultSet rs = null;
 		PreparedStatement stmt = null;
 		try {
-			stmt = conn.prepareStatement("select * from company where id=?");
+			stmt = conn.prepareStatement("select id, name from company where id=?");
 			stmt.setInt(1, id);
-			ResultSet rs = stmt.executeQuery();
+			rs = stmt.executeQuery();
 			
 			while(rs.next()){
 				comp.setId(rs.getInt("id"));
@@ -30,86 +33,77 @@ public class CompanyDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally{
-			DaoFactory.closeAll(conn, stmt);
+			DaoFactory.closeAll(conn, rs, stmt);
 		}
 		return comp;
 	}
 	
 	public List<Company> getAllCompany(){
-		List<Company> comps = new ArrayList<>();
+		List<Company> comps = new ArrayList<Company>();
 		Connection conn = DaoFactory.getConnection();
+		ResultSet rs = null;
 		Statement stmt = null;
 		try {
 			stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("select * from company");
+			rs = stmt.executeQuery("select id, name from company");
 			
 			while(rs.next()){
-				Company comp = new Company();
-				comp.setId(rs.getInt("id"));
-				comp.setName(rs.getString("name"));
+				Company comp = new Company(rs.getInt("id"),rs.getString("name"));
 				comps.add(comp);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally{
-			DaoFactory.closeAll(conn, stmt);
+			DaoFactory.closeAll(conn, rs, stmt);
 		}
 
 		return comps;
 	}
 	
 
-	public int updateCompany(Company comp){
+	public void updateCompany(Company comp){
 		Connection conn = DaoFactory.getConnection();
 		PreparedStatement stmt = null;
-		int nbRows = 0;
 		
 		try {
 			stmt = conn.prepareStatement("udpate company set name=? where id=?");
 			stmt.setString(1, comp.getName());
 			stmt.setInt(5, comp.getId());
-			
-			nbRows = stmt.executeUpdate();
+			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally{
-			DaoFactory.closeAll(conn, stmt);
+			DaoFactory.closeAll(conn, null, stmt);
 		}
-		return nbRows;
 	}
 	
-	public int addCompany(Company comp){
+	public void createCompany(Company comp){
 		Connection conn = DaoFactory.getConnection();
 		PreparedStatement stmt = null;
-		int nbRows = 0;
-		
+
 		try {
 			stmt = conn.prepareStatement("insert into company values(null,?)");
 			stmt.setString(1, comp.getName());
-			
-			nbRows = stmt.executeUpdate();
+			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally{
-			DaoFactory.closeAll(conn, stmt);
+			DaoFactory.closeAll(conn, null, stmt);
 		}
-		return nbRows;
 	}
 	
-	public int deleteCompany(Company comp){
+	public void deleteCompany(int id){
 		Connection conn = DaoFactory.getConnection();
 		PreparedStatement stmt = null;
-		int nbRows = 0;
 		
 		try {
 			stmt = conn.prepareStatement("delete from company where id=?)");
-			stmt.setInt(1, comp.getId());
-			nbRows = stmt.executeUpdate();
+			stmt.setInt(1, id);
+			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally{
-			DaoFactory.closeAll(conn, stmt);
+			DaoFactory.closeAll(conn, null, stmt);
 		}
-		return nbRows;
 	}
 }

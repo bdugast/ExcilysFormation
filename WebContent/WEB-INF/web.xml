@@ -7,9 +7,9 @@
 	<servlet>
 		<description>
 		</description>
-		<display-name>DashboardServlet</display-name>
+		<display-name>DashboardServ</display-name>
 		<servlet-name>DashboardServlet</servlet-name>
-		<servlet-class>org.excilys.servlet.DashboardServlet</servlet-class>
+		<servlet-class>com.excilys.servlet.DashboardServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>DashboardServlet</servlet-name>
