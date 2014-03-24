@@ -27,6 +27,16 @@ public class DaoFactory {
 		return DF;
 	}
 
+	public static ComputerDAOImpl getComputerDao(){
+		if(computerDao == null)	computerDao = new ComputerDAOImpl();
+		return computerDao;
+	}
+	
+	public static CompanyDAOImpl getCompanyDao(){
+		if(companyDao == null)	companyDao = new CompanyDAOImpl();
+		return companyDao;
+	}
+	
 	public static Connection getConnection() {
 		Context ctx;
 		DataSource ds;
@@ -41,16 +51,6 @@ public class DaoFactory {
 			e.printStackTrace();
 		}
 		return conn;
-	}
-	
-	public static ComputerDAOImpl getComputerDao(){
-		if(computerDao == null)	computerDao = new ComputerDAOImpl();
-		return computerDao;
-	}
-	
-	public static CompanyDAOImpl getCompanyDao(){
-		if(companyDao == null)	companyDao = new CompanyDAOImpl();
-		return companyDao;
 	}
 	
 	public static void closeAll(Connection conn, ResultSet rs, Statement stmt) {

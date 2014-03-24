@@ -1,6 +1,6 @@
 package main.java.com.excilys.domain;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Computer {
 	private int id;
@@ -22,6 +22,15 @@ public class Computer {
 		this.company = company;
 	}
 	
+	public Computer(String name, Date introduced, Date discontinued,
+			Company company) {
+		super();
+		this.name = name;
+		this.introduced = introduced;
+		this.discontinued = discontinued;
+		this.company = company;
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -34,7 +43,7 @@ public class Computer {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Date getIntroduced() {
+	public java.sql.Date getIntroduced() {
 		return introduced;
 	}
 	public void setIntroduced(Date introduced) {

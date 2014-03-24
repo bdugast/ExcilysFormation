@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <section id="main">
-	<h1 id="homeTitle">${fn:length(computers)}Computersfound</h1>
+	<h1 id="homeTitle">${fn:length(computers)} Computers found</h1>
 	<div id="actions">
 		<form action="" class="form-inline" method="GET">
 			<div class="form-group">
@@ -15,26 +15,30 @@
 		</form>
 
 		<a type="button" id="add" class="btn btn-success"
-			href="addcomputer">Add Computer</a>
+			href="add">Add Computer</a>
 
 	</div>
 
-	<table class="table table-striped table-bordered">
+	<table class="table table-striped">
 		<thead>
 			<tr>
 				<th>Computer Name</th>
 				<th>Introduced Date</th>
 				<th>Discontinued Date</th>
 				<th>Company</th>
+				<th></th>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody>
 			<c:forEach items="${computers}" var="computer">
 				<tr>
-					<td><a href="#" onclick=""><c:out value="${computer.name}" /></td>
-					<td><c:out value="${computer.introduced}" /></td>
-					<td><c:out value="${computer.discontinued}" /></td>
-					<td><c:out value="${computer.company.name}" /></td>
+					<td>${computer.name}</td>
+					<td>${computer.introduced}</td>
+					<td>${computer.discontinued}</td>
+					<td>${computer.company.name}</td>
+					<td><a type="button" class="btn btn-warning" href="update?id=${computer.id}">Modify</a></td>
+					<td><a type="button" class="btn btn-danger" href="delete?id=${computer.id}">Delete</a></td>
 				</tr>
 			</c:forEach>
 		</tbody>

@@ -18,42 +18,37 @@ import main.java.com.excilys.service.impl.ServiceFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AddComputerServlet extends HttpServlet{
-	
+public class UpdateComputerServlet extends HttpServlet{
+
 	static final Logger LOG = LoggerFactory.getLogger(AddComputerServlet.class);
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		
+		Computer comp = ServiceFactory.getComputerService().getOneComputer(Integer.valueOf(req.getParameter("id")));
+		req.setAttribute("computer", comp);
 		List<Company> companies = ServiceFactory.getCompanyService().getAllCompanies();
 		req.setAttribute("companies", companies);
 		
-		getServletContext().getRequestDispatcher("/WEB-INF/addComputer.jsp").forward(req,resp);
+		getServletContext().getRequestDispatcher("/WEB-INF/updateComputer.jsp").forward(req,resp);
 	}
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		String name = req.getParameter("name");
-
+		Computer comp = ServiceFactory.getComputerService().getOneComputer(Integer.valueOf(req.getParameter("id")));
+		comp.setName(req.getParameter("name"));
 		SimpleDateFormat formatBDD = new SimpleDateFormat("yyyy-mm-dd");
-		Date dateIntroduced = null;
-		Date dateDiscontinued = null;
 		try {			
-			dateIntroduced = new java.sql.Date(formatBDD.parse(req.getParameter("introduced")).getTime());
-			dateDiscontinued = new java.sql.Date(formatBDD.parse(req.getParameter("discontinued")).getTime());
+			comp.setIntroduced(new java.sql.Date(formatBDD.parse(req.getParameter("introduced")).getTime()));
+			comp.setDiscontinued(new java.sql.Date(formatBDD.parse(req.getParameter("discontinued")).getTime()));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		LOG.debug("name " + name);
-		LOG.debug("dateIntroduced " + dateIntroduced);
-		LOG.debug("dateDiscontinued " + dateDiscontinued);
-				
-		Company company = ServiceFactory.getCompanyService().getOneCompany(Integer.valueOf(req.getParameter("company")));
-		Computer comp = new Computer(name, dateIntroduced, dateDiscontinued, company);
+		if(req.getParameter("company")!=null) comp.setCompany(ServiceFactory.getCompanyService().getOneCompany(Integer.valueOf(req.getParameter("company"))));
 		
-		ServiceFactory.getComputerService().createComputer(comp);
+		ServiceFactory.getComputerService().updateComputer(comp);
 		
 		resp.sendRedirect("dashboard");
 	}
