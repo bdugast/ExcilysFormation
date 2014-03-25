@@ -11,6 +11,8 @@
 <link rel="stylesheet" href="css/jquery-ui.min.css" />
 <script src="js/jquery.min.js"></script>
 <script src="js/jquery-ui.min.js"></script>
+<script src="js/jquery.validate.min.js"></script>
+<script src="js/validationForm.js"></script>
 <script>
 	$(function() {
 		$("#dateIntroduced").datepicker({ dateFormat: "yy-mm-dd" });
@@ -23,6 +25,6 @@
 <body>
 	<header class="navbar-inverse">
 		<h1 class="fill">
-			<a href="dashboard"> Application - Computer Database </a>
+			<a href="dashboard?page=1"> Application - Computer Database </a>
 		</h1>
 	</header>

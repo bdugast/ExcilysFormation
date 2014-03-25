@@ -19,6 +19,11 @@
 		<servlet-name>UpdateComputerServlet</servlet-name>
 		<servlet-class>main.java.com.excilys.servlet.UpdateComputerServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<display-name>DeleteComputer</display-name>
+		<servlet-name>DeleteComputerServlet</servlet-name>
+		<servlet-class>main.java.com.excilys.servlet.DeleteComputerServlet</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>DashboardServlet</servlet-name>
 		<url-pattern>/dashboard</url-pattern>
@@ -30,6 +35,10 @@
 	<servlet-mapping>
 		<servlet-name>UpdateComputerServlet</servlet-name>
 		<url-pattern>/update</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>DeleteComputerServlet</servlet-name>
+		<url-pattern>/delete</url-pattern>
 	</servlet-mapping>
 	<resource-ref>
 		<description>Computer Database</description>

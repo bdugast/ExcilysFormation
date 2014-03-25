@@ -1,9 +1,8 @@
 <jsp:include page="include/header.jsp" />
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <section id="main">
-	<h1 id="homeTitle">${fn:length(computers)} Computers found</h1>
+	<h1 id="homeTitle">${countComputers} Computers found</h1>
 	<div id="actions">
 		<form action="" class="form-inline" method="GET">
 			<div class="form-group">
@@ -43,6 +42,28 @@
 			</c:forEach>
 		</tbody>
 	</table>
+	
+     <ul class="pagination">
+     		<c:choose>
+	     		<c:when test="${currentPage != 1}">
+	     			<li><a href="dashboard?page=${currentPage -1}">&laquo;</a></li>
+	     		</c:when>
+	    		<c:otherwise>
+		        	<li class="disabled"><a href="#">&laquo;</a></li>
+		        </c:otherwise>
+	        </c:choose>	
+            <c:forEach begin="1" end="${countPages}" var="i">
+                <li><a href="dashboard?page=${i}"> ${i} </<li></td>
+            </c:forEach>
+            <c:choose>
+	     		<c:when test="${currentPage lt countPages}">
+	     			<li><a href="dashboard?page=${currentPage +1}">&raquo;</a></li>
+	     		</c:when>
+	    		<c:otherwise>
+		        	<li class="disabled"><a href="#">&raquo;</a></li>
+		        </c:otherwise>
+	        </c:choose>	
+    </ul>
 </section>
 
 <jsp:include page="include/footer.jsp" />

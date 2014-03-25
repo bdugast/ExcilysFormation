@@ -34,4 +34,14 @@ public class ComputerServiceImpl implements ComputerService{
 	public void deleteComputer(int id) {
 		DaoFactory.getComputerDao().deleteComputer(id);
 	}
+
+	@Override
+	public List<Computer> getRangeComputers(int start, int nb) {
+		return DaoFactory.getComputerDao().getRangeComputers(start, nb);
+	}
+
+	@Override
+	public int getCountComputer() {
+		return DaoFactory.getComputerDao().getCountComputer();
+	}
 }

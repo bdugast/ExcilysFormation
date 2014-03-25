@@ -37,24 +37,25 @@ public class AddComputerServlet extends HttpServlet{
 			throws ServletException, IOException {
 		String name = req.getParameter("name");
 
-		SimpleDateFormat formatBDD = new SimpleDateFormat("yyyy-mm-dd");
 		Date dateIntroduced = null;
 		Date dateDiscontinued = null;
+		Company company = new Company();
+		SimpleDateFormat formatBDD = new SimpleDateFormat("yyyy-MM-dd");
 		try {			
-			dateIntroduced = new java.sql.Date(formatBDD.parse(req.getParameter("introduced")).getTime());
-			dateDiscontinued = new java.sql.Date(formatBDD.parse(req.getParameter("discontinued")).getTime());
+			if(req.getParameter("introduced")!="") dateIntroduced = new java.sql.Date(formatBDD.parse(req.getParameter("introduced")).getTime());
+			if(req.getParameter("discontinued")!="") dateDiscontinued = new java.sql.Date(formatBDD.parse(req.getParameter("discontinued")).getTime());
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		LOG.debug("name " + name);
-		LOG.debug("dateIntroduced " + dateIntroduced);
-		LOG.debug("dateDiscontinued " + dateDiscontinued);
+		LOG.trace("name " + name);
+		LOG.trace("dateIntroduced " + dateIntroduced);
+		LOG.trace("dateDiscontinued " + dateDiscontinued);
 				
-		Company company = ServiceFactory.getCompanyService().getOneCompany(Integer.valueOf(req.getParameter("company")));
+		if(req.getParameter("company")!="") company = ServiceFactory.getCompanyService().getOneCompany(Integer.valueOf(req.getParameter("company")));
 		Computer comp = new Computer(name, dateIntroduced, dateDiscontinued, company);
 		
 		ServiceFactory.getComputerService().createComputer(comp);
 		
-		resp.sendRedirect("dashboard");
+		resp.sendRedirect("dashboard?page=1");
 	}
 }
