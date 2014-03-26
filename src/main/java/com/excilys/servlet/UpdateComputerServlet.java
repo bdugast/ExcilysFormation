@@ -1,9 +1,6 @@
 package main.java.com.excilys.servlet;
 
 import java.io.IOException;
-import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -15,6 +12,7 @@ import main.java.com.excilys.domain.Company;
 import main.java.com.excilys.domain.Computer;
 import main.java.com.excilys.service.impl.ServiceFactory;
 
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,17 +40,12 @@ public class UpdateComputerServlet extends HttpServlet{
 		Computer comp = new Computer();
 		comp.setId(id);
 		comp.setName(req.getParameter("name"));
-		SimpleDateFormat formatBDD = new SimpleDateFormat("yyyy-MM-dd");
-		try {			
-			if(req.getParameter("introduced")!="") comp.setIntroduced(new java.sql.Date(formatBDD.parse(req.getParameter("introduced")).getTime()));
-			else comp.setIntroduced(null);
-			if(req.getParameter("discontinued")!="") comp.setDiscontinued(new java.sql.Date(formatBDD.parse(req.getParameter("discontinued")).getTime()));
-			else comp.setDiscontinued(null);
-			LOG.trace("Introduced : " + comp.getIntroduced());
-			LOG.trace("Discontinued : " + comp.getDiscontinued());
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		if(req.getParameter("introduced")!="") comp.setIntroduced(new DateTime(req.getParameter("introduced")));
+		else comp.setIntroduced(null);
+		if(req.getParameter("discontinued")!="") comp.setDiscontinued(new DateTime(req.getParameter("discontinued")));
+		else comp.setDiscontinued(null);
+		LOG.trace("Introduced : " + comp.getIntroduced());
+		LOG.trace("Discontinued : " + comp.getDiscontinued());
 		if(req.getParameter("company")!="") comp.setCompany(ServiceFactory.getCompanyService().getOneCompany(Integer.valueOf(req.getParameter("company"))));
 		else comp.setCompany(new Company());
 		

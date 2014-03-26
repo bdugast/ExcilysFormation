@@ -18,14 +18,29 @@ public class DashboardServlet extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
+		int currentPage = 1;
+		String search = "";
+		
 		//Récupérer la page actuelle
-		int currentPage = Integer.valueOf(req.getParameter("page"));	
+		if(req.getParameter("page")!=null) currentPage = Integer.valueOf(req.getParameter("page"));
+		
+		//Récupérer le champ recherche
+		if(req.getParameter("search")!=null) search = req.getParameter("search");
+		
 		//Compter le nombre d'objet
-		int count = ServiceFactory.getComputerService().getCountComputer();
+		int count = ServiceFactory.getComputerService().getCountComputerSearch(search);
+
 		//Savoir le nombre de pages
-		Double countPages = Math.ceil(count/20)+1;
+		int countPages = (int) (Math.ceil((double)count/(double)20));
+		
+		//On modifie la page si la current page est trop haute ou trop basse
+		if(currentPage>countPages) currentPage = countPages;
+		if(currentPage<1) currentPage=1;
+		
 		//Get 20 ordinateurs en fonction de la page with fucking limit	
-		List<Computer> computers = ServiceFactory.getComputerService().getRangeComputers(((currentPage-1)*NB_COMPUTER_BY_PAGE), NB_COMPUTER_BY_PAGE);
+		List<Computer> computers = ServiceFactory.getComputerService().getRangeSearchComputers(((currentPage-1)*NB_COMPUTER_BY_PAGE), NB_COMPUTER_BY_PAGE, search);
+		
+		req.setAttribute("search", search);
 		req.setAttribute("computers", computers);
 		req.setAttribute("countComputers", count);
         req.setAttribute("countPages", countPages);

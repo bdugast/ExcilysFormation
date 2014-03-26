@@ -1,18 +1,18 @@
 package main.java.com.excilys.domain;
 
-import java.sql.Date;
+import org.joda.time.DateTime;
 
 public class Computer {
 	private int id;
 	private String name;
-	private Date introduced;
-	private Date discontinued;
+	private DateTime introduced;
+	private DateTime discontinued;
 	private Company company;	 
 	 
 	public Computer() {
 		super();
 	}
-	public Computer(int id, String name, Date introduced, Date discontinued,
+	public Computer(int id, String name, DateTime introduced, DateTime discontinued,
 			Company company) {
 		super();
 		this.id = id;
@@ -22,7 +22,7 @@ public class Computer {
 		this.company = company;
 	}
 	
-	public Computer(String name, Date introduced, Date discontinued,
+	public Computer(String name, DateTime introduced, DateTime discontinued,
 			Company company) {
 		super();
 		this.name = name;
@@ -43,16 +43,16 @@ public class Computer {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public java.sql.Date getIntroduced() {
+	public DateTime getIntroduced() {
 		return introduced;
 	}
-	public void setIntroduced(Date introduced) {
+	public void setIntroduced(DateTime introduced) {
 		this.introduced = introduced;
 	}
-	public Date getDiscontinued() {
+	public DateTime getDiscontinued() {
 		return discontinued;
 	}
-	public void setDiscontinued(Date discontinued) {
+	public void setDiscontinued(DateTime discontinued) {
 		this.discontinued = discontinued;
 	}
 	public Company getCompany() {
@@ -63,12 +63,10 @@ public class Computer {
 	}
 	@Override
 	public boolean equals(Object obj) {
-		// TODO Auto-generated method stub
 		return super.equals(obj);
 	}
 	@Override
 	public int hashCode() {
-		// TODO Auto-generated method stub
 		return super.hashCode();
 	}
 	@Override

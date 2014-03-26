@@ -1,9 +1,6 @@
 package main.java.com.excilys.servlet;
 
 import java.io.IOException;
-import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -15,6 +12,7 @@ import main.java.com.excilys.domain.Company;
 import main.java.com.excilys.domain.Computer;
 import main.java.com.excilys.service.impl.ServiceFactory;
 
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,16 +35,11 @@ public class AddComputerServlet extends HttpServlet{
 			throws ServletException, IOException {
 		String name = req.getParameter("name");
 
-		Date dateIntroduced = null;
-		Date dateDiscontinued = null;
+		DateTime dateIntroduced = null;
+		DateTime dateDiscontinued = null;
 		Company company = new Company();
-		SimpleDateFormat formatBDD = new SimpleDateFormat("yyyy-MM-dd");
-		try {			
-			if(req.getParameter("introduced")!="") dateIntroduced = new java.sql.Date(formatBDD.parse(req.getParameter("introduced")).getTime());
-			if(req.getParameter("discontinued")!="") dateDiscontinued = new java.sql.Date(formatBDD.parse(req.getParameter("discontinued")).getTime());
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		if(req.getParameter("introduced")!="") dateIntroduced = new DateTime(req.getParameter("introduced"));
+		if(req.getParameter("discontinued")!="") dateDiscontinued = new DateTime(req.getParameter("discontinued"));
 		LOG.trace("name " + name);
 		LOG.trace("dateIntroduced " + dateIntroduced);
 		LOG.trace("dateDiscontinued " + dateDiscontinued);

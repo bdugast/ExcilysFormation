@@ -41,7 +41,18 @@ public class ComputerServiceImpl implements ComputerService{
 	}
 
 	@Override
+	public List<Computer> getRangeSearchComputers(int start, int nb, String search) {
+		return DaoFactory.getComputerDao().getRangeSearchComputers(start, nb, search);
+	}
+
+	@Override
 	public int getCountComputer() {
 		return DaoFactory.getComputerDao().getCountComputer();
 	}
+
+	@Override
+	public int getCountComputerSearch(String search) {
+		return DaoFactory.getComputerDao().getCountComputerSearch(search);
+	}
+
 }

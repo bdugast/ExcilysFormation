@@ -1,5 +1,7 @@
 <jsp:include page="include/header.jsp" />
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://www.joda.org/joda/time/tags" prefix="joda"%>
+
 <section id="main">
 	<h1>Update Computer</h1>
 	<form class="form-horizontal" id="formValidation" action="update"
@@ -14,16 +16,14 @@
 			<label class="control-label" for="introduced">Introduced date
 				:</label>
 			<div class="controls">
-				<input type="text" class="form-control" id="dateIntroduced"
-					name="introduced" value="${computer.introduced}">
+				<input type="text" class="form-control" id="dateIntroduced"	name="introduced" value="<joda:format value="${computer.introduced}" pattern="yyyy-MM-dd"/>">
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label" for="discontinued">Discontinued
 				date :</label>
 			<div class="controls">
-				<input type="text" class="form-control" id="dateDiscontinued"
-					name="discontinued" value="${computer.discontinued}">
+				<input type="text" class="form-control" id="dateDiscontinued" name="discontinued" value="<joda:format value="${computer.discontinued}" pattern="yyyy-MM-dd"/>">
 			</div>
 		</div>
 		<div class="control-group">
