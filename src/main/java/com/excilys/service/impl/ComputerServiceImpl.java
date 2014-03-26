@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 
 public class ComputerServiceImpl implements ComputerService {
 
-	String previousOrderField = "COMPUTER";
+	String previousOrderField = "";
 	Boolean previousOrder = true;
 	int previousStart = 0;
 	
@@ -94,7 +94,8 @@ public class ComputerServiceImpl implements ComputerService {
 			orderb = "cu.discontinued";
 			break;
 		default:
-			return null;
+			orderb = "cu.id";
+			break;
 		}
 		orderby.append(orderb);
 		orderby.append(" ");
