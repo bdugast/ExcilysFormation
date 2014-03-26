@@ -19,16 +19,16 @@
 		<a type="button" id="add" class="btn btn-success"
 			href="add">Add Computer</a>
 
-     	<tags:pagination currentPage="${currentPage}" countPages="${countPages}" search="${search}"></tags:pagination>
+     	<tags:pagination currentPage="${currentPage}" countPages="${countPages}" search="${search}" orderField="${orderField}"></tags:pagination>
 	</div>
 
 	<table class="table table-striped">
 		<thead>
 			<tr>
-				<th>Computer Name</th>
-				<th>Introduced Date</th>
-				<th>Discontinued Date</th>
-				<th>Company</th>
+				<th><a href="dashboard?page=${currentPage}&search=${search}&orderField=COMPUTER">Computer Name</a></th>
+				<th><a href="dashboard?page=${currentPage}&search=${search}&orderField=INTRODUCED">Introduced Date</a></th>
+				<th><a href="dashboard?page=${currentPage}&search=${search}&orderField=DISCONTINUED">Discontinued Date</a></th>
+				<th><a href="dashboard?page=${currentPage}&search=${search}&orderField=COMPANY">Company</a></th>
 				<th></th>
 				<th></th>
 			</tr>
