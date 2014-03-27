@@ -17,7 +17,7 @@ public class DeleteComputerServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		Computer comp = ServiceFactory.getComputerService().getOneComputer(Integer.valueOf(req.getParameter("id")));
+		Computer comp = ServiceFactory.INSTANCE.getComputerService().getOneComputer(Integer.valueOf(req.getParameter("id")));
 		req.setAttribute("computer", comp);
 		
 		getServletContext().getRequestDispatcher("/WEB-INF/deleteComputer.jsp").forward(req,resp);
@@ -25,7 +25,7 @@ public class DeleteComputerServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		ServiceFactory.getComputerService().deleteComputer(Integer.valueOf(req.getParameter("id")));
+		ServiceFactory.INSTANCE.getComputerService().deleteComputer(Integer.valueOf(req.getParameter("id")));
 		resp.sendRedirect("dashboard");
 	}
 }

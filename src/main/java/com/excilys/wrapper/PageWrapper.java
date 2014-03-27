@@ -1,7 +1,7 @@
 package main.java.com.excilys.wrapper;
 
 public class PageWrapper {
-	public final static int NB_COMPUTER_BY_PAGE = 20;
+	public final int NB_COMPUTER_BY_PAGE = 20;
 	private Boolean order;
 	private String orderField;
 	private String search;

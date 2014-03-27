@@ -6,10 +6,8 @@ import main.java.com.excilys.dao.impl.DaoFactory;
 import main.java.com.excilys.domain.Company;
 import main.java.com.excilys.service.CompanyService;
 
-public class CompanyServiceImpl implements CompanyService {
-	
-	protected CompanyServiceImpl() {
-	}
+public enum CompanyServiceImpl implements CompanyService {
+	INSTANCE;
 	
 	public List<Company> getAllCompanies() {
 		return DaoFactory.INSTANCE.getCompanyDao().getAllCompany();	

@@ -26,9 +26,9 @@ public class UpdateComputerServlet extends HttpServlet{
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		
-		Computer comp = ServiceFactory.getComputerService().getOneComputer(Integer.valueOf(req.getParameter("id")));
+		Computer comp = ServiceFactory.INSTANCE.getComputerService().getOneComputer(Integer.valueOf(req.getParameter("id")));
 		req.setAttribute("computer", comp);
-		List<Company> companies = ServiceFactory.getCompanyService().getAllCompanies();
+		List<Company> companies = ServiceFactory.INSTANCE.getCompanyService().getAllCompanies();
 		req.setAttribute("companies", companies);
 		
 		getServletContext().getRequestDispatcher("/WEB-INF/updateComputer.jsp").forward(req,resp);
@@ -46,10 +46,9 @@ public class UpdateComputerServlet extends HttpServlet{
 		else comp.setDiscontinued(null);
 		LOG.trace("Introduced : " + comp.getIntroduced());
 		LOG.trace("Discontinued : " + comp.getDiscontinued());
-		if(req.getParameter("company")!="") comp.setCompany(ServiceFactory.getCompanyService().getOneCompany(Integer.valueOf(req.getParameter("company"))));
+		if(req.getParameter("company")!="") comp.setCompany(ServiceFactory.INSTANCE.getCompanyService().getOneCompany(Integer.valueOf(req.getParameter("company"))));
 		else comp.setCompany(new Company());
-		
-		ServiceFactory.getComputerService().updateComputer(comp);
+		ServiceFactory.INSTANCE.getComputerService().updateComputer(comp);
 		
 		resp.sendRedirect("dashboard?page=1");
 	}

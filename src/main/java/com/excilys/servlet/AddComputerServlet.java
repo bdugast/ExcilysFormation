@@ -1,6 +1,7 @@
 package main.java.com.excilys.servlet;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -26,7 +27,7 @@ public class AddComputerServlet extends HttpServlet{
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		
-		List<Company> companies = ServiceFactory.getCompanyService().getAllCompanies();
+		List<Company> companies = ServiceFactory.INSTANCE.getCompanyService().getAllCompanies();
 		req.setAttribute("companies", companies);
 		
 		getServletContext().getRequestDispatcher("/WEB-INF/addComputer.jsp").forward(req,resp);
@@ -35,22 +36,35 @@ public class AddComputerServlet extends HttpServlet{
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		String name = req.getParameter("name");
 
 		DateTime dateIntroduced = null;
 		DateTime dateDiscontinued = null;
-		Company company = new Company();
-		if(req.getParameter("introduced")!="") dateIntroduced = new DateTime(req.getParameter("introduced"));
-		if(req.getParameter("discontinued")!="") dateDiscontinued = new DateTime(req.getParameter("discontinued"));
-		LOG.trace("name " + name);
-		LOG.trace("dateIntroduced " + dateIntroduced);
-		LOG.trace("dateDiscontinued " + dateDiscontinued);
-				
-		if(req.getParameter("company")!="") company = ServiceFactory.getCompanyService().getOneCompany(Integer.valueOf(req.getParameter("company")));
-		Computer comp = new Computer(name, dateIntroduced, dateDiscontinued, company);
-		
-		ServiceFactory.getComputerService().createComputer(comp);
-		
-		resp.sendRedirect("dashboard?page=1");
-	}
+		HashMap<String, String> hashError = ServiceFactory.INSTANCE.getComputerService().checkForm(req.getParameter("name"), req.getParameter("introduced"), req.getParameter("discontinued"),req.getParameter("company"));
+		if(hashError.isEmpty()){
+			String name = req.getParameter("name");
+			Company company = new Company();
+			if(req.getParameter("introduced")!="") dateIntroduced = new DateTime(req.getParameter("introduced"));
+			if(req.getParameter("discontinued")!="") dateDiscontinued = new DateTime(req.getParameter("discontinued"));
+			LOG.trace("name " + name);
+			LOG.trace("dateIntroduced " + dateIntroduced);
+			LOG.trace("dateDiscontinued " + dateDiscontinued);
+					
+			if(req.getParameter("company")!="") company = ServiceFactory.INSTANCE.getCompanyService().getOneCompany(Integer.valueOf(req.getParameter("company")));
+			Computer comp = new Computer(name, dateIntroduced, dateDiscontinued, company);
+			ServiceFactory.INSTANCE.getComputerService().createComputer(comp);
+					
+			resp.sendRedirect("dashboard");
+		}else{
+			List<Company> companies = ServiceFactory.INSTANCE.getCompanyService().getAllCompanies();
+			req.setAttribute("errors", hashError);
+			LOG.debug("errors " + hashError.toString());
+			req.setAttribute("companies", companies);
+			req.setAttribute("name", req.getParameter("name"));
+			req.setAttribute("introduced", req.getParameter("introduced"));
+			req.setAttribute("discontinued", req.getParameter("discontinued"));
+			req.setAttribute("companyId", req.getParameter("company"));
+			
+			getServletContext().getRequestDispatcher("/WEB-INF/addComputer.jsp").forward(req,resp);
+		}
+	}	
 }

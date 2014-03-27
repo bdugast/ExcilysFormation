@@ -34,7 +34,7 @@ public class DashboardServlet extends HttpServlet{
 		if(req.getParameter("search")!=null) wrap.setSearch(req.getParameter("search"));
 		
 		//Compter le nombre d'objet
-		wrap.setCount(ServiceFactory.getComputerService().getCountComputerSearch(wrap.getSearch()));
+		wrap.setCount(ServiceFactory.INSTANCE.getComputerService().getCountComputerSearch(wrap.getSearch()));
 
 		//Savoir le nombre de pages
 		wrap.setCountPages((int) (Math.ceil((double)wrap.getCount()/(double)20)));
@@ -44,7 +44,7 @@ public class DashboardServlet extends HttpServlet{
 		if(wrap.getCurrentPage()<1) wrap.setCurrentPage(1);
 		
 		//Get 20 ordinateurs en fonction de la page with fucking limit	
-		List<Computer> computers = ServiceFactory.getComputerService().getRangeSearchOrderComputers(wrap);
+		List<Computer> computers = ServiceFactory.INSTANCE.getComputerService().getRangeSearchOrderComputers(wrap);
 		
 		req.setAttribute("wrap", wrap);
 		req.setAttribute("computers", computers);

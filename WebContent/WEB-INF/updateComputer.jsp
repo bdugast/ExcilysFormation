@@ -32,8 +32,7 @@
 				<select name="company" class="form-control">
 					<option value="">Select a company</option>
 					<c:forEach items="${companies}" var="company">
-						<option value="${company.id}"
-							${computer.company.id==company.id ? 'selected' : ''}>${company.name}</option>
+						<option value="${company.id}" ${computer.company.id==company.id ? 'selected' : ''}>${company.name}</option>
 					</c:forEach>
 				</select>
 			</div>
