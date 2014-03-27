@@ -4,19 +4,19 @@
 
 <section id="main">
 	<h1>Update Computer</h1>
-	<form class="form-horizontal" id="formValidation" action="update"
+	<form class="form-horizontal col-md-6" id="formValidation" action="update"
 		method="POST">
 		<div class="control-group">
 			<label class="control-label" for="name">Computer name:</label>
 			<div class="controls">
+				<input type="hidden" class="form-control"	id="id" name="id" value="${computer.id}" />
 				<input type="text" class="form-control"	id="inputName" name="name" value="${computer.name}" />
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label" for="introduced">Introduced date
-				:</label>
+			<label class="control-label" for="introduced">Introduced date:</label>
 			<div class="controls">
-				<input type="text" class="form-control" id="dateIntroduced"	name="introduced" value="<joda:format value="${computer.introduced}" pattern="yyyy-MM-dd"/>">
+				<input type="text" class="form-control" id="dateIntroduced" name="introduced" value="<joda:format value="${computer.introduced}" pattern="yyyy-MM-dd"/>">
 			</div>
 		</div>
 		<div class="control-group">

@@ -9,7 +9,7 @@ public interface ComputerService {
 	public Computer getOneComputer(int id);
 	public List<Computer> getRangeComputers(int start, int nb);
 	public List<Computer> getRangeSearchComputers(int start, int nb, String search);
-	public List<Computer> getRangeSearchOrderComputers(int start, int nb, String search, String orderField);
+	public List<Computer> getRangeSearchOrderComputers(int start, int nb, String search, String orderField,boolean order);
 	public void createComputer(Computer comp);
 	public void updateComputer(Computer comp);
 	public void deleteComputer(int id);

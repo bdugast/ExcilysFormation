@@ -19,14 +19,12 @@ import org.slf4j.LoggerFactory;
 public class UpdateComputerServlet extends HttpServlet{
 
 	static final Logger LOG = LoggerFactory.getLogger(AddComputerServlet.class);
-	int id = 0;
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		
-		id = Integer.valueOf(req.getParameter("id"));
-		Computer comp = ServiceFactory.getComputerService().getOneComputer(id);
+		Computer comp = ServiceFactory.getComputerService().getOneComputer(Integer.valueOf(req.getParameter("id")));
 		req.setAttribute("computer", comp);
 		List<Company> companies = ServiceFactory.getCompanyService().getAllCompanies();
 		req.setAttribute("companies", companies);
@@ -38,7 +36,7 @@ public class UpdateComputerServlet extends HttpServlet{
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		Computer comp = new Computer();
-		comp.setId(id);
+		comp.setId(Integer.valueOf(req.getParameter("id")));
 		comp.setName(req.getParameter("name"));
 		if(req.getParameter("introduced")!="") comp.setIntroduced(new DateTime(req.getParameter("introduced")));
 		else comp.setIntroduced(null);

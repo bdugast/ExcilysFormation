@@ -25,6 +25,6 @@
 <body>
 	<header class="navbar-inverse">
 		<h1 class="fill">
-			<a href="dashboard?page=1"> Application - Computer Database </a>
+			<a href="dashboard"> Application - Computer Database </a>
 		</h1>
 	</header>

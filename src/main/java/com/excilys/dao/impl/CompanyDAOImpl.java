@@ -58,7 +58,6 @@ public class CompanyDAOImpl implements CompanyDAO {
 
 		return comps;
 	}
-	
 
 	public void updateCompany(Company comp){
 		Connection conn = DaoFactory.getConnection();

@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <section id="main">
 	<h1>Add Computer</h1>
-	<form class="form-horizontal" id="formValidation" action="add"
+	<form class="form-horizontal col-md-6" id="formValidation" action="add"
 		method="POST">
 		<div class="control-group">
 			<label class="control-label" for="name">Computer name:</label>

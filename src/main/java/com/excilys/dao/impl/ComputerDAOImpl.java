@@ -43,7 +43,6 @@ public class ComputerDAOImpl implements ComputerDAO {
 			while (rs.next()) {
 				comp.setId(rs.getInt(1));
 				comp.setName(rs.getString(2));
-				LOG.debug("date from bdd : " + rs.getTimestamp(3));
 				if(rs.getTimestamp(3)==null) comp.setIntroduced(null);
 				else comp.setIntroduced(new DateTime(rs.getTimestamp(3)));
 				if(rs.getTimestamp(4)==null) comp.setDiscontinued(null);

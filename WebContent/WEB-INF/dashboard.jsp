@@ -20,17 +20,17 @@
 			href="add">Add Computer</a>
 </div>
 <div class="form-group col-md-12">
-     	<tags:pagination currentPage="${currentPage}" countPages="${countPages}" search="${search}" orderField="${orderField}"></tags:pagination>
+     	<tags:pagination currentPage="${currentPage}" countPages="${countPages}" search="${search}" orderField="${orderField}" order="${order}"></tags:pagination>
      	</div>
 	</div>
 
 	<table class="table table-striped">
 		<thead>
 			<tr>
-				<th class="col-md-2 col-md-offset-1"><a href="dashboard?page=${currentPage}&search=${search}&orderField=COMPUTER">Computer Name</a></th>
-				<th class="col-md-2"><a href="dashboard?page=${currentPage}&search=${search}&orderField=INTRODUCED">Introduced Date</a></th>
-				<th class="col-md-2"><a href="dashboard?page=${currentPage}&search=${search}&orderField=DISCONTINUED">Discontinued Date</a></th>
-				<th class="col-md-2"><a href="dashboard?page=${currentPage}&search=${search}&orderField=COMPANY">Company</a></th>
+				<th class="col-md-2 col-md-offset-1"><a href="dashboard?page=${currentPage}&search=${search}&orderField=COMPUTER&order=${orderField=='COMPUTER' ? !order : 'true' }">Computer Name</a></th>
+				<th class="col-md-2"><a href="dashboard?page=${currentPage}&search=${search}&orderField=INTRODUCED&order=${orderField=='INTRODUCED' ? !order : 'true' }">Introduced Date</a></th>
+				<th class="col-md-2"><a href="dashboard?page=${currentPage}&search=${search}&orderField=DISCONTINUED&order=${orderField=='DISCONTINUED' ? !order : 'true' }">Discontinued Date</a></th>
+				<th class="col-md-2"><a href="dashboard?page=${currentPage}&search=${search}&orderField=COMPANY&order=${orderField=='COMPANY' ? !order : 'true' }">Company</a></th>
 				<th class="col-md-1"></th>
 				<th class="col-md-1"></th>
 			</tr>

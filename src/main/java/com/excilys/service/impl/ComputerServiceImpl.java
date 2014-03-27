@@ -67,20 +67,11 @@ public class ComputerServiceImpl implements ComputerService {
 	}
 
 	@Override
-	public List<Computer> getRangeSearchOrderComputers(int start, int nb, String search, String orderField) {
+	public List<Computer> getRangeSearchOrderComputers(int start, int nb, String search, String orderField, boolean order) {
 		
-		StringBuilder orderby = new StringBuilder();		
-		if ((this.previousOrderField.equals(orderField))&&(previousStart==start)){
-				LOG.debug("orderField : " + orderField);
-				previousOrder = !previousOrder;
-		}
-		if ((!this.previousOrderField.equals(orderField))){
-			this.previousOrderField = orderField;
-			previousOrder = true;
-		}
-		previousStart = start;
+		StringBuilder orderby = new StringBuilder();
 		String orderb;
-		switch (previousOrderField) {
+		switch (orderField) {
 		case "COMPUTER":
 			orderb = "cu.name";
 			break;
@@ -99,10 +90,10 @@ public class ComputerServiceImpl implements ComputerService {
 		}
 		orderby.append(orderb);
 		orderby.append(" ");
-		if (previousOrder)
-			orderby.append("DESC");
-		else
+		if (order)
 			orderby.append("ASC");
+		else
+			orderby.append("DESC");
 
 		return DaoFactory.getComputerDao().getRangeSearchOrderComputers(start,	nb, search, orderby.toString());
 	}

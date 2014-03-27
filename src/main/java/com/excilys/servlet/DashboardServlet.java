@@ -20,10 +20,14 @@ public class DashboardServlet extends HttpServlet{
 			throws ServletException, IOException {
 		int currentPage = 1;
 		String search = "";
-		String orderField = "COMPUTER";
+		String orderField = "";
+		boolean order = false;
 		
 		//Order field
 		if(req.getParameter("orderField")!=null) orderField = req.getParameter("orderField");
+		
+		//Order
+		if(req.getParameter("order")!=null) order = Boolean.valueOf(req.getParameter("order"));
 				
 		//Récupérer la page actuelle
 		if(req.getParameter("page")!=null) currentPage = Integer.valueOf(req.getParameter("page"));
@@ -42,8 +46,9 @@ public class DashboardServlet extends HttpServlet{
 		if(currentPage<1) currentPage=1;
 		
 		//Get 20 ordinateurs en fonction de la page with fucking limit	
-		List<Computer> computers = ServiceFactory.getComputerService().getRangeSearchOrderComputers(((currentPage-1)*NB_COMPUTER_BY_PAGE), NB_COMPUTER_BY_PAGE, search, orderField);
+		List<Computer> computers = ServiceFactory.getComputerService().getRangeSearchOrderComputers(((currentPage-1)*NB_COMPUTER_BY_PAGE), NB_COMPUTER_BY_PAGE, search, orderField, order);
 		
+		req.setAttribute("order", order);
 		req.setAttribute("orderField", orderField);
 		req.setAttribute("search", search);
 		req.setAttribute("computers", computers);
