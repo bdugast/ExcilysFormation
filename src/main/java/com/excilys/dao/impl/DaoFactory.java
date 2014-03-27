@@ -13,34 +13,19 @@ import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DaoFactory {
-
-	static final Logger LOG = LoggerFactory.getLogger(DaoFactory.class);
-	private static DaoFactory DF = null;
-	private static ComputerDAOImpl computerDao = null;
-	private static CompanyDAOImpl companyDao = null;
-
-	private DaoFactory() {
-	}
-
-	public static DaoFactory getInstance() {
-		if (DF == null) {
-			DF = new DaoFactory();
-		}
-		return DF;
-	}
-
-	public static ComputerDAOImpl getComputerDao(){
-		if(computerDao == null)	computerDao = new ComputerDAOImpl();
-		return computerDao;
+public enum DaoFactory {
+	INSTANCE;
+	final Logger LOG = LoggerFactory.getLogger(DaoFactory.class);
+	
+	public ComputerDAOImpl getComputerDao(){
+		return ComputerDAOImpl.INSTANCE;
 	}
 	
-	public static CompanyDAOImpl getCompanyDao(){
-		if(companyDao == null)	companyDao = new CompanyDAOImpl();
-		return companyDao;
+	public CompanyDAOImpl getCompanyDao(){
+		return CompanyDAOImpl.INSTANCE;
 	}
 	
-	public static Connection getConnection() {
+	public  Connection getConnection() {
 		Context ctx;
 		DataSource ds;
 		Connection conn = null;
@@ -55,7 +40,7 @@ public class DaoFactory {
 		return conn;
 	}
 	
-	public static void closeAll(Connection conn, ResultSet rs, Statement stmt) {
+	public void closeAll(Connection conn, ResultSet rs, Statement stmt) {
 		try {
 			if(conn != null) conn.close();
 			if(rs != null) rs.close();

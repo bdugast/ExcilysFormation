@@ -11,13 +11,12 @@ import java.util.List;
 import main.java.com.excilys.dao.CompanyDAO;
 import main.java.com.excilys.domain.Company;
 
-public class CompanyDAOImpl implements CompanyDAO {
-	protected CompanyDAOImpl() {
-	}
+public enum CompanyDAOImpl implements CompanyDAO {
+	INSTANCE;
 	
 	public Company getOneCompany(int id){
 		Company comp = new Company();
-		Connection conn = DaoFactory.getConnection();
+		Connection conn = DaoFactory.INSTANCE.getConnection();
 		ResultSet rs = null;
 		PreparedStatement stmt = null;
 		try {
@@ -32,14 +31,14 @@ public class CompanyDAOImpl implements CompanyDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally{
-			DaoFactory.closeAll(conn, rs, stmt);
+			DaoFactory.INSTANCE.closeAll(conn, rs, stmt);
 		}
 		return comp;
 	}
 	
 	public List<Company> getAllCompany(){
 		List<Company> comps = new ArrayList<Company>();
-		Connection conn = DaoFactory.getConnection();
+		Connection conn = DaoFactory.INSTANCE.getConnection();
 		ResultSet rs = null;
 		Statement stmt = null;
 		try {
@@ -53,14 +52,14 @@ public class CompanyDAOImpl implements CompanyDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally{
-			DaoFactory.closeAll(conn, rs, stmt);
+			DaoFactory.INSTANCE.closeAll(conn, rs, stmt);
 		}
 
 		return comps;
 	}
 
 	public void updateCompany(Company comp){
-		Connection conn = DaoFactory.getConnection();
+		Connection conn = DaoFactory.INSTANCE.getConnection();
 		PreparedStatement stmt = null;
 		
 		try {
@@ -71,12 +70,12 @@ public class CompanyDAOImpl implements CompanyDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally{
-			DaoFactory.closeAll(conn, null, stmt);
+			DaoFactory.INSTANCE.closeAll(conn, null, stmt);
 		}
 	}
 	
 	public void createCompany(Company comp){
-		Connection conn = DaoFactory.getConnection();
+		Connection conn = DaoFactory.INSTANCE.getConnection();
 		PreparedStatement stmt = null;
 
 		try {
@@ -86,12 +85,12 @@ public class CompanyDAOImpl implements CompanyDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally{
-			DaoFactory.closeAll(conn, null, stmt);
+			DaoFactory.INSTANCE.closeAll(conn, null, stmt);
 		}
 	}
 	
 	public void deleteCompany(int id){
-		Connection conn = DaoFactory.getConnection();
+		Connection conn = DaoFactory.INSTANCE.getConnection();
 		PreparedStatement stmt = null;
 		
 		try {
@@ -101,7 +100,7 @@ public class CompanyDAOImpl implements CompanyDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally{
-			DaoFactory.closeAll(conn, null, stmt);
+			DaoFactory.INSTANCE.closeAll(conn, null, stmt);
 		}
 	}
 }

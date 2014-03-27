@@ -27,10 +27,10 @@
 	<table class="table table-striped">
 		<thead>
 			<tr>
-				<th class="col-md-2 col-md-offset-1"><a href="dashboard?page=${wrap.currentPage}&search=${wrap.search}&orderField=COMPUTER&order=${wrap.orderField=='COMPUTER' ? !wrap.order : 'true' }">Computer Name</a></th>
-				<th class="col-md-2"><a href="dashboard?page=${wrap.currentPage}&search=${wrap.search}&orderField=INTRODUCED&order=${wrap.orderField=='INTRODUCED' ? !wrap.order : 'true' }">Introduced Date</a></th>
-				<th class="col-md-2"><a href="dashboard?page=${wrap.currentPage}&search=${wrap.search}&orderField=DISCONTINUED&order=${wrap.orderField=='DISCONTINUED' ? !wrap.order : 'true' }">Discontinued Date</a></th>
-				<th class="col-md-2"><a href="dashboard?page=${wrap.currentPage}&search=${wrap.search}&orderField=COMPANY&order=${wrap.orderField=='COMPANY' ? !wrap.order : 'true' }">Company</a></th>
+				<th class="col-md-2 col-md-offset-1"><a	href="dashboard?page=${wrap.currentPage}&search=${wrap.search}&orderField=COMPUTER&order=${wrap.orderField=='COMPUTER' ? !wrap.order : 'true' }">Computer Name</a></th>
+				<th class="col-md-2"><a	href="dashboard?page=${wrap.currentPage}&search=${wrap.search}&orderField=INTRODUCED&order=${wrap.orderField=='INTRODUCED' ? !wrap.order : 'true' }">Introduced	Date</a></th>
+				<th class="col-md-2"><a	href="dashboard?page=${wrap.currentPage}&search=${wrap.search}&orderField=DISCONTINUED&order=${wrap.orderField=='DISCONTINUED' ? !wrap.order : 'true' }">Discontinued Date</a></th>
+				<th class="col-md-2"><a	href="dashboard?page=${wrap.currentPage}&search=${wrap.search}&orderField=COMPANY&order=${wrap.orderField=='COMPANY' ? !wrap.order : 'true' }">Company</a></th>
 				<th class="col-md-1"></th>
 				<th class="col-md-1"></th>
 			</tr>

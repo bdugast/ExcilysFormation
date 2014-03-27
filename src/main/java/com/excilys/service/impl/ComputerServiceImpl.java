@@ -23,27 +23,27 @@ public class ComputerServiceImpl implements ComputerService {
 
 	@Override
 	public Computer getOneComputer(int id) {
-		return DaoFactory.getComputerDao().getOneComputer(id);
+		return DaoFactory.INSTANCE.getComputerDao().getOneComputer(id);
 	}
 
 	@Override
 	public void createComputer(Computer comp) {
-		DaoFactory.getComputerDao().createComputer(comp);
+		DaoFactory.INSTANCE.getComputerDao().createComputer(comp);
 	}
 
 	@Override
 	public void updateComputer(Computer comp) {
-		DaoFactory.getComputerDao().updateComputer(comp);
+		DaoFactory.INSTANCE.getComputerDao().updateComputer(comp);
 	}
 
 	@Override
 	public void deleteComputer(int id) {
-		DaoFactory.getComputerDao().deleteComputer(id);
+		DaoFactory.INSTANCE.getComputerDao().deleteComputer(id);
 	}
 
 	@Override
 	public int getCountComputerSearch(String search) {
-		return DaoFactory.getComputerDao().getCountComputerSearch(search);
+		return DaoFactory.INSTANCE.getComputerDao().getCountComputerSearch(search);
 	}
 
 	@Override
@@ -75,7 +75,7 @@ public class ComputerServiceImpl implements ComputerService {
 		else
 			orderby.append("DESC");
 
-		return DaoFactory.getComputerDao().getRangeSearchOrderComputers(((wrap.getCurrentPage()-1)*wrap.NB_COMPUTER_BY_PAGE), wrap.NB_COMPUTER_BY_PAGE, wrap.getSearch(), orderby.toString());
+		return DaoFactory.INSTANCE.getComputerDao().getRangeSearchOrderComputers(((wrap.getCurrentPage()-1)*wrap.NB_COMPUTER_BY_PAGE), wrap.NB_COMPUTER_BY_PAGE, wrap.getSearch(), orderby.toString());
 	}
 
 }

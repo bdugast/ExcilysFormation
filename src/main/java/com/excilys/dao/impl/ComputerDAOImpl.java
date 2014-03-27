@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.ArrayList;
@@ -18,17 +17,14 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ComputerDAOImpl implements ComputerDAO {
-
+public enum ComputerDAOImpl implements ComputerDAO {
+	INSTANCE;
 	static final Logger LOG = LoggerFactory.getLogger(ComputerDAOImpl.class);
-
-	protected ComputerDAOImpl() {
-	}
 
 	public Computer getOneComputer(int id) {
 		LOG.trace("start getOneComputer id=" + id);
 		Computer comp = new Computer();
-		Connection conn = DaoFactory.getConnection();
+		Connection conn = DaoFactory.INSTANCE.getConnection();
 		ResultSet rs = null;
 		PreparedStatement stmt = null;
 		try {
@@ -53,14 +49,14 @@ public class ComputerDAOImpl implements ComputerDAO {
 			LOG.error(e.toString());
 		} finally {
 			LOG.trace("Finally, close all");
-			DaoFactory.closeAll(conn, rs, stmt);
+			DaoFactory.INSTANCE.closeAll(conn, rs, stmt);
 		}
 		return comp;
 	}
 
 	public void createComputer(Computer comp) {
 		LOG.trace("Start createComputer");
-		Connection conn = DaoFactory.getConnection();
+		Connection conn = DaoFactory.INSTANCE.getConnection();
 		PreparedStatement stmt = null;
 
 		try {
@@ -86,13 +82,13 @@ public class ComputerDAOImpl implements ComputerDAO {
 			LOG.error(e.toString());
 		} finally {
 			LOG.trace("Finally getAllComputer ListComputer");
-			DaoFactory.closeAll(conn, null, stmt);
+			DaoFactory.INSTANCE.closeAll(conn, null, stmt);
 		}
 	}
 
 	public void updateComputer(Computer comp) {
 		LOG.trace("Start updateComputer");
-		Connection conn = DaoFactory.getConnection();
+		Connection conn = DaoFactory.INSTANCE.getConnection();
 		PreparedStatement stmt = null;
 
 		try {
@@ -122,13 +118,13 @@ public class ComputerDAOImpl implements ComputerDAO {
 			LOG.error(e.toString());
 		} finally {
 			LOG.trace("Finally getAllComputer ListComputer");
-			DaoFactory.closeAll(conn, null, stmt);
+			DaoFactory.INSTANCE.closeAll(conn, null, stmt);
 		}
 	}
 
 	public void deleteComputer(int id) {
 		LOG.trace("Start createComputer");
-		Connection conn = DaoFactory.getConnection();
+		Connection conn = DaoFactory.INSTANCE.getConnection();
 		PreparedStatement stmt = null;
 
 		try {
@@ -142,7 +138,7 @@ public class ComputerDAOImpl implements ComputerDAO {
 			LOG.error(e.toString());
 		} finally {
 			LOG.trace("Finally getAllComputer ListComputer");
-			DaoFactory.closeAll(conn, null, stmt);
+			DaoFactory.INSTANCE.closeAll(conn, null, stmt);
 		}
 	}
 
@@ -150,7 +146,7 @@ public class ComputerDAOImpl implements ComputerDAO {
 	public List<Computer> getRangeSearchOrderComputers(int start, int nb,	String search, String orderby) {
 		LOG.trace("Start getRangeSearchComputer");
 		List<Computer> comps = new ArrayList<Computer>();
-		Connection conn = DaoFactory.getConnection();
+		Connection conn = DaoFactory.INSTANCE.getConnection();
 		ResultSet rs = null;
 		PreparedStatement stmt = null;
 		StringBuilder searchWord = new StringBuilder("%" + search + "%");
@@ -180,7 +176,7 @@ public class ComputerDAOImpl implements ComputerDAO {
 			LOG.error(e.toString());
 		} finally {
 			LOG.trace("Finally getRangeComputers");
-			DaoFactory.closeAll(conn, rs, stmt);
+			DaoFactory.INSTANCE.closeAll(conn, rs, stmt);
 		}
 
 		return comps;
@@ -189,7 +185,7 @@ public class ComputerDAOImpl implements ComputerDAO {
 	@Override
 	public int getCountComputerSearch(String search) {
 		int count = 0;
-		Connection conn = DaoFactory.getConnection();
+		Connection conn = DaoFactory.INSTANCE.getConnection();
 		ResultSet rs = null;
 		PreparedStatement stmt = null;
 		StringBuilder searchWord = new StringBuilder("%" + search + "%");
@@ -209,7 +205,7 @@ public class ComputerDAOImpl implements ComputerDAO {
 			LOG.error(e.toString());
 		} finally {
 			LOG.trace("Finally getRangeComputers");
-			DaoFactory.closeAll(conn, rs, stmt);
+			DaoFactory.INSTANCE.closeAll(conn, rs, stmt);
 		}
 		return count;
 	}

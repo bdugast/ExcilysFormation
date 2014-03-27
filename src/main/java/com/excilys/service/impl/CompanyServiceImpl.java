@@ -12,11 +12,11 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 	
 	public List<Company> getAllCompanies() {
-		return DaoFactory.getCompanyDao().getAllCompany();	
+		return DaoFactory.INSTANCE.getCompanyDao().getAllCompany();	
 	}
 
 	@Override
 	public Company getOneCompany(int id) {
-		return DaoFactory.getCompanyDao().getOneCompany(id);
+		return DaoFactory.INSTANCE.getCompanyDao().getOneCompany(id);
 	}
 }
