@@ -50,46 +50,12 @@ public class ComputerDAOImpl implements ComputerDAO {
 				comp.setCompany(new Company(rs.getInt(5), rs.getString(6)));
 			}
 		} catch (SQLException e) {
-			LOG.error("catch sqlException");
-			e.printStackTrace();
+			LOG.error(e.toString());
 		} finally {
 			LOG.trace("Finally, close all");
 			DaoFactory.closeAll(conn, rs, stmt);
 		}
 		return comp;
-	}
-
-	public List<Computer> getAllComputer() {
-		LOG.trace("Start getAllComputer");
-		List<Computer> comps = new ArrayList<Computer>();
-		Connection conn = DaoFactory.getConnection();
-		ResultSet rs = null;
-		Statement stmt = null;
-		try {
-			stmt = conn.createStatement();
-			String req = "select cu.id, cu.name, cu.introduced, cu.discontinued, cu.company_id, ca.name ca from computer as cu left join company as ca on cu.company_id=ca.id order by cu.id DESC";
-			LOG.debug("requete SQL : " + req);
-			rs = stmt.executeQuery(req);
-
-			while (rs.next()) {
-				Computer comp = new Computer();
-				comp.setId(rs.getInt(1));
-				comp.setName(rs.getString(2));
-				if(rs.getTimestamp(3)==null) comp.setIntroduced(null);
-				else comp.setIntroduced(new DateTime(rs.getTimestamp(3)));
-				if(rs.getTimestamp(4)==null) comp.setDiscontinued(null);
-				else comp.setDiscontinued(new DateTime(rs.getTimestamp(4)));
-				comp.setCompany(new Company(rs.getInt(5), rs.getString(6)));
-				comps.add(comp);
-			}
-		} catch (SQLException e) {
-			LOG.error("catch sqlException : " + e);
-		} finally {
-			LOG.trace("Finally getAllComputer ListComputer");
-			DaoFactory.closeAll(conn, rs, stmt);
-		}
-
-		return comps;
 	}
 
 	public void createComputer(Computer comp) {
@@ -105,13 +71,11 @@ public class ComputerDAOImpl implements ComputerDAO {
 			if (comp.getIntroduced() == null)
 				stmt.setNull(2, Types.NULL);
 			else
-				stmt.setTimestamp(2, new Timestamp(comp.getIntroduced()
-						.getMillis()));
+				stmt.setTimestamp(2, new Timestamp(comp.getIntroduced().getMillis()));
 			if (comp.getDiscontinued() == null)
 				stmt.setNull(3, Types.NULL);
 			else
-				stmt.setTimestamp(3, new Timestamp(comp.getDiscontinued()
-						.getMillis()));
+				stmt.setTimestamp(3, new Timestamp(comp.getDiscontinued().getMillis()));
 			if (comp.getCompany().getId() == 0)
 				stmt.setNull(4, Types.NULL);
 			else
@@ -119,8 +83,7 @@ public class ComputerDAOImpl implements ComputerDAO {
 			LOG.debug("requete stmt : " + stmt);
 			stmt.execute();
 		} catch (SQLException e) {
-			LOG.error("catch sqlException");
-			e.printStackTrace();
+			LOG.error(e.toString());
 		} finally {
 			LOG.trace("Finally getAllComputer ListComputer");
 			DaoFactory.closeAll(conn, null, stmt);
@@ -156,7 +119,7 @@ public class ComputerDAOImpl implements ComputerDAO {
 			LOG.debug("requete stmt : " + stmt);
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-			LOG.error("catch sqlException" + e);
+			LOG.error(e.toString());
 		} finally {
 			LOG.trace("Finally getAllComputer ListComputer");
 			DaoFactory.closeAll(conn, null, stmt);
@@ -176,90 +139,11 @@ public class ComputerDAOImpl implements ComputerDAO {
 			LOG.debug("requete stmt : " + stmt);
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-			LOG.error("catch sqlException");
-			e.printStackTrace();
+			LOG.error(e.toString());
 		} finally {
 			LOG.trace("Finally getAllComputer ListComputer");
 			DaoFactory.closeAll(conn, null, stmt);
 		}
-	}
-
-	@Override
-	public List<Computer> getRangeComputers(int start, int nb) {
-		LOG.trace("Start getAllComputer");
-		List<Computer> comps = new ArrayList<Computer>();
-		Connection conn = DaoFactory.getConnection();
-		ResultSet rs = null;
-		PreparedStatement stmt = null;
-		try {
-			String req = "select cu.id, cu.name, cu.introduced, cu.discontinued, cu.company_id, ca.name ca from computer as cu left join company as ca on cu.company_id=ca.id limit ?,?";
-			LOG.debug("requete SQL : " + req);
-			stmt = conn.prepareStatement(req);
-			stmt.setInt(1, start);
-			stmt.setInt(2, nb);
-			LOG.debug("requete stmt : " + stmt);
-			rs = stmt.executeQuery();
-
-			while (rs.next()) {
-				Computer comp = new Computer();
-				comp.setId(rs.getInt(1));
-				comp.setName(rs.getString(2));
-				if(rs.getTimestamp(3)==null) comp.setIntroduced(null);
-				else comp.setIntroduced(new DateTime(rs.getTimestamp(3)));
-				if(rs.getTimestamp(4)==null) comp.setDiscontinued(null);
-				else comp.setDiscontinued(new DateTime(rs.getTimestamp(4)));
-				comp.setCompany(new Company(rs.getInt(5), rs.getString(6)));
-				comps.add(comp);
-			}
-		} catch (SQLException e) {
-			LOG.error("catch sqlException : " + e);
-		} finally {
-			LOG.trace("Finally getRangeComputers");
-			DaoFactory.closeAll(conn, rs, stmt);
-		}
-
-		return comps;
-	}
-
-	@Override
-	public List<Computer> getRangeSearchComputers(int start, int nb,
-			String search) {
-		LOG.trace("Start getRangeSearchComputer");
-		List<Computer> comps = new ArrayList<Computer>();
-		Connection conn = DaoFactory.getConnection();
-		ResultSet rs = null;
-		PreparedStatement stmt = null;
-		StringBuilder searchWord = new StringBuilder("%" + search + "%");
-		try {
-			String req = "select cu.id, cu.name, cu.introduced, cu.discontinued, cu.company_id, ca.name ca from computer as cu left join company as ca on cu.company_id=ca.id where cu.name like ? or ca.name like ? limit ?,?";
-			LOG.debug("requete SQL : " + req);
-			stmt = conn.prepareStatement(req);
-			stmt.setString(1, searchWord.toString());
-			stmt.setString(2, searchWord.toString());
-			stmt.setInt(3, start);
-			stmt.setInt(4, nb);
-			LOG.debug("requete stmt : " + stmt);
-			rs = stmt.executeQuery();
-
-			while (rs.next()) {
-				Computer comp = new Computer();
-				comp.setId(rs.getInt(1));
-				comp.setName(rs.getString(2));
-				if(rs.getTimestamp(3)==null) comp.setIntroduced(null);
-				else comp.setIntroduced(new DateTime(rs.getTimestamp(3)));
-				if(rs.getTimestamp(4)==null) comp.setDiscontinued(null);
-				else comp.setDiscontinued(new DateTime(rs.getTimestamp(4)));
-				comp.setCompany(new Company(rs.getInt(5), rs.getString(6)));
-				comps.add(comp);
-			}
-		} catch (SQLException e) {
-			LOG.error("catch sqlException : " + e);
-		} finally {
-			LOG.trace("Finally getRangeComputers");
-			DaoFactory.closeAll(conn, rs, stmt);
-		}
-
-		return comps;
 	}
 
 	@Override
@@ -293,34 +177,13 @@ public class ComputerDAOImpl implements ComputerDAO {
 				comps.add(comp);
 			}
 		} catch (SQLException e) {
-			LOG.error("catch sqlException : " + e);
+			LOG.error(e.toString());
 		} finally {
 			LOG.trace("Finally getRangeComputers");
 			DaoFactory.closeAll(conn, rs, stmt);
 		}
 
 		return comps;
-	}
-
-	public int getCountComputer() {
-		int count = 0;
-		Connection conn = DaoFactory.getConnection();
-		ResultSet rs = null;
-		Statement stmt = null;
-		try {
-			stmt = conn.createStatement();
-			rs = stmt.executeQuery("select count(*) from computer");
-
-			while (rs.next()) {
-				count = rs.getInt(1);
-			}
-		} catch (SQLException e) {
-			LOG.error("catch sqlException : " + e);
-		} finally {
-			LOG.trace("Finally getRangeComputers");
-			DaoFactory.closeAll(conn, rs, stmt);
-		}
-		return count;
 	}
 
 	@Override
@@ -343,7 +206,7 @@ public class ComputerDAOImpl implements ComputerDAO {
 				count = rs.getInt(1);
 			}
 		} catch (SQLException e) {
-			LOG.error("catch sqlException : " + e);
+			LOG.error(e.toString());
 		} finally {
 			LOG.trace("Finally getRangeComputers");
 			DaoFactory.closeAll(conn, rs, stmt);

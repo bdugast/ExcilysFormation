@@ -5,7 +5,7 @@
 
 
 <section id="main">
-	<h1 id="homeTitle">${countComputers} Computers found</h1>
+	<h1 id="homeTitle">${wrap.count} Computers found</h1>
 	<div id="actions">
 		<form action="" class="form-inline" method="GET">
 			<div class="form-group col-md-11">
@@ -15,22 +15,22 @@
 					by name</button>
 			</div>
 		</form>
-<div class="form-group col-md-1">
-		<a type="button" id="add" class="btn btn-success"
-			href="add">Add Computer</a>
-</div>
-<div class="form-group col-md-12">
-     	<tags:pagination currentPage="${currentPage}" countPages="${countPages}" search="${search}" orderField="${orderField}" order="${order}"></tags:pagination>
+	<div class="form-group col-md-1">
+			<a type="button" id="add" class="btn btn-success"
+				href="add">Add Computer</a>
+	</div>
+	<div class="form-group col-md-12">
+     	<tags:pagination wrap="${wrap}"></tags:pagination>
      	</div>
 	</div>
 
 	<table class="table table-striped">
 		<thead>
 			<tr>
-				<th class="col-md-2 col-md-offset-1"><a href="dashboard?page=${currentPage}&search=${search}&orderField=COMPUTER&order=${orderField=='COMPUTER' ? !order : 'true' }">Computer Name</a></th>
-				<th class="col-md-2"><a href="dashboard?page=${currentPage}&search=${search}&orderField=INTRODUCED&order=${orderField=='INTRODUCED' ? !order : 'true' }">Introduced Date</a></th>
-				<th class="col-md-2"><a href="dashboard?page=${currentPage}&search=${search}&orderField=DISCONTINUED&order=${orderField=='DISCONTINUED' ? !order : 'true' }">Discontinued Date</a></th>
-				<th class="col-md-2"><a href="dashboard?page=${currentPage}&search=${search}&orderField=COMPANY&order=${orderField=='COMPANY' ? !order : 'true' }">Company</a></th>
+				<th class="col-md-2 col-md-offset-1"><a href="dashboard?page=${wrap.currentPage}&search=${wrap.search}&orderField=COMPUTER&order=${wrap.orderField=='COMPUTER' ? !wrap.order : 'true' }">Computer Name</a></th>
+				<th class="col-md-2"><a href="dashboard?page=${wrap.currentPage}&search=${wrap.search}&orderField=INTRODUCED&order=${wrap.orderField=='INTRODUCED' ? !wrap.order : 'true' }">Introduced Date</a></th>
+				<th class="col-md-2"><a href="dashboard?page=${wrap.currentPage}&search=${wrap.search}&orderField=DISCONTINUED&order=${wrap.orderField=='DISCONTINUED' ? !wrap.order : 'true' }">Discontinued Date</a></th>
+				<th class="col-md-2"><a href="dashboard?page=${wrap.currentPage}&search=${wrap.search}&orderField=COMPANY&order=${wrap.orderField=='COMPANY' ? !wrap.order : 'true' }">Company</a></th>
 				<th class="col-md-1"></th>
 				<th class="col-md-1"></th>
 			</tr>

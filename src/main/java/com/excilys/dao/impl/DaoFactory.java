@@ -10,8 +10,12 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class DaoFactory {
 
+	static final Logger LOG = LoggerFactory.getLogger(DaoFactory.class);
 	private static DaoFactory DF = null;
 	private static ComputerDAOImpl computerDao = null;
 	private static CompanyDAOImpl companyDao = null;
@@ -19,7 +23,6 @@ public class DaoFactory {
 	private DaoFactory() {
 	}
 
-	/** Point d'accès pour l'instance unique du singleton */
 	public static DaoFactory getInstance() {
 		if (DF == null) {
 			DF = new DaoFactory();
@@ -41,15 +44,14 @@ public class DaoFactory {
 		Context ctx;
 		DataSource ds;
 		Connection conn = null;
-		try {
-			ctx = new InitialContext();
-			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/compdb");
-			conn = ds.getConnection();
-		} catch (NamingException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+			try {
+				ctx = new InitialContext();
+				ds = (DataSource) ctx.lookup("java:comp/env/jdbc/compdb");
+				conn = ds.getConnection();
+			} catch (SQLException | NamingException e) {
+				LOG.error(e.toString());
+			}
+		
 		return conn;
 	}
 	
@@ -59,7 +61,7 @@ public class DaoFactory {
 			if(rs != null) rs.close();
 			if(stmt != null) stmt.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOG.error(e.toString());
 		}
 	}
 }

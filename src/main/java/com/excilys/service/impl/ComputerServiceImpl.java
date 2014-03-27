@@ -5,6 +5,7 @@ import java.util.List;
 import main.java.com.excilys.dao.impl.DaoFactory;
 import main.java.com.excilys.domain.Computer;
 import main.java.com.excilys.service.ComputerService;
+import main.java.com.excilys.wrapper.PageWrapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,10 +19,6 @@ public class ComputerServiceImpl implements ComputerService {
 	static final Logger LOG = LoggerFactory.getLogger(CompanyServiceImpl.class);
 
 	protected ComputerServiceImpl() {
-	}
-
-	public List<Computer> getAllComputers() {
-		return DaoFactory.getComputerDao().getAllComputer();
 	}
 
 	@Override
@@ -45,33 +42,16 @@ public class ComputerServiceImpl implements ComputerService {
 	}
 
 	@Override
-	public List<Computer> getRangeComputers(int start, int nb) {
-		return DaoFactory.getComputerDao().getRangeComputers(start, nb);
-	}
-
-	@Override
-	public List<Computer> getRangeSearchComputers(int start, int nb,
-			String search) {
-		return DaoFactory.getComputerDao().getRangeSearchComputers(start, nb,
-				search);
-	}
-
-	@Override
-	public int getCountComputer() {
-		return DaoFactory.getComputerDao().getCountComputer();
-	}
-
-	@Override
 	public int getCountComputerSearch(String search) {
 		return DaoFactory.getComputerDao().getCountComputerSearch(search);
 	}
 
 	@Override
-	public List<Computer> getRangeSearchOrderComputers(int start, int nb, String search, String orderField, boolean order) {
+	public List<Computer> getRangeSearchOrderComputers(PageWrapper wrap) {
 		
 		StringBuilder orderby = new StringBuilder();
 		String orderb;
-		switch (orderField) {
+		switch (wrap.getOrderField()) {
 		case "COMPUTER":
 			orderb = "cu.name";
 			break;
@@ -90,12 +70,12 @@ public class ComputerServiceImpl implements ComputerService {
 		}
 		orderby.append(orderb);
 		orderby.append(" ");
-		if (order)
+		if (wrap.getOrder())
 			orderby.append("ASC");
 		else
 			orderby.append("DESC");
 
-		return DaoFactory.getComputerDao().getRangeSearchOrderComputers(start,	nb, search, orderby.toString());
+		return DaoFactory.getComputerDao().getRangeSearchOrderComputers(((wrap.getCurrentPage()-1)*wrap.NB_COMPUTER_BY_PAGE), wrap.NB_COMPUTER_BY_PAGE, wrap.getSearch(), orderby.toString());
 	}
 
 }

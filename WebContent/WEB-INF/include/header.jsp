@@ -15,10 +15,10 @@
 <script src="js/validationForm.js"></script>
 <script>
 	$(function() {
-		$("#dateIntroduced").datepicker({ dateFormat: "yy-mm-dd" });
+		$("#dateIntroduced").datepicker({ dateFormat: "yy-mm-dd",  changeMonth: true, changeYear : true });
 	});
 	$(function() {
-		$("#dateDiscontinued").datepicker({ dateFormat: "yy-mm-dd" });
+		$("#dateDiscontinued").datepicker({ dateFormat: "yy-mm-dd",  changeMonth: true, changeYear : true });
 	});
 </script>
 </head>

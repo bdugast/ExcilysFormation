@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <section id="main">
-	<h1>Update Computer</h1>
+	<h1>Delete Computer</h1>
 	<form class="form-horizontal" action="delete" method="POST">
 		<div class="control-group">
 			<div class="controls">

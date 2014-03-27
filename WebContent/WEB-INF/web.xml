@@ -4,42 +4,6 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	id="WebApp_ID" version="3.0">
 	<display-name>computer-database</display-name>
-	<servlet>
-		<display-name>DashboardServ</display-name>
-		<servlet-name>DashboardServlet</servlet-name>
-		<servlet-class>main.java.com.excilys.servlet.DashboardServlet</servlet-class>
-	</servlet>
-	<servlet>
-		<display-name>AddComputer</display-name>
-		<servlet-name>AddComputerServlet</servlet-name>
-		<servlet-class>main.java.com.excilys.servlet.AddComputerServlet</servlet-class>
-	</servlet>
-	<servlet>
-		<display-name>UpdateComputer</display-name>
-		<servlet-name>UpdateComputerServlet</servlet-name>
-		<servlet-class>main.java.com.excilys.servlet.UpdateComputerServlet</servlet-class>
-	</servlet>
-	<servlet>
-		<display-name>DeleteComputer</display-name>
-		<servlet-name>DeleteComputerServlet</servlet-name>
-		<servlet-class>main.java.com.excilys.servlet.DeleteComputerServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>DashboardServlet</servlet-name>
-		<url-pattern>/dashboard</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>AddComputerServlet</servlet-name>
-		<url-pattern>/add</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>UpdateComputerServlet</servlet-name>
-		<url-pattern>/update</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>DeleteComputerServlet</servlet-name>
-		<url-pattern>/delete</url-pattern>
-	</servlet-mapping>
 	<resource-ref>
 		<description>Computer Database</description>
 		<res-ref-name>jdbc/compdb</res-ref-name>
@@ -47,11 +11,6 @@
 		<res-auth>Container</res-auth>
 	</resource-ref>
 	<welcome-file-list>
-		<welcome-file>/WEB-INF/index.html</welcome-file>
-		<welcome-file>/WEB-INF/index.htm</welcome-file>
-		<welcome-file>/WEB-INF/index.jsp</welcome-file>
-		<welcome-file>/WEB-INF/default.html</welcome-file>
-		<welcome-file>/WEB-INF/default.htm</welcome-file>
-		<welcome-file>/WEB-INF/default.jsp</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
 </web-app>
