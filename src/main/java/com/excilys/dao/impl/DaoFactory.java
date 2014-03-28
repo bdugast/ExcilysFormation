@@ -13,10 +13,23 @@ import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.jolbox.bonecp.BoneCPDataSource;
+
 public enum DaoFactory {
 	INSTANCE;
 	final Logger LOG = LoggerFactory.getLogger(DaoFactory.class);
+	BoneCPDataSource boneCP = new BoneCPDataSource();
 	
+	{
+		try {
+			Context ctx = new InitialContext();
+			DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/compdb");
+			boneCP.setDatasourceBean(ds);
+		} catch (NamingException e) {
+			LOG.error(e.toString());
+		}
+	}
+
 	public ComputerDAOImpl getComputerDao(){
 		return ComputerDAOImpl.INSTANCE;
 	}
@@ -26,17 +39,12 @@ public enum DaoFactory {
 	}
 	
 	public  Connection getConnection() {
-		Context ctx;
-		DataSource ds;
 		Connection conn = null;
-			try {
-				ctx = new InitialContext();
-				ds = (DataSource) ctx.lookup("java:comp/env/jdbc/compdb");
-				conn = ds.getConnection();
-			} catch (SQLException | NamingException e) {
-				LOG.error(e.toString());
-			}
-		
+		try {			
+			conn = boneCP.getConnection();
+		} catch (SQLException e) {
+			LOG.error(e.toString());
+		}		
 		return conn;
 	}
 	
