@@ -29,7 +29,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
 			comp.setId(rs.getInt("id"));
 			comp.setName(rs.getString("name"));
 		}
-		DaoFactory.INSTANCE.closeAll(conn, rs, stmt);
+		DaoFactory.INSTANCE.closeDAO(rs, stmt);
 		return comp;
 	}
 	
@@ -45,7 +45,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
 			Company comp = new Company(rs.getInt("id"),rs.getString("name"));
 			comps.add(comp);
 		}
-		DaoFactory.INSTANCE.closeAll(conn, rs, stmt);
+		DaoFactory.INSTANCE.closeDAO(rs, stmt);
 		return comps;
 	}
 
@@ -57,7 +57,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
 		stmt.setString(1, comp.getName());
 		stmt.setInt(5, comp.getId());
 		stmt.executeUpdate();
-		DaoFactory.INSTANCE.closeAll(conn, null, stmt);
+		DaoFactory.INSTANCE.closeDAO(null, stmt);
 	}
 	
 	public void createCompany(Company comp) throws SQLException{
@@ -67,7 +67,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
 		stmt = conn.prepareStatement("insert into company values(null,?)");
 		stmt.setString(1, comp.getName());
 		stmt.executeUpdate();
-		DaoFactory.INSTANCE.closeAll(conn, null, stmt);
+		DaoFactory.INSTANCE.closeDAO(null, stmt);
 	}
 	
 	public void deleteCompany(int id) throws SQLException{
@@ -77,6 +77,6 @@ public enum CompanyDAOImpl implements CompanyDAO {
 		stmt = conn.prepareStatement("delete from company where id=?)");
 		stmt.setInt(1, id);
 		stmt.executeUpdate();
-		DaoFactory.INSTANCE.closeAll(conn, null, stmt);
+		DaoFactory.INSTANCE.closeDAO(null, stmt);
 	}
 }

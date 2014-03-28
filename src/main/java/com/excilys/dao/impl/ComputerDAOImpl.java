@@ -46,11 +46,11 @@ public enum ComputerDAOImpl implements ComputerDAO {
 			else comp.setDiscontinued(new DateTime(rs.getTimestamp(4)));
 			comp.setCompany(new Company(rs.getInt(5), rs.getString(6)));
 		}
-		DaoFactory.INSTANCE.closeAll(conn, rs, stmt);
+		DaoFactory.INSTANCE.closeDAO(rs, stmt);
 		return comp;
 	}
 
-	public int createComputer(Computer comp, Connection conn) throws SQLException {
+	public int createComputer(Computer comp) throws SQLException {
 		LOG.trace("Start createComputer");
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -58,7 +58,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
 
 		String req = "insert into computer values(null,?,?,?,?)";
 		LOG.debug("requete SQL : " + req);
-		stmt = conn.prepareStatement(req, Statement.RETURN_GENERATED_KEYS);
+		stmt = DaoFactory.INSTANCE.getConnection().prepareStatement(req, Statement.RETURN_GENERATED_KEYS);
 		stmt.setString(1, comp.getName());
 		
 		if (comp.getIntroduced() == null)
@@ -83,17 +83,17 @@ public enum ComputerDAOImpl implements ComputerDAO {
 		if(rs.next()){
 			key = rs.getInt(1);
 		}	
-		DaoFactory.INSTANCE.closeAll(null, rs, stmt);
+		DaoFactory.INSTANCE.closeDAO(rs, stmt);
 		return key;
 	}
 
-	public void updateComputer(Computer comp, Connection conn) throws SQLException {
+	public void updateComputer(Computer comp) throws SQLException {
 		LOG.trace("Start updateComputer");
 		PreparedStatement stmt = null;
 
 		String req = "update computer set name=?, introduced=?, discontinued=?, company_id=? where computer.id=?";
 		LOG.debug("requete SQL : " + req);
-		stmt = conn.prepareStatement(req);
+		stmt = DaoFactory.INSTANCE.getConnection().prepareStatement(req);
 		stmt.setString(1, comp.getName());
 		if (comp.getIntroduced() == null)
 			stmt.setNull(2, Types.NULL);
@@ -112,21 +112,21 @@ public enum ComputerDAOImpl implements ComputerDAO {
 		LOG.debug("requete stmt : " + stmt);
 		stmt.executeUpdate();
 	
-		DaoFactory.INSTANCE.closeAll(null, null, stmt);
+		DaoFactory.INSTANCE.closeDAO(null, stmt);
 	}
 
-	public void deleteComputer(int id, Connection conn) throws SQLException {
+	public void deleteComputer(int id) throws SQLException {
 		LOG.trace("Start createComputer");
 		PreparedStatement stmt = null;
 
 		String req = "delete from computer where id=?";
 		LOG.debug("requete SQL : " + req);
-		stmt = conn.prepareStatement(req);
+		stmt = DaoFactory.INSTANCE.getConnection().prepareStatement(req);
 		stmt.setInt(1, id);
 		LOG.debug("requete stmt : " + stmt);
 		stmt.executeUpdate();
 	
-		DaoFactory.INSTANCE.closeAll(null, null, stmt);
+		DaoFactory.INSTANCE.closeDAO(null, stmt);
 	}
 
 	@Override
@@ -160,7 +160,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
 			comps.add(comp);
 		}
 	
-		DaoFactory.INSTANCE.closeAll(conn, rs, stmt);
+		DaoFactory.INSTANCE.closeDAO(rs, stmt);
 
 		return comps;
 	}
@@ -184,7 +184,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
 		if (rs.next()) {
 			count = rs.getInt(1);
 		}
-		DaoFactory.INSTANCE.closeAll(conn, rs, stmt);
+		DaoFactory.INSTANCE.closeDAO(rs, stmt);
 
 		return count;
 	}

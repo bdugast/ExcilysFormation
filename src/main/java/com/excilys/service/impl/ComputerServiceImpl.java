@@ -27,18 +27,21 @@ public enum ComputerServiceImpl implements ComputerService {
 			comp = DaoFactory.INSTANCE.getComputerDao().getOneComputer(id);
 		} catch (SQLException e) {
 			LOG.error(e.toString());
+		} finally {
+			DaoFactory.INSTANCE.closeConnection();
 		}
 		return comp;
 	}
 
 	@Override
 	public void createComputer(Computer comp) {
+		
 		Connection conn = DaoFactory.INSTANCE.getConnection();
 		int idComp;
 		try {
 			conn.setAutoCommit(false);
-			idComp = DaoFactory.INSTANCE.getComputerDao().createComputer(comp, conn);
-			DaoFactory.INSTANCE.getLogDao().insertMessageLog("CREATE", idComp, conn);
+			idComp = DaoFactory.INSTANCE.getComputerDao().createComputer(comp);
+			DaoFactory.INSTANCE.getLogDao().insertMessageLog("CREATE", idComp);
 			conn.commit();
 		} catch (Exception e) {
 			try {
@@ -47,11 +50,7 @@ public enum ComputerServiceImpl implements ComputerService {
 				LOG.error(e1.toString());
 			}
 		} finally {
-			try {
-				conn.close();
-			} catch (SQLException e) {
-				LOG.error(e.toString());
-			}
+			DaoFactory.INSTANCE.closeConnection();
 		}
 	}
 
@@ -60,8 +59,8 @@ public enum ComputerServiceImpl implements ComputerService {
 		Connection conn = DaoFactory.INSTANCE.getConnection();
 		try {
 			conn.setAutoCommit(false);
-			DaoFactory.INSTANCE.getComputerDao().updateComputer(comp, conn);
-			DaoFactory.INSTANCE.getLogDao().insertMessageLog("UPDATE", comp.getId(), conn);
+			DaoFactory.INSTANCE.getComputerDao().updateComputer(comp);
+			DaoFactory.INSTANCE.getLogDao().insertMessageLog("UPDATE", comp.getId());
 			conn.commit();
 		} catch (Exception e) {
 			try {
@@ -69,12 +68,8 @@ public enum ComputerServiceImpl implements ComputerService {
 			} catch (SQLException e1) {
 				LOG.error(e1.toString());
 			}
-		} finally {
-			try {
-				conn.close();
-			} catch (SQLException e) {
-				LOG.error(e.toString());
-			}
+		}  finally {
+			DaoFactory.INSTANCE.closeConnection();
 		}
 	}
 
@@ -83,8 +78,8 @@ public enum ComputerServiceImpl implements ComputerService {
 		Connection conn = DaoFactory.INSTANCE.getConnection();
 		try {
 			conn.setAutoCommit(false);
-			DaoFactory.INSTANCE.getComputerDao().deleteComputer(id, conn);
-			DaoFactory.INSTANCE.getLogDao().insertMessageLog("DELETE", id, conn);
+			DaoFactory.INSTANCE.getComputerDao().deleteComputer(id);
+			DaoFactory.INSTANCE.getLogDao().insertMessageLog("DELETE", id);
 			conn.commit();
 		} catch (Exception e) {
 			try {
@@ -93,11 +88,7 @@ public enum ComputerServiceImpl implements ComputerService {
 				LOG.error(e1.toString());
 			}
 		} finally {
-			try {
-				conn.close();
-			} catch (SQLException e) {
-				LOG.error(e.toString());
-			}
+			DaoFactory.INSTANCE.closeConnection();
 		}
 	}
 
@@ -108,6 +99,8 @@ public enum ComputerServiceImpl implements ComputerService {
 			count = DaoFactory.INSTANCE.getComputerDao().getCountComputerSearch(search);
 		} catch (SQLException e) {
 			LOG.error(e.toString());
+		} finally {
+			DaoFactory.INSTANCE.closeConnection();
 		}
 		return count;
 	}
@@ -150,6 +143,8 @@ public enum ComputerServiceImpl implements ComputerService {
 							orderby.toString());
 		} catch (SQLException e) {
 			LOG.error(e.toString());
+		} finally {
+			DaoFactory.INSTANCE.closeConnection();
 		}
 		return compList;
 	}

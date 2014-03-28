@@ -19,7 +19,7 @@ public enum DaoFactory {
 	INSTANCE;
 	final Logger LOG = LoggerFactory.getLogger(DaoFactory.class);
 	BoneCPDataSource boneCP = new BoneCPDataSource();
-	
+	ThreadLocal<Connection> tl = new ThreadLocal<>();	
 	{
 		try {
 			Context ctx = new InitialContext();
@@ -43,22 +43,43 @@ public enum DaoFactory {
 	}
 	
 	public  Connection getConnection() {
-		Connection conn = null;
-		try {			
-			conn = boneCP.getConnection();
+		LOG.debug("ouverture");
+		try {
+			if(tl.get()==null){
+				tl.set(boneCP.getConnection());
+				LOG.debug("ouverture set");
+			}
 		} catch (SQLException e) {
+			LOG.error("ouverture fail");
 			LOG.error(e.toString());
 		}		
-		return conn;
+		return tl.get();
 	}
 	
-	public void closeAll(Connection conn, ResultSet rs, Statement stmt) {
+	public void closeDAO(ResultSet rs, Statement stmt) {
 		try {
-			if(conn != null) conn.close();
-			if(rs != null) rs.close();
-			if(stmt != null) stmt.close();
+			if(rs != null){
+				rs.close();
+				LOG.debug("rs close");
+			}
+			if(stmt != null){
+				stmt.close();
+				LOG.debug("stmt close");
+			}
 		} catch (SQLException e) {
 			LOG.error(e.toString());
 		}
+	}
+	
+	public void closeConnection() {
+		LOG.debug("fermeture");
+		try {
+			tl.get().close();
+			LOG.debug("fermeture success");
+		} catch (SQLException e) {
+			LOG.error("fermeture error");
+			LOG.error(e.toString());
+		}
+		tl.remove();
 	}
 }

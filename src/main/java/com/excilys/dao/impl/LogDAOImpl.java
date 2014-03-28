@@ -16,14 +16,14 @@ public enum LogDAOImpl implements LogDAO {
 	static final Logger LOG = LoggerFactory.getLogger(LogDAOImpl.class);
 	
 	@Override
-	public void insertMessageLog(String message, int id, Connection conn) {
+	public void insertMessageLog(String message, int id) {
 		LOG.trace("Start createComputer");
 		PreparedStatement stmt = null;
 
 		try {
 			String req = "insert into log values(null, ?, ?, null)";
 			LOG.debug("requete SQL : " + req);
-			stmt = conn.prepareStatement(req);
+			stmt = DaoFactory.INSTANCE.getConnection().prepareStatement(req);
 			stmt.setString(1, message);
 			stmt.setInt(2, id);
 			LOG.debug("requete stmt : " + stmt);
@@ -32,7 +32,7 @@ public enum LogDAOImpl implements LogDAO {
 			LOG.error(e.toString());
 		} finally {
 			LOG.trace("Finally getAllComputer ListComputer");
-			DaoFactory.INSTANCE.closeAll(null, null, stmt);
+			DaoFactory.INSTANCE.closeDAO(null, stmt);
 		}
 	}
 

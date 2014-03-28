@@ -20,6 +20,8 @@ public enum CompanyServiceImpl implements CompanyService {
 			 compList = DaoFactory.INSTANCE.getCompanyDao().getAllCompany();
 		} catch (SQLException e) {
 			LOG.error(e.toString());
+		} finally {
+			DaoFactory.INSTANCE.closeConnection();
 		}
 		return compList;
 	}
@@ -31,6 +33,8 @@ public enum CompanyServiceImpl implements CompanyService {
 			return DaoFactory.INSTANCE.getCompanyDao().getOneCompany(id);
 		} catch (SQLException e) {
 			LOG.error(e.toString());
+		} finally {
+			DaoFactory.INSTANCE.closeConnection();
 		}
 		return comp;
 	}
