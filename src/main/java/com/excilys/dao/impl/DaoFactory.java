@@ -43,11 +43,10 @@ public enum DaoFactory {
 	}
 	
 	public  Connection getConnection() {
-		LOG.debug("ouverture");
 		try {
 			if(tl.get()==null){
 				tl.set(boneCP.getConnection());
-				LOG.debug("ouverture set");
+				LOG.debug("ouverture connexion");
 			}
 		} catch (SQLException e) {
 			LOG.error("ouverture fail");
@@ -60,11 +59,11 @@ public enum DaoFactory {
 		try {
 			if(rs != null){
 				rs.close();
-				LOG.debug("rs close");
+				LOG.trace("rs close");
 			}
 			if(stmt != null){
 				stmt.close();
-				LOG.debug("stmt close");
+				LOG.trace("stmt close");
 			}
 		} catch (SQLException e) {
 			LOG.error(e.toString());
@@ -72,7 +71,6 @@ public enum DaoFactory {
 	}
 	
 	public void closeConnection() {
-		LOG.debug("fermeture");
 		try {
 			tl.get().close();
 			LOG.debug("fermeture success");

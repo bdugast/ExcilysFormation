@@ -2,9 +2,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.joda.org/joda/time/tags" prefix="joda"%>
 
-<section id="main">
+<section id="main" class="col-md-6 col-md-offset-3">
 	<h1>Update Computer</h1>
-	<form class="form-horizontal col-md-6" id="formValidation" action="update"
+	<form class="form-horizontal" id="formValidation" action="update"
 		method="POST">
 		<div class="control-group">
 			<label class="control-label" for="name">Computer name:</label>
@@ -19,7 +19,7 @@
 		<div class="control-group">
 			<label class="control-label" for="introduced">Introduced date:</label>
 			<div class="controls">
-				<input type="text" class="form-control" id="dateIntroduced" name="introduced" value="${introduced}">
+				<input type="text" class="form-control" id="introduced" name="introduced" value="${introduced}">
 				<c:if test="${errors.get('introducedError')!=null}">
 					<label><c:out value="${errors.get('introducedError')}"/></label>
 				</c:if>
@@ -29,7 +29,7 @@
 			<label class="control-label" for="discontinued">Discontinued
 				date :</label>
 			<div class="controls">
-				<input type="text" class="form-control" id="dateDiscontinued" name="discontinued" value="${discontinued}">
+				<input type="text" class="form-control" id="discontinued" name="discontinued" value="${discontinued}">
 				<c:if test="${errors.get('discontinuedError')!=null}">
 					<label><c:out value="${errors.get('discontinuedError')}"/></label>
 				</c:if>
@@ -41,7 +41,7 @@
 				<select name="company" class="form-control">
 					<option value="">Select a company</option>
 					<c:forEach items="${companies}" var="company">
-						<option value="${company.id}" ${id==company.id ? 'selected' : ''}>${company.name}</option>
+						<option value="${company.id}" ${companyId==company.id ? 'selected' : ''}>${company.name}</option>
 					</c:forEach>
 				</select>
 			</div>

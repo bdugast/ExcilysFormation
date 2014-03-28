@@ -2,7 +2,7 @@ package main.java.com.excilys.wrapper;
 
 public class PageWrapper {
 	public final int NB_COMPUTER_BY_PAGE = 20;
-	private Boolean order;
+	private boolean order;
 	private String orderField;
 	private String search;
 	private int count;
@@ -18,7 +18,7 @@ public class PageWrapper {
 		this.currentPage = 1;
 	}
 	
-	public PageWrapper(Boolean order, String orderField, String search,
+	public PageWrapper(boolean order, String orderField, String search,
 			int count, int countPages, int currentPage) {
 		this.order = order;
 		this.orderField = orderField;
@@ -28,10 +28,10 @@ public class PageWrapper {
 		this.currentPage = currentPage;
 	}
 	
-	public Boolean getOrder() {
+	public boolean getOrder() {
 		return order;
 	}
-	public void setOrder(Boolean order) {
+	public void setOrder(boolean order) {
 		this.order = order;
 	}
 	public String getOrderField() {

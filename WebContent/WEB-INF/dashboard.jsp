@@ -47,9 +47,7 @@
 				</tr>
 			</c:forEach>
 		</tbody>
-	</table>
-     
-     
+	</table>    
 </section>
 
 <jsp:include page="include/footer.jsp" />

@@ -43,7 +43,7 @@ public class DashboardServlet extends HttpServlet{
 		if(wrap.getCurrentPage()>wrap.getCountPages()) wrap.setCurrentPage(wrap.getCountPages());
 		if(wrap.getCurrentPage()<1) wrap.setCurrentPage(1);
 		
-		//Get 20 ordinateurs en fonction de la page with fucking limit	
+		//Get 20 ordinateurs en fonction de la page with fucking limit and search
 		List<Computer> computers = ServiceFactory.INSTANCE.getComputerService().getRangeSearchOrderComputers(wrap);
 		
 		req.setAttribute("wrap", wrap);

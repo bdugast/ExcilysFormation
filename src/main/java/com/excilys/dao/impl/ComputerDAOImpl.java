@@ -46,6 +46,8 @@ public enum ComputerDAOImpl implements ComputerDAO {
 			else comp.setDiscontinued(new DateTime(rs.getTimestamp(4)));
 			comp.setCompany(new Company(rs.getInt(5), rs.getString(6)));
 		}
+
+		
 		DaoFactory.INSTANCE.closeDAO(rs, stmt);
 		return comp;
 	}
@@ -109,6 +111,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
 		else
 			stmt.setObject(4, comp.getCompany().getId());
 		stmt.setInt(5, comp.getId());
+		
 		LOG.debug("requete stmt : " + stmt);
 		stmt.executeUpdate();
 	
@@ -131,7 +134,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
 
 	@Override
 	public List<Computer> getRangeSearchOrderComputers(int start, int nb,	String search, String orderby) throws SQLException {
-		LOG.trace("Start getRangeSearchComputer");
+		LOG.trace("Start getRangeSearchOrderComputers");
 		List<Computer> comps = new ArrayList<Computer>();
 		Connection conn = DaoFactory.INSTANCE.getConnection();
 		ResultSet rs = null;
@@ -157,6 +160,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
 			if(rs.getTimestamp(4)==null) comp.setDiscontinued(null);
 			else comp.setDiscontinued(new DateTime(rs.getTimestamp(4)));
 			comp.setCompany(new Company(rs.getInt(5), rs.getString(6)));
+
 			comps.add(comp);
 		}
 	

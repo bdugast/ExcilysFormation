@@ -1,15 +1,12 @@
 package main.java.com.excilys.dao.impl;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.sql.Types;
+
+import main.java.com.excilys.dao.LogDAO;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import main.java.com.excilys.dao.LogDAO;
 
 public enum LogDAOImpl implements LogDAO {
 	INSTANCE;

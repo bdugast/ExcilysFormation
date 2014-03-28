@@ -1,6 +1,5 @@
 package main.java.com.excilys.dao;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 

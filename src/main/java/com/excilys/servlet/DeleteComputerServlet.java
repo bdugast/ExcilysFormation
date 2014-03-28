@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import main.java.com.excilys.domain.Computer;
 import main.java.com.excilys.service.impl.ServiceFactory;
 
 @WebServlet("/delete")

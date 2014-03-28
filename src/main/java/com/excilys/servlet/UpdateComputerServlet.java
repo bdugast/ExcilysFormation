@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import main.java.com.excilys.domain.Company;
 import main.java.com.excilys.domain.Computer;
-import main.java.com.excilys.service.impl.ComputerServiceImpl;
 import main.java.com.excilys.service.impl.ServiceFactory;
 
 import org.joda.time.DateTime;
@@ -66,17 +65,11 @@ public class UpdateComputerServlet extends HttpServlet{
 			List<Company> companies = ServiceFactory.INSTANCE.getCompanyService().getAllCompanies();
 			req.setAttribute("companies", companies);
 			req.setAttribute("errors", hashError);
-			LOG.debug("errors " + hashError.toString());
 			req.setAttribute("id", req.getParameter("id"));
-			LOG.debug("id" + req.getParameter("id"));
 			req.setAttribute("name", req.getParameter("name"));
-			LOG.debug("name" + req.getParameter("name"));
 			req.setAttribute("introduced", req.getParameter("introduced"));
-			LOG.debug("introduced" + req.getParameter("introduced"));
 			req.setAttribute("discontinued", req.getParameter("discontinued"));
-			LOG.debug("discontinued" + req.getParameter("discontinued"));
 			req.setAttribute("companyId", req.getParameter("company"));
-			LOG.debug("company" + req.getParameter("company"));
 			
 			getServletContext().getRequestDispatcher("/WEB-INF/updateComputer.jsp").forward(req,resp);
 		}

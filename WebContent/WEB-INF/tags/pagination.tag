@@ -15,10 +15,10 @@
             <c:forEach begin="1" end="${wrap.countPages}" var="i">
                 <c:choose>
 		     		<c:when test="${wrap.currentPage == i}">
-		     			<li class="active"><a href="dashboard?page=${i}&search=${wrap.search}&orderField=${wrap.orderField}&order=${wrap.order}"> ${i} </<li></td>
+		     			<li class="active"><a href="dashboard?page=${i}&search=${wrap.search}&orderField=${wrap.orderField}&order=${wrap.order}"> ${i} </a><li>
 		     		</c:when>
 		    		<c:otherwise>
-			        	<li><a href="dashboard?page=${i}&search=${wrap.search}&orderField=${wrap.orderField}&order=${wrap.order}"> ${i} </<li></td>
+			        	<li><a href="dashboard?page=${i}&search=${wrap.search}&orderField=${wrap.orderField}&order=${wrap.order}"> ${i} </a><li>
 			        </c:otherwise>
 		        </c:choose>
                 
