@@ -1,13 +1,14 @@
 package main.java.com.excilys.dao;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import main.java.com.excilys.domain.Company;
 
 public interface CompanyDAO {
-	public Company getOneCompany(int id);
-	public List<Company> getAllCompany();
-	public void updateCompany(Company comp);
-	public void createCompany(Company comp);
-	public void deleteCompany(int id);
+	public Company getOneCompany(int id) throws SQLException;
+	public List<Company> getAllCompany() throws SQLException;
+	public void updateCompany(Company comp) throws SQLException;
+	public void createCompany(Company comp) throws SQLException;
+	public void deleteCompany(int id) throws SQLException;
 }

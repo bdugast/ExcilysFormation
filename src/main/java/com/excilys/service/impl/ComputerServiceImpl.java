@@ -18,11 +18,17 @@ import org.slf4j.LoggerFactory;
 public enum ComputerServiceImpl implements ComputerService {
 	INSTANCE;
 
-	static final Logger LOG = LoggerFactory.getLogger(CompanyServiceImpl.class);
+	static final Logger LOG = LoggerFactory.getLogger(ComputerServiceImpl.class);
 
 	@Override
 	public Computer getOneComputer(int id) {
-		return DaoFactory.INSTANCE.getComputerDao().getOneComputer(id);
+		Computer comp = null;
+		try {
+			comp = DaoFactory.INSTANCE.getComputerDao().getOneComputer(id);
+		} catch (SQLException e) {
+			LOG.error(e.toString());
+		}
+		return comp;
 	}
 
 	@Override
@@ -52,7 +58,6 @@ public enum ComputerServiceImpl implements ComputerService {
 	@Override
 	public void updateComputer(Computer comp) {
 		Connection conn = DaoFactory.INSTANCE.getConnection();
-		int idComp;
 		try {
 			conn.setAutoCommit(false);
 			DaoFactory.INSTANCE.getComputerDao().updateComputer(comp, conn);
@@ -76,7 +81,6 @@ public enum ComputerServiceImpl implements ComputerService {
 	@Override
 	public void deleteComputer(int id) {
 		Connection conn = DaoFactory.INSTANCE.getConnection();
-		int idComp;
 		try {
 			conn.setAutoCommit(false);
 			DaoFactory.INSTANCE.getComputerDao().deleteComputer(id, conn);
@@ -99,13 +103,20 @@ public enum ComputerServiceImpl implements ComputerService {
 
 	@Override
 	public int getCountComputerSearch(String search) {
-		return DaoFactory.INSTANCE.getComputerDao().getCountComputerSearch(
-				search);
+		int count = 0;
+		try {
+			count = DaoFactory.INSTANCE.getComputerDao().getCountComputerSearch(search);
+		} catch (SQLException e) {
+			LOG.error(e.toString());
+		}
+		return count;
 	}
 
 	@Override
 	public List<Computer> getRangeSearchOrderComputers(PageWrapper wrap) {
 
+		List<Computer> compList = null;
+		
 		StringBuilder orderby = new StringBuilder();
 		String orderb;
 		switch (wrap.getOrderField()) {
@@ -132,12 +143,15 @@ public enum ComputerServiceImpl implements ComputerService {
 		else
 			orderby.append("DESC");
 
-		return DaoFactory.INSTANCE
-				.getComputerDao()
-				.getRangeSearchOrderComputers(
-						((wrap.getCurrentPage() - 1) * wrap.NB_COMPUTER_BY_PAGE),
-						wrap.NB_COMPUTER_BY_PAGE, wrap.getSearch(),
-						orderby.toString());
+		try {
+			 compList = DaoFactory.INSTANCE.getComputerDao().getRangeSearchOrderComputers(
+							((wrap.getCurrentPage() - 1) * wrap.NB_COMPUTER_BY_PAGE),
+							wrap.NB_COMPUTER_BY_PAGE, wrap.getSearch(),
+							orderby.toString());
+		} catch (SQLException e) {
+			LOG.error(e.toString());
+		}
+		return compList;
 	}
 
 	public HashMap<String, String> checkForm(String name, String introduced,
@@ -173,9 +187,12 @@ public enum ComputerServiceImpl implements ComputerService {
 			} catch (NumberFormatException e) {
 				errorHash.put("companyError", "Company does not exist");
 			}
-			if (id != 0
-					&& DaoFactory.INSTANCE.getCompanyDao().getOneCompany(id) == null)
-				errorHash.put("companyError", "Company does not exist");
+			try {
+				if (id != 0	&& DaoFactory.INSTANCE.getCompanyDao().getOneCompany(id) == null)
+					errorHash.put("companyError", "Company does not exist");
+			} catch (SQLException e) {
+				LOG.error(e.toString());
+			}
 		}
 		return errorHash;
 	}
