@@ -38,6 +38,10 @@ public enum DaoFactory {
 		return CompanyDAOImpl.INSTANCE;
 	}
 	
+	public LogDAOImpl getLogDao(){
+		return LogDAOImpl.INSTANCE;
+	}
+	
 	public  Connection getConnection() {
 		Connection conn = null;
 		try {			

@@ -43,7 +43,7 @@
 					<td><joda:format value="${computer.discontinued}" pattern="yyyy-MM-dd"/></td>
 					<td>${computer.company.name}</td>
 					<td><a type="button" class="btn btn-warning" href="update?id=${computer.id}">Modify</a></td>
-					<td><a type="button" class="btn btn-danger" href="delete?id=${computer.id}">Delete</a></td>
+					<td><a type="button" class="btn btn-danger" href="delete?id=${computer.id}" onclick="return confirm('Are you sure to delete this computer?')">Delete</a></td>
 				</tr>
 			</c:forEach>
 		</tbody>

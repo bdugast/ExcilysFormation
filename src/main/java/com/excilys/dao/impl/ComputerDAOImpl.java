@@ -17,6 +17,8 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mysql.jdbc.Statement;
+
 public enum ComputerDAOImpl implements ComputerDAO {
 	INSTANCE;
 	static final Logger LOG = LoggerFactory.getLogger(ComputerDAOImpl.class);
@@ -54,15 +56,16 @@ public enum ComputerDAOImpl implements ComputerDAO {
 		return comp;
 	}
 
-	public void createComputer(Computer comp) {
+	public int createComputer(Computer comp, Connection conn) {
 		LOG.trace("Start createComputer");
-		Connection conn = DaoFactory.INSTANCE.getConnection();
 		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		int key = 0;
 
 		try {
 			String req = "insert into computer values(null,?,?,?,?)";
 			LOG.debug("requete SQL : " + req);
-			stmt = conn.prepareStatement(req);
+			stmt = conn.prepareStatement(req, Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, comp.getName());
 			if (comp.getIntroduced() == null)
 				stmt.setNull(2, Types.NULL);
@@ -78,17 +81,23 @@ public enum ComputerDAOImpl implements ComputerDAO {
 				stmt.setObject(4, comp.getCompany().getId());
 			LOG.debug("requete stmt : " + stmt);
 			stmt.execute();
+			
+			rs = stmt.getGeneratedKeys();
+			if(rs.next()){
+				key = rs.getInt(1);
+			}
+			
 		} catch (SQLException e) {
 			LOG.error(e.toString());
 		} finally {
-			LOG.trace("Finally getAllComputer ListComputer");
-			DaoFactory.INSTANCE.closeAll(conn, null, stmt);
+			LOG.trace("Finally createComputer");
+			DaoFactory.INSTANCE.closeAll(null, rs, stmt);
 		}
+		return key;
 	}
 
-	public void updateComputer(Computer comp) {
+	public void updateComputer(Computer comp, Connection conn) {
 		LOG.trace("Start updateComputer");
-		Connection conn = DaoFactory.INSTANCE.getConnection();
 		PreparedStatement stmt = null;
 
 		try {
@@ -99,13 +108,11 @@ public enum ComputerDAOImpl implements ComputerDAO {
 			if (comp.getIntroduced() == null)
 				stmt.setNull(2, Types.NULL);
 			else
-				stmt.setTimestamp(2, new Timestamp(comp.getIntroduced()
-						.getMillis()));
+				stmt.setTimestamp(2, new Timestamp(comp.getIntroduced().getMillis()));
 			if (comp.getDiscontinued() == null)
 				stmt.setNull(3, Types.NULL);
 			else
-				stmt.setTimestamp(3, new Timestamp(comp.getDiscontinued()
-						.getMillis()));
+				stmt.setTimestamp(3, new Timestamp(comp.getDiscontinued().getMillis()));
 			LOG.debug("company ID : " + comp.getCompany().getId());
 			if (comp.getCompany().getId() == 0)
 				stmt.setNull(4, Types.NULL);
@@ -118,13 +125,12 @@ public enum ComputerDAOImpl implements ComputerDAO {
 			LOG.error(e.toString());
 		} finally {
 			LOG.trace("Finally getAllComputer ListComputer");
-			DaoFactory.INSTANCE.closeAll(conn, null, stmt);
+			DaoFactory.INSTANCE.closeAll(null, null, stmt);
 		}
 	}
 
-	public void deleteComputer(int id) {
+	public void deleteComputer(int id, Connection conn) {
 		LOG.trace("Start createComputer");
-		Connection conn = DaoFactory.INSTANCE.getConnection();
 		PreparedStatement stmt = null;
 
 		try {
@@ -138,7 +144,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
 			LOG.error(e.toString());
 		} finally {
 			LOG.trace("Finally getAllComputer ListComputer");
-			DaoFactory.INSTANCE.closeAll(conn, null, stmt);
+			DaoFactory.INSTANCE.closeAll(null, null, stmt);
 		}
 	}
 
