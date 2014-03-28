@@ -15,7 +15,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
 	INSTANCE;
 	
 	public Company getOneCompany(int id){
-		Company comp = new Company();
+		Company comp = null;
 		Connection conn = DaoFactory.INSTANCE.getConnection();
 		ResultSet rs = null;
 		PreparedStatement stmt = null;
@@ -25,6 +25,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
 			rs = stmt.executeQuery();
 			
 			while(rs.next()){
+				comp = new Company();
 				comp.setId(rs.getInt("id"));
 				comp.setName(rs.getString("name"));
 			}

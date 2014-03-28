@@ -9,21 +9,30 @@
 		<div class="control-group">
 			<label class="control-label" for="name">Computer name:</label>
 			<div class="controls">
-				<input type="hidden" class="form-control"	id="id" name="id" value="${computer.id}" />
-				<input type="text" class="form-control"	id="inputName" name="name" value="${computer.name}" />
+				<input type="hidden" class="form-control"	id="id" name="id" value="${id}" />
+				<input type="text" class="form-control"	id="inputName" name="name" value="${name}" />
+				<c:if test="${errors.get('nameError')!=null}">
+					<label><c:out value="${errors.get('nameError')}"/></label>
+				</c:if>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label" for="introduced">Introduced date:</label>
 			<div class="controls">
-				<input type="text" class="form-control" id="dateIntroduced" name="introduced" value="<joda:format value="${computer.introduced}" pattern="yyyy-MM-dd"/>">
+				<input type="text" class="form-control" id="dateIntroduced" name="introduced" value="${introduced}">
+				<c:if test="${errors.get('introducedError')!=null}">
+					<label><c:out value="${errors.get('introducedError')}"/></label>
+				</c:if>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label" for="discontinued">Discontinued
 				date :</label>
 			<div class="controls">
-				<input type="text" class="form-control" id="dateDiscontinued" name="discontinued" value="<joda:format value="${computer.discontinued}" pattern="yyyy-MM-dd"/>">
+				<input type="text" class="form-control" id="dateDiscontinued" name="discontinued" value="${discontinued}">
+				<c:if test="${errors.get('discontinuedError')!=null}">
+					<label><c:out value="${errors.get('discontinuedError')}"/></label>
+				</c:if>
 			</div>
 		</div>
 		<div class="control-group">
@@ -32,7 +41,7 @@
 				<select name="company" class="form-control">
 					<option value="">Select a company</option>
 					<c:forEach items="${companies}" var="company">
-						<option value="${company.id}" ${computer.company.id==company.id ? 'selected' : ''}>${company.name}</option>
+						<option value="${company.id}" ${id==company.id ? 'selected' : ''}>${company.name}</option>
 					</c:forEach>
 				</select>
 			</div>

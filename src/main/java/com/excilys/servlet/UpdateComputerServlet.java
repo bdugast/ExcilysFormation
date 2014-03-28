@@ -1,6 +1,7 @@
 package main.java.com.excilys.servlet;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -27,7 +28,13 @@ public class UpdateComputerServlet extends HttpServlet{
 			throws ServletException, IOException {
 		
 		Computer comp = ServiceFactory.INSTANCE.getComputerService().getOneComputer(Integer.valueOf(req.getParameter("id")));
-		req.setAttribute("computer", comp);
+		
+		req.setAttribute("id", comp.getId());
+		req.setAttribute("name", comp.getName());
+		req.setAttribute("introduced", comp.getIntroduced());
+		req.setAttribute("discontinued", comp.getDiscontinued());
+		req.setAttribute("companyId", comp.getCompany().getId());
+		
 		List<Company> companies = ServiceFactory.INSTANCE.getCompanyService().getAllCompanies();
 		req.setAttribute("companies", companies);
 		
@@ -37,19 +44,40 @@ public class UpdateComputerServlet extends HttpServlet{
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		Computer comp = new Computer();
-		comp.setId(Integer.valueOf(req.getParameter("id")));
-		comp.setName(req.getParameter("name"));
-		if(req.getParameter("introduced")!="") comp.setIntroduced(new DateTime(req.getParameter("introduced")));
-		else comp.setIntroduced(null);
-		if(req.getParameter("discontinued")!="") comp.setDiscontinued(new DateTime(req.getParameter("discontinued")));
-		else comp.setDiscontinued(null);
-		LOG.trace("Introduced : " + comp.getIntroduced());
-		LOG.trace("Discontinued : " + comp.getDiscontinued());
-		if(req.getParameter("company")!="") comp.setCompany(ServiceFactory.INSTANCE.getCompanyService().getOneCompany(Integer.valueOf(req.getParameter("company"))));
-		else comp.setCompany(new Company());
-		ServiceFactory.INSTANCE.getComputerService().updateComputer(comp);
-		
-		resp.sendRedirect("dashboard?page=1");
+		HashMap<String, String> hashError = new HashMap<>();
+		hashError = ServiceFactory.INSTANCE.getComputerService().checkForm(req.getParameter("name"), req.getParameter("introduced"), req.getParameter("discontinued"),req.getParameter("company"));
+		if(hashError.isEmpty()){
+			Computer comp = new Computer();
+			comp.setId(Integer.valueOf(req.getParameter("id")));
+			comp.setName(req.getParameter("name"));
+			if(req.getParameter("introduced")!="") comp.setIntroduced(new DateTime(req.getParameter("introduced")));
+			else comp.setIntroduced(null);
+			if(req.getParameter("discontinued")!="") comp.setDiscontinued(new DateTime(req.getParameter("discontinued")));
+			else comp.setDiscontinued(null);
+			LOG.trace("Introduced : " + comp.getIntroduced());
+			LOG.trace("Discontinued : " + comp.getDiscontinued());
+			if(req.getParameter("company")!="") comp.setCompany(ServiceFactory.INSTANCE.getCompanyService().getOneCompany(Integer.valueOf(req.getParameter("company"))));
+			else comp.setCompany(new Company());
+			ServiceFactory.INSTANCE.getComputerService().updateComputer(comp);
+			
+			resp.sendRedirect("dashboard");
+		}else{
+			List<Company> companies = ServiceFactory.INSTANCE.getCompanyService().getAllCompanies();
+			req.setAttribute("companies", companies);
+			req.setAttribute("errors", hashError);
+			LOG.debug("errors " + hashError.toString());
+			req.setAttribute("id", req.getParameter("id"));
+			LOG.debug("id" + req.getParameter("id"));
+			req.setAttribute("name", req.getParameter("name"));
+			LOG.debug("name" + req.getParameter("name"));
+			req.setAttribute("introduced", req.getParameter("introduced"));
+			LOG.debug("introduced" + req.getParameter("introduced"));
+			req.setAttribute("discontinued", req.getParameter("discontinued"));
+			LOG.debug("discontinued" + req.getParameter("discontinued"));
+			req.setAttribute("companyId", req.getParameter("company"));
+			LOG.debug("company" + req.getParameter("company"));
+			
+			getServletContext().getRequestDispatcher("/WEB-INF/updateComputer.jsp").forward(req,resp);
+		}
 	}
 }

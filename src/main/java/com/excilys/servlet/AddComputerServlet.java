@@ -39,7 +39,8 @@ public class AddComputerServlet extends HttpServlet{
 
 		DateTime dateIntroduced = null;
 		DateTime dateDiscontinued = null;
-		HashMap<String, String> hashError = ServiceFactory.INSTANCE.getComputerService().checkForm(req.getParameter("name"), req.getParameter("introduced"), req.getParameter("discontinued"),req.getParameter("company"));
+		HashMap<String, String> hashError = new HashMap<>();
+		hashError = ServiceFactory.INSTANCE.getComputerService().checkForm(req.getParameter("name"), req.getParameter("introduced"), req.getParameter("discontinued"),req.getParameter("company"));
 		if(hashError.isEmpty()){
 			String name = req.getParameter("name");
 			Company company = new Company();
