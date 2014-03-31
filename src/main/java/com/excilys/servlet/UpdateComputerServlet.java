@@ -1,4 +1,4 @@
-package main.java.com.excilys.servlet;
+package com.excilys.servlet;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -10,13 +10,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import main.java.com.excilys.domain.Company;
-import main.java.com.excilys.domain.Computer;
-import main.java.com.excilys.service.impl.ServiceFactory;
-
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.excilys.domain.Company;
+import com.excilys.domain.Computer;
+import com.excilys.service.impl.ServiceFactory;
 
 @WebServlet("/update")
 public class UpdateComputerServlet extends HttpServlet{

@@ -1,111 +1,104 @@
-package main.java.com.excilys.service.impl;
+package com.excilys.service.impl;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
-
-import main.java.com.excilys.dao.impl.DaoFactory;
-import main.java.com.excilys.domain.Computer;
-import main.java.com.excilys.service.ComputerService;
-import main.java.com.excilys.wrapper.PageWrapper;
 
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.excilys.dao.impl.DaoFactory;
+import com.excilys.domain.Computer;
+import com.excilys.exception.CustomException;
+import com.excilys.service.ComputerService;
+import com.excilys.wrapper.PageWrapper;
+
 public enum ComputerServiceImpl implements ComputerService {
 	INSTANCE;
 
 	static final Logger LOG = LoggerFactory.getLogger(ComputerServiceImpl.class);
 
-	@Override
 	public Computer getOneComputer(int id) {
 		Computer comp = null;
 		try {
 			comp = DaoFactory.INSTANCE.getComputerDao().getOneComputer(id);
-		} catch (SQLException e) {
-			LOG.error(e.toString());
+		} catch (CustomException e) {
+			throw e;
 		} finally {
 			DaoFactory.INSTANCE.closeConnection();
 		}
 		return comp;
 	}
 
-	@Override
 	public void createComputer(Computer comp) {
 		
-		Connection conn = DaoFactory.INSTANCE.getConnection();
+		DaoFactory.INSTANCE.startTransaction();
 		int idComp;
 		try {
-			conn.setAutoCommit(false);
 			idComp = DaoFactory.INSTANCE.getComputerDao().createComputer(comp);
 			DaoFactory.INSTANCE.getLogDao().insertMessageLog("CREATE", idComp);
-			conn.commit();
-		} catch (Exception e) {
-			try {
-				conn.rollback();
-			} catch (SQLException e1) {
-				LOG.error(e1.toString());
+			DaoFactory.INSTANCE.commitTransaction();
+		} catch (CustomException e) {
+			try{
+				DaoFactory.INSTANCE.rollbackTransaction();
+				throw e;
+			} catch (CustomException e1) {
+				throw e1;
 			}
 		} finally {
 			DaoFactory.INSTANCE.closeConnection();
 		}
 	}
 
-	@Override
 	public void updateComputer(Computer comp) {
-		Connection conn = DaoFactory.INSTANCE.getConnection();
+		DaoFactory.INSTANCE.startTransaction();
 		try {
-			conn.setAutoCommit(false);
 			DaoFactory.INSTANCE.getComputerDao().updateComputer(comp);
 			DaoFactory.INSTANCE.getLogDao().insertMessageLog("UPDATE", comp.getId());
-			conn.commit();
-		} catch (Exception e) {
+			DaoFactory.INSTANCE.commitTransaction();
+		} catch (CustomException e) {
 			try {
-				conn.rollback();
-			} catch (SQLException e1) {
-				LOG.error(e1.toString());
+				DaoFactory.INSTANCE.rollbackTransaction();
+				throw e;
+			} catch (CustomException e1) {
+				throw e1;
 			}
 		}  finally {
 			DaoFactory.INSTANCE.closeConnection();
 		}
 	}
 
-	@Override
 	public void deleteComputer(int id) {
-		Connection conn = DaoFactory.INSTANCE.getConnection();
+		DaoFactory.INSTANCE.startTransaction();
 		try {
-			conn.setAutoCommit(false);
 			DaoFactory.INSTANCE.getComputerDao().deleteComputer(id);
 			DaoFactory.INSTANCE.getLogDao().insertMessageLog("DELETE", id);
-			conn.commit();
-		} catch (Exception e) {
+			DaoFactory.INSTANCE.commitTransaction();
+		} catch (CustomException e) {
 			try {
-				conn.rollback();
-			} catch (SQLException e1) {
-				LOG.error(e1.toString());
+				DaoFactory.INSTANCE.rollbackTransaction();
+				throw e;
+			} catch (CustomException e1) {
+				throw e1;
 			}
 		} finally {
 			DaoFactory.INSTANCE.closeConnection();
 		}
 	}
 
-	@Override
 	public int getCountComputerSearch(String search) {
 		int count = 0;
 		try {
 			count = DaoFactory.INSTANCE.getComputerDao().getCountComputerSearch(search);
-		} catch (SQLException e) {
-			LOG.error(e.toString());
+		} catch (CustomException e) {
+			throw e;
 		} finally {
 			DaoFactory.INSTANCE.closeConnection();
 		}
 		return count;
 	}
 
-	@Override
 	public List<Computer> getRangeSearchOrderComputers(PageWrapper wrap) {
 
 		List<Computer> compList = null;
@@ -141,8 +134,8 @@ public enum ComputerServiceImpl implements ComputerService {
 							((wrap.getCurrentPage() - 1) * wrap.NB_COMPUTER_BY_PAGE),
 							wrap.NB_COMPUTER_BY_PAGE, wrap.getSearch(),
 							orderby.toString());
-		} catch (SQLException e) {
-			LOG.error(e.toString());
+		} catch (CustomException e) {
+			throw e;
 		} finally {
 			DaoFactory.INSTANCE.closeConnection();
 		}
@@ -185,8 +178,8 @@ public enum ComputerServiceImpl implements ComputerService {
 			try {
 				if (id != 0	&& DaoFactory.INSTANCE.getCompanyDao().getOneCompany(id) == null)
 					errorHash.put("companyError", "Company does not exist");
-			} catch (SQLException e) {
-				LOG.error(e.toString());
+			} catch (CustomException e) {
+				throw e;
 			}
 		}
 		return errorHash;

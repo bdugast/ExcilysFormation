@@ -1,7 +1,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<%@ attribute name="wrap" required="true" type="main.java.com.excilys.wrapper.PageWrapper"%>
+<%@ attribute name="wrap" required="true" type="com.excilys.wrapper.PageWrapper"%>
 
 <ul class="pagination">
      		<c:choose>

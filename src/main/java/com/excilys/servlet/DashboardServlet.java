@@ -1,4 +1,4 @@
-package main.java.com.excilys.servlet;
+package com.excilys.servlet;
 
 import java.io.IOException;
 import java.util.List;
@@ -9,9 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import main.java.com.excilys.domain.Computer;
-import main.java.com.excilys.service.impl.ServiceFactory;
-import main.java.com.excilys.wrapper.PageWrapper;
+import com.excilys.domain.Computer;
+import com.excilys.service.impl.ServiceFactory;
+import com.excilys.wrapper.PageWrapper;
 
 @WebServlet("/dashboard")
 public class DashboardServlet extends HttpServlet{

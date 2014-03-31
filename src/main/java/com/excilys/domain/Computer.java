@@ -1,6 +1,7 @@
-package main.java.com.excilys.domain;
+package com.excilys.domain;
 
 import org.joda.time.DateTime;
+
 
 public class Computer {
 	private int id;

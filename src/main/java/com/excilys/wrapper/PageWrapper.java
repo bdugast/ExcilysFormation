@@ -1,4 +1,4 @@
-package main.java.com.excilys.wrapper;
+package com.excilys.wrapper;
 
 public class PageWrapper {
 	public final int NB_COMPUTER_BY_PAGE = 20;

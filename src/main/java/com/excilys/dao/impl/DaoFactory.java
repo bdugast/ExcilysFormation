@@ -1,4 +1,4 @@
-package main.java.com.excilys.dao.impl;
+package com.excilys.dao.impl;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -13,13 +13,14 @@ import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.excilys.exception.CustomException;
 import com.jolbox.bonecp.BoneCPDataSource;
 
 public enum DaoFactory {
 	INSTANCE;
 	final Logger LOG = LoggerFactory.getLogger(DaoFactory.class);
 	BoneCPDataSource boneCP = new BoneCPDataSource();
-	ThreadLocal<Connection> tl = new ThreadLocal<>();	
+	ThreadLocal<Connection> tl = new ThreadLocal<Connection>();
 	{
 		try {
 			Context ctx = new InitialContext();
@@ -28,6 +29,11 @@ public enum DaoFactory {
 		} catch (NamingException e) {
 			LOG.error(e.toString());
 		}
+	}
+	
+	protected Connection initialValue(){
+		
+		return null;
 	}
 
 	public ComputerDAOImpl getComputerDao(){
@@ -79,5 +85,30 @@ public enum DaoFactory {
 			LOG.error(e.toString());
 		}
 		tl.remove();
+	}
+
+	public void startTransaction() {
+		Connection conn = getConnection();
+		try {
+			conn.setAutoCommit(false);
+		} catch (SQLException e) {
+			throw new CustomException("erreur init transaction", e.getMessage());
+		}
+	}
+	
+	public void commitTransaction() {
+		try {
+			getConnection().commit();
+		} catch (SQLException e) {
+			throw new CustomException("erreur commit transaction", e.getMessage());
+		}
+	}
+	
+	public void rollbackTransaction() {
+		try {
+			getConnection().rollback();
+		} catch (SQLException e) {
+			throw new CustomException("erreur rollback transaction", e.getMessage());
+		}
 	}
 }

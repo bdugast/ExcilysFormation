@@ -1,4 +1,4 @@
-package main.java.com.excilys.servlet;
+package com.excilys.servlet;
 
 import java.io.IOException;
 
@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import main.java.com.excilys.service.impl.ServiceFactory;
+import com.excilys.service.impl.ServiceFactory;
 
 @WebServlet("/delete")
 public class DeleteComputerServlet extends HttpServlet {

@@ -1,4 +1,4 @@
-package main.java.com.excilys.domain;
+package com.excilys.domain;
 
 public class Company {
 	private int id;

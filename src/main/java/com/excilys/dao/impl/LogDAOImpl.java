@@ -1,12 +1,13 @@
-package main.java.com.excilys.dao.impl;
+package com.excilys.dao.impl;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import main.java.com.excilys.dao.LogDAO;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.excilys.dao.LogDAO;
+import com.excilys.exception.CustomException;
 
 public enum LogDAOImpl implements LogDAO {
 	INSTANCE;
@@ -26,7 +27,7 @@ public enum LogDAOImpl implements LogDAO {
 			LOG.debug("requete stmt : " + stmt);
 			stmt.execute();
 		} catch (SQLException e) {
-			LOG.error(e.toString());
+			throw new CustomException("erreur SQL", e.getMessage());
 		} finally {
 			LOG.trace("Finally getAllComputer ListComputer");
 			DaoFactory.INSTANCE.closeDAO(null, stmt);

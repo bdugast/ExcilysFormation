@@ -1,4 +1,4 @@
-package main.java.com.excilys.service.impl;
+package com.excilys.service.impl;
 
 
 public enum ServiceFactory {

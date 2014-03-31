@@ -1,6 +1,5 @@
 <jsp:include page="include/header.jsp" />
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://www.joda.org/joda/time/tags" prefix="joda"%>
 
 <section id="main" class="col-md-6 col-md-offset-3">
 	<h1>Update Computer</h1>

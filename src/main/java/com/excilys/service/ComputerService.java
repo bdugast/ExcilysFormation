@@ -1,9 +1,9 @@
-package main.java.com.excilys.service;
+package com.excilys.service;
 
 import java.util.List;
 
-import main.java.com.excilys.domain.Computer;
-import main.java.com.excilys.wrapper.PageWrapper;
+import com.excilys.domain.Computer;
+import com.excilys.wrapper.PageWrapper;
 
 public interface ComputerService {
 	public Computer getOneComputer(int id);
