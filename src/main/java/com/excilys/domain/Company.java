@@ -1,6 +1,10 @@
 package com.excilys.domain;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Company {
+	
 	private int id;
 	private String name;
 		

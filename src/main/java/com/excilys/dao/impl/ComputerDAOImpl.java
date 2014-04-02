@@ -13,21 +13,26 @@ import java.util.List;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.excilys.dao.ComputerDAO;
 import com.excilys.domain.Company;
 import com.excilys.domain.Computer;
 import com.excilys.exception.CustomException;
 
-public enum ComputerDAOImpl implements ComputerDAO {
-	INSTANCE;
+@Repository
+public class ComputerDAOImpl implements ComputerDAO {
 	static final Logger LOG = LoggerFactory.getLogger(ComputerDAOImpl.class);
+	
+	@Autowired 
+	private ConnectionManager connectionManager;
 
 	@Override
 	public Computer getOneComputer(int id) {
 		LOG.trace("start getOneComputer id=" + id);
 		Computer comp = new Computer();
-		Connection conn = DaoFactory.INSTANCE.getConnection();
+		Connection conn = connectionManager.getConnection();
 		ResultSet rs = null;
 		PreparedStatement stmt = null;
 		
@@ -52,7 +57,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
 		}catch(SQLException e){
 			throw new CustomException("erreur SQL", e.getMessage());
 		}finally{
-			DaoFactory.INSTANCE.closeDAO(rs, stmt);			
+			connectionManager.closeDAO(rs, stmt);			
 		}
 		return comp;
 	}
@@ -67,7 +72,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
 		try{
 			String req = "insert into computer values(null,?,?,?,?)";
 			LOG.debug("requete SQL : " + req);
-			stmt = DaoFactory.INSTANCE.getConnection().prepareStatement(req, Statement.RETURN_GENERATED_KEYS);
+			stmt = connectionManager.getConnection().prepareStatement(req, Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, comp.getName());
 			
 			if (comp.getIntroduced() == null)
@@ -95,7 +100,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
 		}catch(SQLException e){
 			throw new CustomException("erreur SQL", e.getMessage());
 		}finally{
-			DaoFactory.INSTANCE.closeDAO(rs, stmt);			
+			connectionManager.closeDAO(rs, stmt);			
 		}
 		return key;
 	}
@@ -108,7 +113,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
 		try{
 			String req = "update computer set name=?, introduced=?, discontinued=?, company_id=? where computer.id=?";
 			LOG.debug("requete SQL : " + req);
-			stmt = DaoFactory.INSTANCE.getConnection().prepareStatement(req);
+			stmt = connectionManager.getConnection().prepareStatement(req);
 			stmt.setString(1, comp.getName());
 			if (comp.getIntroduced() == null)
 				stmt.setNull(2, Types.NULL);
@@ -130,7 +135,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
 		}catch(SQLException e){
 			throw new CustomException("erreur SQL", e.getMessage());
 		}finally{
-			DaoFactory.INSTANCE.closeDAO(null, stmt);			
+			connectionManager.closeDAO(null, stmt);			
 		}
 	}
 
@@ -141,14 +146,14 @@ public enum ComputerDAOImpl implements ComputerDAO {
 		try{
 			String req = "delete from computer where id=?";
 			LOG.debug("requete SQL : " + req);
-			stmt = DaoFactory.INSTANCE.getConnection().prepareStatement(req);
+			stmt = connectionManager.getConnection().prepareStatement(req);
 			stmt.setInt(1, id);
 			LOG.debug("requete stmt : " + stmt);
 			stmt.executeUpdate();
 		}catch(SQLException e){
 			throw new CustomException("erreur SQL", e.getMessage());
 		}finally{
-			DaoFactory.INSTANCE.closeDAO(null, stmt);			
+			connectionManager.closeDAO(null, stmt);			
 		}
 	}
 
@@ -156,7 +161,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
 	public List<Computer> getRangeSearchOrderComputers(int start, int nb,	String search, String orderby){
 		LOG.trace("Start getRangeSearchOrderComputers");
 		List<Computer> comps = new ArrayList<Computer>();
-		Connection conn = DaoFactory.INSTANCE.getConnection();
+		Connection conn = connectionManager.getConnection();
 		ResultSet rs = null;
 		PreparedStatement stmt = null;
 		StringBuilder searchWord = new StringBuilder("%" + search + "%");
@@ -186,7 +191,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
 		}catch(SQLException e){
 			throw new CustomException("erreur SQL", e.getMessage());
 		}finally{
-			DaoFactory.INSTANCE.closeDAO(rs, stmt);			
+			connectionManager.closeDAO(rs, stmt);			
 		}
 
 		return comps;
@@ -195,7 +200,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
 	@Override
 	public int getCountComputerSearch(String search){
 		int count = 0;
-		Connection conn = DaoFactory.INSTANCE.getConnection();
+		Connection conn = connectionManager.getConnection();
 		ResultSet rs = null;
 		PreparedStatement stmt = null;
 		StringBuilder searchWord = new StringBuilder("%" + search + "%");
@@ -213,7 +218,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
 		}catch(SQLException e){
 			throw new CustomException("erreur SQL", e.getMessage());
 		}finally{
-			DaoFactory.INSTANCE.closeDAO(rs, stmt);			
+			connectionManager.closeDAO(rs, stmt);			
 		}
 		return count;
 	}

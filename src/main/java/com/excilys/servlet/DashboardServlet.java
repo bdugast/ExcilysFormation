@@ -9,12 +9,27 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
 import com.excilys.domain.Computer;
-import com.excilys.service.impl.ServiceFactory;
+import com.excilys.service.impl.ComputerServiceImpl;
 import com.excilys.wrapper.PageWrapper;
 
 @WebServlet("/dashboard")
 public class DashboardServlet extends HttpServlet{
+	
+	@Autowired
+	ComputerServiceImpl computerService;
+
+	@Override
+	public void init() throws ServletException {
+		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
+	}
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -34,7 +49,7 @@ public class DashboardServlet extends HttpServlet{
 		if(req.getParameter("search")!=null) wrap.setSearch(req.getParameter("search"));
 		
 		//Compter le nombre d'objet
-		wrap.setCount(ServiceFactory.INSTANCE.getComputerService().getCountComputerSearch(wrap.getSearch()));
+		wrap.setCount(computerService.getCountComputerSearch(wrap.getSearch()));
 
 		//Savoir le nombre de pages
 		wrap.setCountPages((int) (Math.ceil((double)wrap.getCount()/(double)20)));
@@ -44,7 +59,7 @@ public class DashboardServlet extends HttpServlet{
 		if(wrap.getCurrentPage()<1) wrap.setCurrentPage(1);
 		
 		//Get 20 ordinateurs en fonction de la page with fucking limit and search
-		List<Computer> computers = ServiceFactory.INSTANCE.getComputerService().getRangeSearchOrderComputers(wrap);
+		List<Computer> computers = computerService.getRangeSearchOrderComputers(wrap);
 		
 		req.setAttribute("wrap", wrap);
 		req.setAttribute("computers", computers);

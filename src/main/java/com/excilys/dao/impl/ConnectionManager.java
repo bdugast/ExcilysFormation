@@ -12,13 +12,14 @@ import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import com.excilys.exception.CustomException;
 import com.jolbox.bonecp.BoneCPDataSource;
 
-public enum DaoFactory {
-	INSTANCE;
-	final Logger LOG = LoggerFactory.getLogger(DaoFactory.class);
+@Component
+public class ConnectionManager {
+	final Logger LOG = LoggerFactory.getLogger(ConnectionManager.class);
 	BoneCPDataSource boneCP = new BoneCPDataSource();
 	ThreadLocal<Connection> tl = new ThreadLocal<Connection>();
 	{
@@ -34,18 +35,6 @@ public enum DaoFactory {
 	protected Connection initialValue(){
 		
 		return null;
-	}
-
-	public ComputerDAOImpl getComputerDao(){
-		return ComputerDAOImpl.INSTANCE;
-	}
-	
-	public CompanyDAOImpl getCompanyDao(){
-		return CompanyDAOImpl.INSTANCE;
-	}
-	
-	public LogDAOImpl getLogDao(){
-		return LogDAOImpl.INSTANCE;
 	}
 	
 	public  Connection getConnection() {

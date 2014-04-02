@@ -8,17 +8,23 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 import com.excilys.dao.CompanyDAO;
 import com.excilys.domain.Company;
 import com.excilys.exception.CustomException;
 
-public enum CompanyDAOImpl implements CompanyDAO {
-	INSTANCE;
+@Repository
+public class CompanyDAOImpl implements CompanyDAO {
+	
+	@Autowired
+	private ConnectionManager connectionManager;
 	
 	@Override
 	public Company getOneCompany(int id){
 		Company comp = null;
-		Connection conn = DaoFactory.INSTANCE.getConnection();
+		Connection conn = connectionManager.getConnection();
 		ResultSet rs = null;
 		PreparedStatement stmt = null;
 		try{
@@ -34,7 +40,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
 		}catch(SQLException e){
 			throw new CustomException("erreur SQL", e.getMessage());
 		}finally{
-			DaoFactory.INSTANCE.closeDAO(rs, stmt);			
+			connectionManager.closeDAO(rs, stmt);			
 		}
 		return comp;
 	}
@@ -42,7 +48,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
 	@Override
 	public List<Company> getAllCompany(){
 		List<Company> comps = new ArrayList<Company>();
-		Connection conn = DaoFactory.INSTANCE.getConnection();
+		Connection conn = connectionManager.getConnection();
 		ResultSet rs = null;
 		Statement stmt = null;
 		try{
@@ -56,14 +62,14 @@ public enum CompanyDAOImpl implements CompanyDAO {
 		}catch(SQLException e){
 			throw new CustomException("erreur SQL", e.getMessage());
 		}finally{
-			DaoFactory.INSTANCE.closeDAO(rs, stmt);			
+			connectionManager.closeDAO(rs, stmt);			
 		}
 		return comps;
 	}
 
 	@Override
 	public void updateCompany(Company comp){
-		Connection conn = DaoFactory.INSTANCE.getConnection();
+		Connection conn = connectionManager.getConnection();
 		PreparedStatement stmt = null;
 		
 		try{
@@ -74,30 +80,30 @@ public enum CompanyDAOImpl implements CompanyDAO {
 		}catch(SQLException e){
 			throw new CustomException("erreur SQL", e.getMessage());
 		}finally{
-			DaoFactory.INSTANCE.closeDAO(null, stmt);			
+			connectionManager.closeDAO(null, stmt);			
 		}
 	}
 	
 	@Override
 	public void createCompany(Company comp){
-		Connection conn = DaoFactory.INSTANCE.getConnection();
+		Connection conn = connectionManager.getConnection();
 		PreparedStatement stmt = null;
 
 		try{
 			stmt = conn.prepareStatement("insert into company values(null,?)");
 			stmt.setString(1, comp.getName());
 			stmt.executeUpdate();
-			DaoFactory.INSTANCE.closeDAO(null, stmt);
+			connectionManager.closeDAO(null, stmt);
 		}catch(SQLException e){
 			throw new CustomException("erreur SQL", e.getMessage());
 		}finally{
-			DaoFactory.INSTANCE.closeDAO(null, stmt);			
+			connectionManager.closeDAO(null, stmt);			
 		}
 	}
 	
 	@Override
 	public void deleteCompany(int id){
-		Connection conn = DaoFactory.INSTANCE.getConnection();
+		Connection conn = connectionManager.getConnection();
 		PreparedStatement stmt = null;
 		try{
 			stmt = conn.prepareStatement("delete from company where id=?)");
@@ -106,7 +112,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
 		}catch(SQLException e){
 			throw new CustomException("erreur SQL", e.getMessage());
 		}finally{
-			DaoFactory.INSTANCE.closeDAO(null, stmt);			
+			connectionManager.closeDAO(null, stmt);			
 		}
 	}
 }

@@ -13,21 +13,35 @@ import javax.servlet.http.HttpServletResponse;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.excilys.domain.Company;
 import com.excilys.domain.Computer;
-import com.excilys.service.impl.ServiceFactory;
+import com.excilys.service.impl.CompanyServiceImpl;
+import com.excilys.service.impl.ComputerServiceImpl;
 
 @WebServlet("/add")
 public class AddComputerServlet extends HttpServlet{
 	
 	static final Logger LOG = LoggerFactory.getLogger(AddComputerServlet.class);
-
+	@Autowired
+	ComputerServiceImpl computerService;
+	@Autowired
+	CompanyServiceImpl companyService;
+	
+	@Override
+	public void init() throws ServletException {
+		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
+	}
+	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		
-		List<Company> companies = ServiceFactory.INSTANCE.getCompanyService().getAllCompanies();
+		List<Company> companies = companyService.getAllCompanies();
 		req.setAttribute("companies", companies);
 		
 		getServletContext().getRequestDispatcher("/WEB-INF/addComputer.jsp").forward(req,resp);
@@ -40,7 +54,7 @@ public class AddComputerServlet extends HttpServlet{
 		DateTime dateIntroduced = null;
 		DateTime dateDiscontinued = null;
 		HashMap<String, String> hashError = new HashMap<>();
-		hashError = ServiceFactory.INSTANCE.getComputerService().checkForm(req.getParameter("name"), req.getParameter("introduced"), req.getParameter("discontinued"),req.getParameter("company"));
+		hashError = computerService.checkForm(req.getParameter("name"), req.getParameter("introduced"), req.getParameter("discontinued"),req.getParameter("company"));
 		if(hashError.isEmpty()){
 			String name = req.getParameter("name");
 			Company company = new Company();
@@ -50,13 +64,13 @@ public class AddComputerServlet extends HttpServlet{
 			LOG.trace("dateIntroduced " + dateIntroduced);
 			LOG.trace("dateDiscontinued " + dateDiscontinued);
 					
-			if(req.getParameter("company")!="") company = ServiceFactory.INSTANCE.getCompanyService().getOneCompany(Integer.valueOf(req.getParameter("company")));
+			if(req.getParameter("company")!="") company = companyService.getOneCompany(Integer.valueOf(req.getParameter("company")));
 			Computer comp = new Computer(name, dateIntroduced, dateDiscontinued, company);
-			ServiceFactory.INSTANCE.getComputerService().createComputer(comp);
+			computerService.createComputer(comp);
 					
 			resp.sendRedirect("dashboard");
 		}else{
-			List<Company> companies = ServiceFactory.INSTANCE.getCompanyService().getAllCompanies();
+			List<Company> companies = companyService.getAllCompanies();
 			req.setAttribute("errors", hashError);
 			LOG.debug("errors " + hashError.toString());
 			req.setAttribute("companies", companies);

@@ -33,17 +33,22 @@
 			<artifactId>bonecp</artifactId>
 			<version>0.8.0.RELEASE</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>4.0.3.RELEASE</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
 			<plugin>
-		        <artifactId>maven-compiler-plugin</artifactId>
-		        <version>3.0</version>
-		        <configuration>
-		            <source>1.7</source>
-		            <target>1.7</target>
-		        </configuration>
-		    </plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.0</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
 		</plugins>
 		<finalName>ExcilysFormation</finalName>
 	</build>

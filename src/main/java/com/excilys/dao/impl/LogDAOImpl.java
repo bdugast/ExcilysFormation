@@ -5,13 +5,18 @@ import java.sql.SQLException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.excilys.dao.LogDAO;
 import com.excilys.exception.CustomException;
 
-public enum LogDAOImpl implements LogDAO {
-	INSTANCE;
+@Repository
+public class LogDAOImpl implements LogDAO {
 	static final Logger LOG = LoggerFactory.getLogger(LogDAOImpl.class);
+	
+	@Autowired
+	private ConnectionManager connectionManager;
 	
 	@Override
 	public void insertMessageLog(String message, int id) {
@@ -21,7 +26,7 @@ public enum LogDAOImpl implements LogDAO {
 		try {
 			String req = "insert into log values(null, ?, ?, null)";
 			LOG.debug("requete SQL : " + req);
-			stmt = DaoFactory.INSTANCE.getConnection().prepareStatement(req);
+			stmt = connectionManager.getConnection().prepareStatement(req);
 			stmt.setString(1, message);
 			stmt.setInt(2, id);
 			LOG.debug("requete stmt : " + stmt);
@@ -30,7 +35,7 @@ public enum LogDAOImpl implements LogDAO {
 			throw new CustomException("erreur SQL", e.getMessage());
 		} finally {
 			LOG.trace("Finally getAllComputer ListComputer");
-			DaoFactory.INSTANCE.closeDAO(null, stmt);
+			connectionManager.closeDAO(null, stmt);
 		}
 	}
 

@@ -13,21 +13,36 @@ import javax.servlet.http.HttpServletResponse;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.excilys.domain.Company;
 import com.excilys.domain.Computer;
-import com.excilys.service.impl.ServiceFactory;
+import com.excilys.service.impl.CompanyServiceImpl;
+import com.excilys.service.impl.ComputerServiceImpl;
 
 @WebServlet("/update")
 public class UpdateComputerServlet extends HttpServlet{
 
-	static final Logger LOG = LoggerFactory.getLogger(AddComputerServlet.class);
-
+	
+	static final Logger LOG = LoggerFactory.getLogger(UpdateComputerServlet.class);
+	@Autowired
+	ComputerServiceImpl computerService;
+	@Autowired
+	CompanyServiceImpl companyService;
+	
+	@Override
+	public void init() throws ServletException {
+		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
+	}
+	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		
-		Computer comp = ServiceFactory.INSTANCE.getComputerService().getOneComputer(Integer.valueOf(req.getParameter("id")));
+		Computer comp = computerService.getOneComputer(Integer.valueOf(req.getParameter("id")));
 		
 		req.setAttribute("id", comp.getId());
 		req.setAttribute("name", comp.getName());
@@ -35,7 +50,7 @@ public class UpdateComputerServlet extends HttpServlet{
 		req.setAttribute("discontinued", comp.getDiscontinued());
 		req.setAttribute("companyId", comp.getCompany().getId());
 		
-		List<Company> companies = ServiceFactory.INSTANCE.getCompanyService().getAllCompanies();
+		List<Company> companies = companyService.getAllCompanies();
 		req.setAttribute("companies", companies);
 		
 		getServletContext().getRequestDispatcher("/WEB-INF/updateComputer.jsp").forward(req,resp);
@@ -45,7 +60,7 @@ public class UpdateComputerServlet extends HttpServlet{
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		HashMap<String, String> hashError = new HashMap<>();
-		hashError = ServiceFactory.INSTANCE.getComputerService().checkForm(req.getParameter("name"), req.getParameter("introduced"), req.getParameter("discontinued"),req.getParameter("company"));
+		hashError = computerService.checkForm(req.getParameter("name"), req.getParameter("introduced"), req.getParameter("discontinued"),req.getParameter("company"));
 		if(hashError.isEmpty()){
 			Computer comp = new Computer();
 			comp.setId(Integer.valueOf(req.getParameter("id")));
@@ -56,13 +71,13 @@ public class UpdateComputerServlet extends HttpServlet{
 			else comp.setDiscontinued(null);
 			LOG.trace("Introduced : " + comp.getIntroduced());
 			LOG.trace("Discontinued : " + comp.getDiscontinued());
-			if(req.getParameter("company")!="") comp.setCompany(ServiceFactory.INSTANCE.getCompanyService().getOneCompany(Integer.valueOf(req.getParameter("company"))));
+			if(req.getParameter("company")!="") comp.setCompany(companyService.getOneCompany(Integer.valueOf(req.getParameter("company"))));
 			else comp.setCompany(new Company());
-			ServiceFactory.INSTANCE.getComputerService().updateComputer(comp);
+			computerService.updateComputer(comp);
 			
 			resp.sendRedirect("dashboard");
 		}else{
-			List<Company> companies = ServiceFactory.INSTANCE.getCompanyService().getAllCompanies();
+			List<Company> companies = companyService.getAllCompanies();
 			req.setAttribute("companies", companies);
 			req.setAttribute("errors", hashError);
 			req.setAttribute("id", req.getParameter("id"));
