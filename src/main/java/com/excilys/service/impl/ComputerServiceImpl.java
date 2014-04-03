@@ -1,19 +1,16 @@
 package com.excilys.service.impl;
 
-import java.util.HashMap;
 import java.util.List;
 
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.excilys.dao.impl.CompanyDAOImpl;
-import com.excilys.dao.impl.ComputerDAOImpl;
+import com.excilys.dao.impl.CompanyDaoImpl;
+import com.excilys.dao.impl.ComputerDaoImpl;
 import com.excilys.dao.impl.ConnectionManager;
-import com.excilys.dao.impl.LogDAOImpl;
+import com.excilys.dao.impl.LogDaoImpl;
 import com.excilys.domain.Computer;
 import com.excilys.exception.CustomException;
 import com.excilys.service.ComputerService;
@@ -24,11 +21,11 @@ public class ComputerServiceImpl implements ComputerService {
 	static final Logger LOG = LoggerFactory.getLogger(ComputerServiceImpl.class);
 	
 	@Autowired
-	public ComputerDAOImpl computerDao;
+	public ComputerDaoImpl computerDao;
 	@Autowired
-	public CompanyDAOImpl companyDao;
+	public CompanyDaoImpl companyDao;
 	@Autowired
-	public LogDAOImpl logDao;
+	public LogDaoImpl logDao;
 	@Autowired
 	private ConnectionManager connectionManager;
 	
@@ -154,48 +151,4 @@ public class ComputerServiceImpl implements ComputerService {
 		}
 		return compList;
 	}
-
-	public HashMap<String, String> checkForm(String name, String introduced,
-			String discontinued, String companyId) {
-		DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd");
-		HashMap<String, String> errorHash = new HashMap<>();
-
-		if (name.length() < 2)
-			errorHash.put("nameError",
-					"Name lenght must be more than 2 characters");
-		LOG.debug("introduced " + introduced.toString());
-		if (!introduced.equals("")) {
-			try {
-				fmt.parseDateTime(introduced);
-			} catch (Exception e) {
-				errorHash.put("introducedError", "Format incorrect yyyy-mm-dd");
-			}
-		}
-		LOG.debug("discontinued " + discontinued.toString());
-		if (!discontinued.equals("")) {
-			try {
-				fmt.parseDateTime(discontinued);
-			} catch (Exception e) {
-				errorHash.put("discontinuedError",
-						"Format incorrect yyyy-mm-dd");
-			}
-		}
-		LOG.debug("company " + companyId.toString());
-		if (!companyId.equals("")) {
-			int id = 0;
-			try {
-				id = Integer.valueOf(companyId);
-			} catch (NumberFormatException e) {
-				errorHash.put("companyError", "Company does not exist");
-			}
-			try {
-				if (id != 0	&& companyDao.getOneCompany(id) == null)
-					errorHash.put("companyError", "Company does not exist");
-			} catch (CustomException e) {
-				throw e;
-			}
-		}
-		return errorHash;
-	}
-
 }

@@ -5,22 +5,29 @@
 	<h1>Update Computer</h1>
 	<form class="form-horizontal" id="formValidation" action="update"
 		method="POST">
+		<c:if test="${errors.get('errorId')!=null}">
+			<label><c:out value="${errors.get('errorId')}" /></label>
+		</c:if>
 		<div class="control-group">
 			<label class="control-label" for="name">Computer name:</label>
+
 			<div class="controls">
-				<input type="hidden" class="form-control"	id="id" name="id" value="${id}" />
-				<input type="text" class="form-control"	id="inputName" name="name" value="${name}" />
+				<input type="hidden" class="form-control" id="id" name="id"
+					value="${compDto.id}" /> <input type="text" class="form-control"
+					id="inputName" name="name" value="${compDto.name}" />
 				<c:if test="${errors.get('nameError')!=null}">
-					<label><c:out value="${errors.get('nameError')}"/></label>
+					<label><c:out value="${errors.get('nameError')}" /></label>
 				</c:if>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label" for="introduced">Introduced date:</label>
+			<label class="control-label" for="introduced">Introduced
+				date:</label>
 			<div class="controls">
-				<input type="text" class="form-control" id="introduced" name="introduced" value="${introduced}">
+				<input type="text" class="form-control" id="dateIntroduced"
+					name="introduced" value="${compDto.introduced}">
 				<c:if test="${errors.get('introducedError')!=null}">
-					<label><c:out value="${errors.get('introducedError')}"/></label>
+					<label><c:out value="${errors.get('introducedError')}" /></label>
 				</c:if>
 			</div>
 		</div>
@@ -28,9 +35,10 @@
 			<label class="control-label" for="discontinued">Discontinued
 				date :</label>
 			<div class="controls">
-				<input type="text" class="form-control" id="discontinued" name="discontinued" value="${discontinued}">
+				<input type="text" class="form-control" id="dateDiscontinued"
+					name="discontinued" value="${compDto.discontinued}">
 				<c:if test="${errors.get('discontinuedError')!=null}">
-					<label><c:out value="${errors.get('discontinuedError')}"/></label>
+					<label><c:out value="${errors.get('discontinuedError')}" /></label>
 				</c:if>
 			</div>
 		</div>
@@ -38,9 +46,10 @@
 			<label for="company">Company Name:</label>
 			<div class="controls">
 				<select name="company" class="form-control">
-					<option value="">Select a company</option>
+					<option value="-1">Select a company</option>
 					<c:forEach items="${companies}" var="company">
-						<option value="${company.id}" ${companyId==company.id ? 'selected' : ''}>${company.name}</option>
+						<option value="${company.id}"
+							${compDto.companyId==company.id ? 'selected' : ''}>${company.name}</option>
 					</c:forEach>
 				</select>
 			</div>

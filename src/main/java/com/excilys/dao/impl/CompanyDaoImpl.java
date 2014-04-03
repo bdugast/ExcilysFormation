@@ -8,16 +8,19 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.excilys.dao.CompanyDAO;
+import com.excilys.dao.CompanyDao;
 import com.excilys.domain.Company;
 import com.excilys.exception.CustomException;
 
 @Repository
-public class CompanyDAOImpl implements CompanyDAO {
-	
+public class CompanyDaoImpl implements CompanyDao {
+
+	static final Logger LOG = LoggerFactory.getLogger(CompanyDaoImpl.class);
 	@Autowired
 	private ConnectionManager connectionManager;
 	
@@ -37,6 +40,8 @@ public class CompanyDAOImpl implements CompanyDAO {
 				comp.setId(rs.getInt("id"));
 				comp.setName(rs.getString("name"));
 			}
+
+			LOG.debug("company : " + comp);
 		}catch(SQLException e){
 			throw new CustomException("erreur SQL", e.getMessage());
 		}finally{

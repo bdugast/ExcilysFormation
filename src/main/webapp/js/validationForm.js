@@ -3,14 +3,18 @@ $(document).ready(
 			$.validator.addMethod(
 				"dateControl",
 				function(value, element) {
-					 try { 
-						jQuery.datepicker.parseDate("yy-mm-dd", value);
-					 	return true;
-					 } catch(e) { 
-			            return false;
-					 }
+					if(value==""){
+						return true;
+					}else{
+						try { 
+							$.datepicker.parseDate("yy-mm-dd", value);
+							return true;
+						} catch(e) { 
+							return false;
+						}
+					}
 				},
-				"Please enter a date in the format yyyy-mm-dd.");
+				"JS Please enter a date in the format yyyy-mm-dd.");
 			$('#formValidation').validate({
 				rules : {
 					name : {

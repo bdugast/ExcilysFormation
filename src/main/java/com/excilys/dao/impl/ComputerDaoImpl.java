@@ -11,19 +11,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.excilys.dao.ComputerDAO;
+import com.excilys.dao.ComputerDao;
 import com.excilys.domain.Company;
 import com.excilys.domain.Computer;
 import com.excilys.exception.CustomException;
 
 @Repository
-public class ComputerDAOImpl implements ComputerDAO {
-	static final Logger LOG = LoggerFactory.getLogger(ComputerDAOImpl.class);
+public class ComputerDaoImpl implements ComputerDao {
+	static final Logger LOG = LoggerFactory.getLogger(ComputerDaoImpl.class);
 	
 	@Autowired 
 	private ConnectionManager connectionManager;
@@ -31,8 +33,9 @@ public class ComputerDAOImpl implements ComputerDAO {
 	@Override
 	public Computer getOneComputer(int id) {
 		LOG.trace("start getOneComputer id=" + id);
-		Computer comp = new Computer();
+		Computer comp = null;
 		Connection conn = connectionManager.getConnection();
+		DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.S");
 		ResultSet rs = null;
 		PreparedStatement stmt = null;
 		
@@ -45,10 +48,11 @@ public class ComputerDAOImpl implements ComputerDAO {
 			rs = stmt.executeQuery();
 	
 			while (rs.next()) {
+				comp = new Computer();
 				comp.setId(rs.getInt(1));
 				comp.setName(rs.getString(2));
 				if(rs.getTimestamp(3)==null) comp.setIntroduced(null);
-				else comp.setIntroduced(new DateTime(rs.getTimestamp(3)));
+				else comp.setIntroduced(dtf.parseDateTime(rs.getString(3)));				
 				if(rs.getTimestamp(4)==null) comp.setDiscontinued(null);
 				else comp.setDiscontinued(new DateTime(rs.getTimestamp(4)));
 				comp.setCompany(new Company(rs.getInt(5), rs.getString(6)));
@@ -85,7 +89,7 @@ public class ComputerDAOImpl implements ComputerDAO {
 			else
 				stmt.setTimestamp(3, new Timestamp(comp.getDiscontinued().getMillis()));
 			
-			if (comp.getCompany().getId() == 0)
+			if (comp.getCompany() == null || comp.getCompany().getId() == 0)
 				stmt.setNull(4, Types.NULL);
 			else
 				stmt.setObject(4, comp.getCompany().getId());

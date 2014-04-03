@@ -8,12 +8,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.excilys.dao.LogDAO;
+import com.excilys.dao.LogDao;
 import com.excilys.exception.CustomException;
 
 @Repository
-public class LogDAOImpl implements LogDAO {
-	static final Logger LOG = LoggerFactory.getLogger(LogDAOImpl.class);
+public class LogDaoImpl implements LogDao {
+	static final Logger LOG = LoggerFactory.getLogger(LogDaoImpl.class);
 	
 	@Autowired
 	private ConnectionManager connectionManager;

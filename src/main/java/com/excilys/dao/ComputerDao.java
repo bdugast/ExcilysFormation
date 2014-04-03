@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.excilys.domain.Computer;
 
-public interface ComputerDAO {
+public interface ComputerDao {
 	public Computer getOneComputer(int id);
 	public List<Computer> getRangeSearchOrderComputers(int start, int nb, String search, String orderby);
 	public void updateComputer(Computer comp);

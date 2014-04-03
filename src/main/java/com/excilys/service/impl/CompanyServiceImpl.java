@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.excilys.dao.impl.CompanyDAOImpl;
+import com.excilys.dao.impl.CompanyDaoImpl;
 import com.excilys.dao.impl.ConnectionManager;
 import com.excilys.domain.Company;
 import com.excilys.exception.CustomException;
@@ -18,7 +18,7 @@ public class CompanyServiceImpl implements CompanyService {
 	static final Logger LOG = LoggerFactory.getLogger(CompanyServiceImpl.class);
 	
 	@Autowired
-	public CompanyDAOImpl companyDao;
+	public CompanyDaoImpl companyDao;
 	
 	@Autowired
 	private ConnectionManager connectionManager;

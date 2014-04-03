@@ -3,6 +3,9 @@
 <%@ taglib uri="http://www.joda.org/joda/time/tags" prefix="joda"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
+	<c:if test="${valide !=null}">
+		<div class="alert alert-success"><c:out value="${valide}" /></div>
+	</c:if>
 
 <section id="main">
 	<h1 id="homeTitle">${wrap.count} Computers found</h1>

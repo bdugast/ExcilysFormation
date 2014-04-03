@@ -14,12 +14,15 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.excilys.service.impl.ComputerServiceImpl;
+import com.excilys.validator.ComputerValidator;
 
 @WebServlet("/delete")
 public class DeleteComputerServlet extends HttpServlet {
 	
 	@Autowired
 	ComputerServiceImpl computerService;
+	@Autowired
+	ComputerValidator computerValidator;
 
 	@Override
 	public void init() throws ServletException {
@@ -29,7 +32,9 @@ public class DeleteComputerServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		computerService.deleteComputer(Integer.valueOf(req.getParameter("id")));
-		resp.sendRedirect("dashboard");
+		if(computerValidator.validateId(req.getParameter("id"))){			
+			computerService.deleteComputer(Integer.valueOf(req.getParameter("id")));
+		}
+		resp.sendRedirect("dashboard?msg=successDel");
 	}
 }

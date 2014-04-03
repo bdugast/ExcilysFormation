@@ -36,6 +36,8 @@ public class DashboardServlet extends HttpServlet{
 			throws ServletException, IOException {
 		PageWrapper wrap = new PageWrapper();
 		
+		
+		
 		//Order field
 		if(req.getParameter("orderField")!=null) wrap.setOrderField(req.getParameter("orderField"));
 		
@@ -60,6 +62,12 @@ public class DashboardServlet extends HttpServlet{
 		
 		//Get 20 ordinateurs en fonction de la page with fucking limit and search
 		List<Computer> computers = computerService.getRangeSearchOrderComputers(wrap);
+		
+		if(req.getParameter("msg")!=null){
+			if(req.getParameter("msg").equals("successAdd")) req.setAttribute("valide", "Computer successfully add");
+			if(req.getParameter("msg").equals("successUp")) req.setAttribute("valide", "Computer successfully update");
+			if(req.getParameter("msg").equals("successDel")) req.setAttribute("valide", "Computer successfully delete");
+		}
 		
 		req.setAttribute("wrap", wrap);
 		req.setAttribute("computers", computers);

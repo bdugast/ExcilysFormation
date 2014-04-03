@@ -8,7 +8,7 @@
 <!-- Bootstrap -->
 <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 <link href="css/main.css" rel="stylesheet" media="screen">
-<link rel="stylesheet" href="css/jquery-ui.min.css" />
+<link href="css/jquery-ui.min.css" rel="stylesheet" media="screen">
 <script src="js/jquery.min.js"></script>
 <script src="js/jquery-ui.min.js"></script>
 <script src="js/jquery.validate.min.js"></script>
