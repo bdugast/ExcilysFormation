@@ -127,10 +127,9 @@ public class ComputerDaoImpl implements ComputerDao {
 				stmt.setNull(3, Types.NULL);
 			else
 				stmt.setTimestamp(3, new Timestamp(comp.getDiscontinued().getMillis()));
-			LOG.debug("company ID : " + comp.getCompany().getId());
-			if (comp.getCompany().getId() == 0)
+			if (comp.getCompany() == null){
 				stmt.setNull(4, Types.NULL);
-			else
+			}else
 				stmt.setObject(4, comp.getCompany().getId());
 			stmt.setInt(5, comp.getId());
 			

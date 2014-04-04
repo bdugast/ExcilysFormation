@@ -1,7 +1,6 @@
 package com.excilys.domain;
 
 import org.joda.time.DateTime;
-import org.springframework.stereotype.Component;
 
 public class Computer {
 	private int id;

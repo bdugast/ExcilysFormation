@@ -1,6 +1,5 @@
 package com.excilys.domain;
 
-import org.springframework.stereotype.Component;
 
 public class Company {
 	

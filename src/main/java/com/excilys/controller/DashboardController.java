@@ -1,42 +1,33 @@
-package com.excilys.servlet;
+package com.excilys.controller;
 
 import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
-import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.excilys.domain.Computer;
 import com.excilys.service.impl.ComputerServiceImpl;
 import com.excilys.wrapper.PageWrapper;
 
-@WebServlet("/dashboard")
-public class DashboardServlet extends HttpServlet{
+@Controller
+@RequestMapping("/dashboard")
+public class DashboardController{
 	
 	@Autowired
 	ComputerServiceImpl computerService;
-
-	@Override
-	public void init() throws ServletException {
-		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
-	}
 	
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+	@RequestMapping(method = RequestMethod.GET)
+	protected ModelAndView doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		PageWrapper wrap = new PageWrapper();
-		
-		
 		
 		//Order field
 		if(req.getParameter("orderField")!=null) wrap.setOrderField(req.getParameter("orderField"));
@@ -74,6 +65,10 @@ public class DashboardServlet extends HttpServlet{
 		req.setAttribute("wrap", wrap);
 		req.setAttribute("computers", computers);
 
-		getServletContext().getRequestDispatcher("/WEB-INF/dashboard.jsp").forward(req,resp);
+		//getServletContext().getRequestDispatcher("/WEB-INF/updateComputer.jsp").forward(req,resp);
+		
+		ModelAndView mav = new ModelAndView("dashboard");
+		mav.addObject("req", req);
+		return mav;
 		}
 }

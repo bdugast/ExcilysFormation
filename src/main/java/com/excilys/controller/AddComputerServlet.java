@@ -1,19 +1,20 @@
-package com.excilys.servlet;
+package com.excilys.controller;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.excilys.domain.Company;
 import com.excilys.dto.ComputerDto;
@@ -22,8 +23,9 @@ import com.excilys.service.impl.CompanyServiceImpl;
 import com.excilys.service.impl.ComputerServiceImpl;
 import com.excilys.validator.ComputerValidator;
 
-@WebServlet("/add")
-public class AddComputerServlet extends HttpServlet{
+@Controller
+@RequestMapping("/add")
+public class AddComputerServlet{
 	
 	static final Logger LOG = LoggerFactory.getLogger(AddComputerServlet.class);
 	@Autowired
@@ -35,24 +37,23 @@ public class AddComputerServlet extends HttpServlet{
 	@Autowired
 	ComputerValidator computerValidator;
 	
-	@Override
-	public void init() throws ServletException {
-		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
-	}
-	
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+	@RequestMapping(method = RequestMethod.GET)
+	protected ModelAndView doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		
 		List<Company> companies = companyService.getAllCompanies();
 		req.setAttribute("companies", companies);
 		
-		getServletContext().getRequestDispatcher("/WEB-INF/addComputer.jsp").forward(req,resp);
+		ModelAndView mav = new ModelAndView("addComputer");
+		mav.addObject(req);
+		return mav;
 	}
 	
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+	@RequestMapping(method = RequestMethod.POST)
+	protected ModelAndView doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
+		
+		ModelAndView mav;
 		
 		ComputerDto compDto = ComputerDto.builder()
                 .name(req.getParameter("name"))
@@ -64,16 +65,22 @@ public class AddComputerServlet extends HttpServlet{
 		hashError = computerValidator.validate(compDto);
 		
 		if(hashError.isEmpty()){
+			LOG.debug("successAdd");
 			computerService.createComputer(computerMapper.fromDto(compDto));
-			resp.sendRedirect("dashboard?msg=successAdd");
+			mav = new ModelAndView("redirect:/dashboard");
+			mav.addObject("msg", "successAdd");
+			return mav;
 		}else{
+			LOG.debug("failAdd");
 			List<Company> companies = companyService.getAllCompanies();
 			req.setAttribute("errors", hashError);
 			LOG.debug("errors " + hashError.toString());
 			req.setAttribute("companies", companies);
 			req.setAttribute("ComputerDto", compDto);
 			
-			getServletContext().getRequestDispatcher("/WEB-INF/addComputer.jsp").forward(req,resp);
+			mav = new ModelAndView("addComputer");
+			mav.addObject(req);
+			return mav;
 		}
 	}	
 }

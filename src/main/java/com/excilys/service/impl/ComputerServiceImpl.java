@@ -64,6 +64,7 @@ public class ComputerServiceImpl implements ComputerService {
 	public void updateComputer(Computer comp) {
 		connectionManager.startTransaction();
 		try {
+			LOG.debug("computer = " + comp);
 			computerDao.updateComputer(comp);
 			logDao.insertMessageLog("UPDATE", comp.getId());
 			connectionManager.commitTransaction();
