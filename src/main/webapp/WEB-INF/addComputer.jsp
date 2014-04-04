@@ -1,56 +1,52 @@
+
 <jsp:include page="include/header.jsp" />
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <section id="main" class="col-md-6 col-md-offset-3">
 	<h1>Add Computer</h1>
-	<form class="form-horizontal" id="formValidation" action="add"
-		method="POST">
+
+	<form:form commandName="compDto" class="form-horizontal"
+		id="formValidation" action="add" method="POST">
 		<div class="control-group">
-			<label class="control-label" for="name">Computer name:</label>
+			<form:label path="name">Computer name:</form:label>
 			<div class="controls">
-				<input type="text" class="form-control" id="inputName" name="name" value="${compDto.name}"/>
-				<c:if test="${errors.get('nameError')!=null}">
-					<label><c:out value="${errors.get('nameError')}"/></label>
-				</c:if>
+				<form:input path="name" class="form-control" id="inputName"
+					value="${compDto.name}" />
+				<form:errors path="name" class="errors" />
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label" for="introduced">Introduced date :</label>
+			<form:label path="introduced">Introduced date:</form:label>
 			<div class="controls">
-				<input type="text" class="form-control" id="dateIntroduced"	name="introduced" value="${compDto.introduced}">
-				<c:if test="${errors.get('introducedError')!=null}">
-					<label><c:out value="${errors.get('introducedError')}"/></label>
-				</c:if>
+				<form:input path="introduced" class="form-control"
+					id="dateIntroduced" value="${compDto.introduced}" />
+				<form:errors path="introduced" class="errors" />
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label" for="discontinued">Discontinued date :</label>
+			<form:label path="discontinued">Discontinued date:</form:label>
 			<div class="controls">
-				<input type="text" class="form-control" id="dateDiscontinued" name="discontinued" value="${compDto.discontinued}">
-				<c:if test="${errors.get('discontinuedError')!=null}">
-					<label><c:out value="${errors.get('discontinuedError')}"/></label>
-				</c:if>
+				<form:input path="discontinued" class="form-control"
+					id="dateDiscontinued" value="${compDto.discontinued}" />
+				<form:errors path="discontinued" class="errors" />
 			</div>
 		</div>
 		<div class="control-group">
-			<label for="company">Company Name:</label>
+			<form:label path="companyId">Company :</form:label>
 			<div class="controls">
-				<select name="company" class="form-control">
+				<form:select path="companyId">
 					<option value="-1">Select a company</option>
-					<c:forEach items="${companies}" var="company">
-						<option value="${company.id}" ${compDto.companyId==company.id ? 'selected' : ''}>${company.name}</option>
-					</c:forEach>
-				</select>
-				<c:if test="${errors.get('companyError')!=null}">
-					<label><c:out value="${errors.get('companyError')}"/></label>
-				</c:if>
+					<form:options items="${companies}" itemValue="id" itemLabel="name" />
+				</form:select>
+				<form:errors path="companyId" class="errors" />
 			</div>
 		</div>
 		<div class="actions">
-			<input type="submit" value="Add" class="btn btn-primary"> or
-			<a href="dashboard" class="btn">Cancel</a>
+			<input type="submit" value="Update" class="btn btn-primary">
+			or <a href="dashboard" class="btn">Cancel</a>
 		</div>
-	</form>
+	</form:form>
 </section>
 
 <jsp:include page="include/footer.jsp" />

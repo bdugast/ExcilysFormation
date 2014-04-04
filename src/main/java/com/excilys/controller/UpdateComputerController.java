@@ -42,63 +42,40 @@ public class UpdateComputerController {
 	ComputerValidator compVal;
 	
 	@RequestMapping(method = RequestMethod.GET)
-	protected ModelAndView doGet(HttpServletRequest req, ModelMap map)
+	protected String doGet(HttpServletRequest req, ModelMap map)
 			throws ServletException, IOException {
 
-		ModelAndView mav;
 		if(compVal.validateId(req.getParameter("id"))){
 			
 			ComputerDto compDto = computerMapper.toDto(computerService.getOneComputer(Integer.valueOf(req.getParameter("id"))));
 			List<Company> companies = companyService.getAllCompanies();
 
 			map.addAttribute("companies", companies);
+			map.addAttribute("compDto", compDto);
 			
-			mav = new ModelAndView("updateComputer");
-			mav.addObject("compDto", compDto);
-			return mav;
+			return "updateComputer";
 		}else{
-			mav = new ModelAndView("redirect:/dashboard");
-			mav.addObject("msg", "failUp");
-			return mav;
+			return "redirect:/dashboard?msg=failUp";
 		}
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	protected String doPost(@Valid @ModelAttribute("compDto") ComputerDto compDto, BindingResult result, ModelMap map )
+	protected String doPost(@Valid @ModelAttribute("compDto") ComputerDto compDto, BindingResult result, ModelMap map)
 			throws ServletException, IOException {
-
-//		ModelAndView mav = null;
 		
 		LOG.debug("compDto " + compDto.getId() + " " + compDto.getName() + compDto.getIntroduced() + compDto.getDiscontinued() + compDto.getCompanyId());
 		
-//		HashMap<String, String> hashError = new HashMap<>();
-//		hashError = compVal.validate(compDto);
-//		LOG.debug("validation : " + compVal.validateId(String.valueOf(compDto.getId())));
-//		if(!compVal.validateId(String.valueOf(compDto.getId())))
-//			hashError.put("idError", "L'identifiant est incorrecte");
-		
-//		LOG.debug("hashError " + hashError.toString());
-		
-//		if(hashError.isEmpty()){
 		if(!result.hasErrors()){
 			computerService.updateComputer(computerMapper.fromDto(compDto));
-//			mav = new ModelAndView("redirect:dashboard?msg=successUp");
 			return "redirect:dashboard?msg=successUp";
 		}else{
 			List<Company> companies = companyService.getAllCompanies();
-//			req.setAttribute("companies", companies);
-//			req.setAttribute("errors", hashError);
-//			req.setAttribute("compDto", compDto);
 			
 			map.put("result", result);
 			map.put("companies", companies);
 			map.put("compDto", compDto);
 	        return "updateComputer";
 			
-//			mav = new ModelAndView("updateComputer");
-//			mav.addObject("companies", companies);
-//			mav.addObject("command", compDto);
 		}
-		//return mav;
 	}
 }

@@ -5,13 +5,12 @@ import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.excilys.domain.Computer;
 import com.excilys.service.impl.ComputerServiceImpl;
@@ -25,7 +24,7 @@ public class DashboardController{
 	ComputerServiceImpl computerService;
 	
 	@RequestMapping(method = RequestMethod.GET)
-	protected ModelAndView doGet(HttpServletRequest req, HttpServletResponse resp)
+	protected String doGet(HttpServletRequest req, ModelMap map)
 			throws ServletException, IOException {
 		PageWrapper wrap = new PageWrapper();
 		
@@ -62,12 +61,9 @@ public class DashboardController{
 			if(req.getParameter("msg").equals("failDel")) req.setAttribute("fail", "FAIL!!! Invalid computer!!!");
 		}
 		
-		req.setAttribute("wrap", wrap);
-		req.setAttribute("computers", computers);
-
+		map.addAttribute("wrap", wrap);
+		map.addAttribute("computers", computers);
 		
-		ModelAndView mav = new ModelAndView("dashboard");
-		mav.addObject("req", req);
-		return mav;
+		return "dashboard";
 		}
 }

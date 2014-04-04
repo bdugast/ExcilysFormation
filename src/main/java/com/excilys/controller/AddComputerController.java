@@ -7,11 +7,15 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -38,49 +42,33 @@ public class AddComputerController{
 	ComputerValidator computerValidator;
 	
 	@RequestMapping(method = RequestMethod.GET)
-	protected ModelAndView doGet(HttpServletRequest req, HttpServletResponse resp)
+	protected String doGet(ModelMap map)
 			throws ServletException, IOException {
 		
 		List<Company> companies = companyService.getAllCompanies();
-		req.setAttribute("companies", companies);
+		map.addAttribute("companies", companies);
+		map.addAttribute("compDto", new ComputerDto());
 		
-		ModelAndView mav = new ModelAndView("addComputer");
-		mav.addObject("req", req);
-		return mav;
+		return "addComputer";
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	protected ModelAndView doPost(HttpServletRequest req, HttpServletResponse resp)
+	protected String doPost(@Valid @ModelAttribute("compDto") ComputerDto compDto, BindingResult result, ModelMap map)
 			throws ServletException, IOException {
 		
-		ModelAndView mav;
-		
-		ComputerDto compDto = ComputerDto.builder()
-                .name(req.getParameter("name"))
-                .introduced(req.getParameter("introduced"))
-                .discontinued(req.getParameter("discontinued"))
-                .companyId(Integer.parseInt(req.getParameter("company"))).build();
-		
-		HashMap<String, String> hashError = new HashMap<>();
-		hashError = computerValidator.validate(compDto);
-		
-		if(hashError.isEmpty()){
+		if(!result.hasErrors()){
 			LOG.debug("successAdd");
 			computerService.createComputer(computerMapper.fromDto(compDto));
-			mav = new ModelAndView("redirect:/dashboard");
-			mav.addObject("msg", "successAdd");
-			return mav;
+			return "redirect:dashboard?msg=successAdd";
 		}else{
 			LOG.debug("failAdd");
 			List<Company> companies = companyService.getAllCompanies();
-			req.setAttribute("errors", hashError);
-			LOG.debug("errors " + hashError.toString());
-			req.setAttribute("companies", companies);
-			req.setAttribute("ComputerDto", compDto);
 			
-			mav = new ModelAndView("addComputer");
-			mav.addObject("req", req);
-			return mav;
+			map.put("result", result);
+			map.put("companies", companies);
+			map.put("compDto", compDto);
+	        return "addComputer";
+			
 		}
 	}	
 }
