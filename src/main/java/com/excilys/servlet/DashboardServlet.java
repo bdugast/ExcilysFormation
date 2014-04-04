@@ -67,6 +67,8 @@ public class DashboardServlet extends HttpServlet{
 			if(req.getParameter("msg").equals("successAdd")) req.setAttribute("valide", "Computer successfully add");
 			if(req.getParameter("msg").equals("successUp")) req.setAttribute("valide", "Computer successfully update");
 			if(req.getParameter("msg").equals("successDel")) req.setAttribute("valide", "Computer successfully delete");
+			if(req.getParameter("msg").equals("failUp")) req.setAttribute("fail", "FAIL!!! Invalid computer!!!");
+			if(req.getParameter("msg").equals("failDel")) req.setAttribute("fail", "FAIL!!! Invalid computer!!!");
 		}
 		
 		req.setAttribute("wrap", wrap);

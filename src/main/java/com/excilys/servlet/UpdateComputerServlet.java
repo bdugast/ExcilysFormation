@@ -44,14 +44,17 @@ public class UpdateComputerServlet extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		
-		ComputerDto compDto = computerMapper.toDto(computerService.getOneComputer(Integer.valueOf(req.getParameter("id"))));
-		
-		req.setAttribute("compDto", compDto);
-		List<Company> companies = companyService.getAllCompanies();
-		req.setAttribute("companies", companies);
-		
-		getServletContext().getRequestDispatcher("/WEB-INF/updateComputer.jsp").forward(req,resp);
+		if(compVal.validateId(req.getParameter("id"))){
+			ComputerDto compDto = computerMapper.toDto(computerService.getOneComputer(Integer.valueOf(req.getParameter("id"))));
+			
+			req.setAttribute("compDto", compDto);
+			List<Company> companies = companyService.getAllCompanies();
+			req.setAttribute("companies", companies);
+			
+			getServletContext().getRequestDispatcher("/WEB-INF/updateComputer.jsp").forward(req,resp);
+		}else{
+			resp.sendRedirect("dashboard?msg=failUp");
+		}
 	}
 	
 	@Override

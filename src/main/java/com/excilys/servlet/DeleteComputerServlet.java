@@ -34,7 +34,9 @@ public class DeleteComputerServlet extends HttpServlet {
 			throws ServletException, IOException {
 		if(computerValidator.validateId(req.getParameter("id"))){			
 			computerService.deleteComputer(Integer.valueOf(req.getParameter("id")));
+			resp.sendRedirect("dashboard?msg=successDel");
+		}else{
+			resp.sendRedirect("dashboard?msg=failUp");
 		}
-		resp.sendRedirect("dashboard?msg=successDel");
 	}
 }

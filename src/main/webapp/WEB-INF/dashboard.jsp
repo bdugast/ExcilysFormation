@@ -6,6 +6,9 @@
 	<c:if test="${valide !=null}">
 		<div class="alert alert-success"><c:out value="${valide}" /></div>
 	</c:if>
+	<c:if test="${fail !=null}">
+		<div class="alert alert-danger"><c:out value="${fail}" /></div>
+	</c:if>
 
 <section id="main">
 	<h1 id="homeTitle">${wrap.count} Computers found</h1>
