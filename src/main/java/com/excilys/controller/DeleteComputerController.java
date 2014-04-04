@@ -17,7 +17,7 @@ import com.excilys.validator.ComputerValidator;
 
 @Controller
 @RequestMapping("/delete")
-public class DeleteComputerServlet {
+public class DeleteComputerController {
 
 	@Autowired
 	ComputerServiceImpl computerService;

@@ -6,13 +6,13 @@
 <title>EPF Computer Database</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
-<link href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" rel="stylesheet" media="screen">
-<link href="${pageContext.request.contextPath}/resources/css/main.css" rel="stylesheet" media="screen">
-<link href="${pageContext.request.contextPath}/resources/css/jquery-ui.min.css" rel="stylesheet" media="screen">
-<script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/jquery-ui.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/jquery.validate.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/validationForm.js"></script>
+<link href="resources/css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="resources/css/main.css" rel="stylesheet" media="screen">
+<link href="resources/css/jquery-ui.min.css" rel="stylesheet" media="screen">
+<script src="resources/js/jquery.min.js"></script>
+<script src="resources/js/jquery-ui.min.js"></script>
+<script src="resources/js/jquery.validate.min.js"></script>
+<script src="resources/js/validationForm.js"></script>
 <script>
 	$(function() {
 		$("#dateIntroduced").datepicker({ dateFormat: "yy-mm-dd",  changeMonth: true, changeYear : true });

@@ -24,11 +24,10 @@ import com.excilys.service.impl.ComputerServiceImpl;
 import com.excilys.validator.ComputerValidator;
 
 @Controller
-@RequestMapping("/update")
-public class UpdateComputerServlet {
-
+@RequestMapping("/add")
+public class AddComputerController{
 	
-	static final Logger LOG = LoggerFactory.getLogger(UpdateComputerServlet.class);
+	static final Logger LOG = LoggerFactory.getLogger(AddComputerController.class);
 	@Autowired
 	ComputerServiceImpl computerService;
 	@Autowired
@@ -36,66 +35,52 @@ public class UpdateComputerServlet {
 	@Autowired
 	CompanyServiceImpl companyService;
 	@Autowired
-	ComputerValidator compVal;
+	ComputerValidator computerValidator;
 	
 	@RequestMapping(method = RequestMethod.GET)
 	protected ModelAndView doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-
-		ModelAndView mav;
-		if(compVal.validateId(req.getParameter("id"))){
-			ComputerDto compDto = computerMapper.toDto(computerService.getOneComputer(Integer.valueOf(req.getParameter("id"))));
-			
-			req.setAttribute("compDto", compDto);
-			List<Company> companies = companyService.getAllCompanies();
-			req.setAttribute("companies", companies);
-
-			mav = new ModelAndView("updateComputer");
-			mav.addObject("req", req);
-			return mav;
-		}else{
-			mav = new ModelAndView("redirect:/dashboard");
-			mav.addObject("msg", "failUp");
-			return mav;
-		}
+		
+		List<Company> companies = companyService.getAllCompanies();
+		req.setAttribute("companies", companies);
+		
+		ModelAndView mav = new ModelAndView("addComputer");
+		mav.addObject("req", req);
+		return mav;
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
 	protected ModelAndView doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-
+		
 		ModelAndView mav;
+		
 		ComputerDto compDto = ComputerDto.builder()
-				.id(Integer.parseInt(req.getParameter("id")))
                 .name(req.getParameter("name"))
                 .introduced(req.getParameter("introduced"))
                 .discontinued(req.getParameter("discontinued"))
                 .companyId(Integer.parseInt(req.getParameter("company"))).build();
 		
-		LOG.debug("compDto " + compDto.getId() + " " + compDto.getName() + compDto.getIntroduced() + compDto.getDiscontinued() + compDto.getCompanyId());
-		
 		HashMap<String, String> hashError = new HashMap<>();
-		hashError = compVal.validate(compDto);
-		LOG.debug("validation : " + compVal.validateId(String.valueOf(compDto.getId())));
-		if(!compVal.validateId(String.valueOf(compDto.getId())))
-			hashError.put("idError", "L'identifiant est incorrecte");
-		
-		LOG.debug("hashError " + hashError.toString());
+		hashError = computerValidator.validate(compDto);
 		
 		if(hashError.isEmpty()){
-			computerService.updateComputer(computerMapper.fromDto(compDto));
-			mav = new ModelAndView("redirect:dashboard");
-			mav.addObject("msg", "successUp");
+			LOG.debug("successAdd");
+			computerService.createComputer(computerMapper.fromDto(compDto));
+			mav = new ModelAndView("redirect:/dashboard");
+			mav.addObject("msg", "successAdd");
 			return mav;
 		}else{
+			LOG.debug("failAdd");
 			List<Company> companies = companyService.getAllCompanies();
-			req.setAttribute("companies", companies);
 			req.setAttribute("errors", hashError);
-			req.setAttribute("compDto", compDto);
+			LOG.debug("errors " + hashError.toString());
+			req.setAttribute("companies", companies);
+			req.setAttribute("ComputerDto", compDto);
 			
-			mav = new ModelAndView("updateComputer");
+			mav = new ModelAndView("addComputer");
 			mav.addObject("req", req);
 			return mav;
 		}
-	}
+	}	
 }

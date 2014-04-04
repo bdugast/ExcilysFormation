@@ -65,7 +65,6 @@ public class DashboardController{
 		req.setAttribute("wrap", wrap);
 		req.setAttribute("computers", computers);
 
-		//getServletContext().getRequestDispatcher("/WEB-INF/updateComputer.jsp").forward(req,resp);
 		
 		ModelAndView mav = new ModelAndView("dashboard");
 		mav.addObject("req", req);
