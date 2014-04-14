@@ -7,14 +7,14 @@ $(document).ready(
 						return true;
 					}else{
 						try { 
-							$.datepicker.parseDate("yy-mm-dd", value);
+							$.datepicker.parseDate("dd-mm-yy", value);
 							return true;
 						} catch(e) { 
 							return false;
 						}
 					}
 				},
-				"JS Please enter a date in the format yyyy-mm-dd.");
+				"JS Please enter a date in the format dd-mm-yyyy.");
 			$('#formValidation').validate({
 				rules : {
 					name : {

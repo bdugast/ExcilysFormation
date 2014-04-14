@@ -6,24 +6,38 @@
 <title>EPF Computer Database</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
-<link href="resources/css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="resources/css/bootstrap.min.css" rel="stylesheet"
+	media="screen">
 <link href="resources/css/main.css" rel="stylesheet" media="screen">
-<link href="resources/css/jquery-ui.min.css" rel="stylesheet" media="screen">
+<link href="resources/css/jquery-ui.min.css" rel="stylesheet"
+	media="screen">
 <script src="resources/js/jquery.min.js"></script>
 <script src="resources/js/jquery-ui.min.js"></script>
 <script src="resources/js/jquery.validate.min.js"></script>
 <script src="resources/js/validationForm.js"></script>
 <script>
 	$(function() {
-		$("#dateIntroduced").datepicker({ dateFormat: "yy-mm-dd",  changeMonth: true, changeYear : true });
+		$("#dateIntroduced").datepicker({
+			dateFormat : "dd-mm-yy",
+			changeMonth : true,
+			changeYear : true
+		});
 	});
 	$(function() {
-		$("#dateDiscontinued").datepicker({ dateFormat: "yy-mm-dd",  changeMonth: true, changeYear : true });
+		$("#dateDiscontinued").datepicker({
+			dateFormat : "dd-mm-yy",
+			changeMonth : true,
+			changeYear : true
+		});
 	});
 </script>
 </head>
 <body>
 	<header class="navbar-inverse">
+		<span id="lang">
+			<a href="?lang=us"><img alt="us" src="resources/img/us.png"></a> | 
+			<a href="?lang=fr"><img alt="fr" src="resources/img/fr.png"></a>
+		</span>
 		<h1 class="fill">
 			<a href="dashboard"> Application - Computer Database </a>
 		</h1>

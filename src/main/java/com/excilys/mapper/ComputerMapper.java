@@ -1,5 +1,7 @@
 package com.excilys.mapper;
 
+import java.util.Locale;
+
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -24,11 +26,13 @@ public class ComputerMapper {
 		DateTime discontinued;
 		Company company;
 		
+		DateTimeFormatter dtf = DateTimeFormat.forPattern("dd-MM-yyyy");
+		
 		id = compDto.getId();
 		name = compDto.getName();
-		if(compDto.getIntroduced()!="") introduced = new DateTime(compDto.getIntroduced());
+		if(compDto.getIntroduced()!="") introduced = new DateTime(dtf.parseDateTime(compDto.getIntroduced()));
 		else introduced = null;
-		if(compDto.getDiscontinued()!="") discontinued = new DateTime(compDto.getDiscontinued());
+		if(compDto.getDiscontinued()!="") discontinued = new DateTime(dtf.parseDateTime(compDto.getDiscontinued()));
 		else discontinued = null;
 		if(companyService.getOneCompany(compDto.getCompanyId()) != null) company = companyService.getOneCompany(compDto.getCompanyId());
 		else company = null;
@@ -38,7 +42,7 @@ public class ComputerMapper {
 	
 	public ComputerDto toDto(Computer comp) {
 		
-		DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd");
+		DateTimeFormatter dtf = DateTimeFormat.forPattern("dd-MM-yyyy");
 		
 		String introduced = null;
 		String discontinued = null;

@@ -59,7 +59,7 @@ table.computers .header a {
 }
 
 #pagination ul .current a {
-	color: #666;
+	color: #666;style="" 
 }
 
 .col2 {
@@ -87,4 +87,9 @@ label.error {
 	color: red;
 	padding: 2px 8px;
 	margin-top: 2px;
+}
+
+#lang{
+	float:right;
+	margin: 10px;
 }

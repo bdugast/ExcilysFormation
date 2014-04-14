@@ -9,13 +9,13 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class ComputerDto {
 	private int id;
 	
-	@NotEmpty(message="must be filled") @Size(min=2, message="at least 2 characters") 
+	@NotEmpty(message="{computerdto.name.notempty}") @Size(min=2, message="{computerdto.name.size}") 
 	private String name;
 	
-	@Pattern(regexp = "^|(\\d{4})-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$", message="Correct date format 'yyyy-mm-dd' required")
+	@Pattern(regexp = "^|(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[012])-(\\d{4})$", message="{computerdto.date.format}")
 	private String introduced;
 
-	@Pattern(regexp = "^|(\\d{4})-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$", message="Correct date format 'yyyy-mm-dd' required")
+	@Pattern(regexp = "^|(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[012])-(\\d{4})$", message="{computerdto.date.format}")
 	private String discontinued;
 
 	private int companyId;

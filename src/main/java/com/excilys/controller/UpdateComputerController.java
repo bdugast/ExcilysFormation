@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -17,7 +16,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.excilys.domain.Company;
 import com.excilys.dto.ComputerDto;
@@ -75,7 +73,6 @@ public class UpdateComputerController {
 			map.put("companies", companies);
 			map.put("compDto", compDto);
 	        return "updateComputer";
-			
 		}
 	}
 }
