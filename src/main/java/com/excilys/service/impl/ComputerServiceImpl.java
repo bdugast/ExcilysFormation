@@ -12,7 +12,9 @@ import com.excilys.dao.impl.ComputerDaoImpl;
 import com.excilys.dao.impl.ConnectionManager;
 import com.excilys.dao.impl.LogDaoImpl;
 import com.excilys.domain.Computer;
+import com.excilys.dto.ComputerDto;
 import com.excilys.exception.CustomException;
+import com.excilys.mapper.ComputerMapper;
 import com.excilys.service.ComputerService;
 import com.excilys.wrapper.PageWrapper;
 
@@ -28,6 +30,8 @@ public class ComputerServiceImpl implements ComputerService {
 	public LogDaoImpl logDao;
 	@Autowired
 	private ConnectionManager connectionManager;
+	@Autowired
+	private ComputerMapper computerMapper;
 	
 	public Computer getOneComputer(int id) {
 		Computer comp = null;
@@ -110,7 +114,7 @@ public class ComputerServiceImpl implements ComputerService {
 		return count;
 	}
 
-	public List<Computer> getRangeSearchOrderComputers(PageWrapper wrap) {
+	public List<ComputerDto> getRangeSearchOrderComputers(PageWrapper wrap) {
 
 		List<Computer> compList = null;
 		
@@ -150,6 +154,6 @@ public class ComputerServiceImpl implements ComputerService {
 		} finally {
 			connectionManager.closeConnection();
 		}
-		return compList;
+		return computerMapper.toListCompDto(compList);
 	}
 }

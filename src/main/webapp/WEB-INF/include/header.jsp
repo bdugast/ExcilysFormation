@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
+<%@ taglib prefix = "spring" uri = "http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,18 +17,12 @@
 <script src="resources/js/validationForm.js"></script>
 <script>
 	$(function() {
-		$("#dateIntroduced").datepicker({
-			dateFormat : "dd-mm-yy",
+		$(".date").datepicker({
+			dateFormat : "<spring:message code="date.format.picker" />",
 			changeMonth : true,
 			changeYear : true
-		});
-	});
-	$(function() {
-		$("#dateDiscontinued").datepicker({
-			dateFormat : "dd-mm-yy",
-			changeMonth : true,
-			changeYear : true
-		});
+		},
+	    $.datepicker.regional['fr']);
 	});
 </script>
 </head>

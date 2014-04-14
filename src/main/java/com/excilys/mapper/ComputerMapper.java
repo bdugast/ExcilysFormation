@@ -1,5 +1,7 @@
 package com.excilys.mapper;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import org.joda.time.DateTime;
@@ -57,5 +59,13 @@ public class ComputerMapper {
                 .companyId(comp.getCompany().getId()).build();
 		
 		return compDto;
+	}
+
+	public List<ComputerDto> toListCompDto(List<Computer> compList) {
+		List<ComputerDto> compDtoList = new ArrayList<ComputerDto>();
+		for (Computer computer : compList) {
+			compDtoList.add(toDto(computer));
+		}
+		return compDtoList;
 	}
 }

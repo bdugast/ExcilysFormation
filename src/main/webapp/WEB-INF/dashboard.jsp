@@ -45,9 +45,9 @@
 			<c:forEach items="${computers}" var="computer">
 				<tr>
 					<td>${computer.name}</td>
-					<td><joda:format value="${computer.introduced}" pattern="dd-MM-yyyy"/></td>
-					<td><joda:format value="${computer.discontinued}" pattern="dd-MM-yyyy"/></td>
-					<td>${computer.company.name}</td>
+					<td>${computer.introduced}</td>
+					<td>${computer.discontinued}</td>
+					<td>${computer.companyId}</td>
 					<td><a type="button" class="btn btn-warning" href="update?id=${computer.id}"><spring:message code="form.updatecomputer" /></a></td>
 					<td><a type="button" class="btn btn-danger" href="delete?id=${computer.id}" onclick="return confirm('<spring:message code="form.deletemsg" />')"><spring:message code="form.delete" /></a></td>
 				</tr>

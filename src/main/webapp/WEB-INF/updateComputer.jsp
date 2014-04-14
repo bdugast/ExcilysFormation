@@ -18,14 +18,14 @@
 		<div class="control-group">
 				<form:label path="introduced"><spring:message code="form.introduced" /></form:label>
 				<div class="controls">
-					<form:input path="introduced" class="form-control" id="dateIntroduced" value="${compDto.introduced}"/>
+					<form:input path="introduced" class="form-control date" value="${compDto.introduced}"/>
 					<form:errors path="introduced" class="errors" />
 				</div>
 		</div>
 		<div class="control-group">
 				<form:label path="discontinued"><spring:message code="form.discontinued" /></form:label>
 				<div class="controls">
-					<form:input path="discontinued" class="form-control" id="dateDiscontinued" value="${compDto.discontinued}"/>
+					<form:input path="discontinued" class="form-control date" value="${compDto.discontinued}"/>
 					<form:errors path="discontinued" class="errors" />
 				</div>
 		</div>

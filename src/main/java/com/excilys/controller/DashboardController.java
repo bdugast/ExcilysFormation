@@ -12,7 +12,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.excilys.domain.Computer;
+import com.excilys.dto.ComputerDto;
 import com.excilys.service.impl.ComputerServiceImpl;
 import com.excilys.wrapper.PageWrapper;
 
@@ -51,7 +51,7 @@ public class DashboardController{
 		if(wrap.getCurrentPage()<1) wrap.setCurrentPage(1);
 		
 		//Get 20 ordinateurs en fonction de la page with fucking limit and search
-		List<Computer> computers = computerService.getRangeSearchOrderComputers(wrap);
+		List<ComputerDto> computers = computerService.getRangeSearchOrderComputers(wrap);
 		
 		if(req.getParameter("msg")!=null){
 			if(req.getParameter("msg").equals("successAdd")) req.setAttribute("valide", "Computer successfully add");
