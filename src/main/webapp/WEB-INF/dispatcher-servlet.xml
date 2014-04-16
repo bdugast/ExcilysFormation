@@ -17,6 +17,14 @@
 	<context:component-scan base-package="com.excilys.controller" />
 
 
+	<!-- BoneCP configuration -->
+	<bean id="mainDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=convertToNull" />
+		<property name="username" value="computerDB" />
+		<property name="password" value="excilys" />
+	</bean>
+
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix">
@@ -26,8 +34,8 @@
 			<value>.jsp</value>
 		</property>
 	</bean>
-	
-	<mvc:annotation-driven />
+
+	<mvc:annotation-driven validator="validator" />
 
 	<bean id="messageSource"
 		class="org.springframework.context.support.ResourceBundleMessageSource">
@@ -51,10 +59,16 @@
 		</property>
 	</bean>
 
+	<bean id="validator"
+		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+		<property name="validationMessageSource" ref="messageSource"></property>
+	</bean>
+
+	<mvc:resources mapping="/resources/**" location="/resources/" />
+
 	<mvc:interceptors>
 		<ref bean="localeChangeInterceptor" />
 	</mvc:interceptors>
 
-	<mvc:resources mapping="/resources/**" location="/resources/" />
 
 </beans>

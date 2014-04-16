@@ -5,13 +5,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.excilys.exception.CustomException;
@@ -20,17 +16,11 @@ import com.jolbox.bonecp.BoneCPDataSource;
 @Component
 public class ConnectionManager {
 	final Logger LOG = LoggerFactory.getLogger(ConnectionManager.class);
-	BoneCPDataSource boneCP = new BoneCPDataSource();
+	
+	@Autowired
+	BoneCPDataSource boneCP;
+	
 	ThreadLocal<Connection> tl = new ThreadLocal<Connection>();
-	{
-		try {
-			Context ctx = new InitialContext();
-			DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/compdb");
-			boneCP.setDatasourceBean(ds);
-		} catch (NamingException e) {
-			LOG.error(e.toString());
-		}
-	}
 	
 	protected Connection initialValue(){
 		

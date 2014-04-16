@@ -8,6 +8,8 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
 
 import com.excilys.domain.Company;
@@ -20,15 +22,19 @@ public class ComputerMapper {
 	
 	@Autowired
 	CompanyServiceImpl companyService;
+	@Autowired
+	private ResourceBundleMessageSource messageSource;
 
 	public Computer fromDto(ComputerDto compDto) {
+		Locale locale = LocaleContextHolder.getLocale();
+		
 		int id;
 		String name;
 		DateTime introduced;
 		DateTime discontinued;
 		Company company;
 		
-		DateTimeFormatter dtf = DateTimeFormat.forPattern("dd-MM-yyyy");
+		DateTimeFormatter dtf = DateTimeFormat.forPattern(messageSource.getMessage("date.format.joda", null, locale));
 		
 		id = compDto.getId();
 		name = compDto.getName();
@@ -44,7 +50,9 @@ public class ComputerMapper {
 	
 	public ComputerDto toDto(Computer comp) {
 		
-		DateTimeFormatter dtf = DateTimeFormat.forPattern("dd-MM-yyyy");
+		Locale locale = LocaleContextHolder.getLocale();
+		
+		DateTimeFormatter dtf = DateTimeFormat.forPattern(messageSource.getMessage("date.format.joda", null, locale));
 		
 		String introduced = null;
 		String discontinued = null;

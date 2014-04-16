@@ -19,12 +19,6 @@
 		</dependency>
 		<dependency>
 			<scope>compile</scope>
-			<groupId>joda-time</groupId>
-			<artifactId>joda-time-jsptags</artifactId>
-			<version>1.1.1</version>
-		</dependency>
-		<dependency>
-			<scope>compile</scope>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
 			<version>1.1.1</version>

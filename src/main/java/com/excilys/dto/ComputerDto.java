@@ -1,21 +1,23 @@
 package com.excilys.dto;
 
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
+
+import com.excilys.validator.DateValidator;
 
 
 public class ComputerDto {
 	private int id;
 	
-	@NotEmpty(message="{computerdto.name.notempty}") @Size(min=2, message="{computerdto.name.size}") 
+	@NotEmpty(message="{NotEmpty.computerDto.name}")
+	@Size(min=2, message="{Size.computerDto.name}") 
 	private String name;
 	
-	@Pattern(regexp = "^|(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[012])-(\\d{4})$", message="{computerdto.date.format}")
+	@DateValidator
 	private String introduced;
 
-	@Pattern(regexp = "^|(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[012])-(\\d{4})$", message="{computerdto.date.format}")
+	@DateValidator
 	private String discontinued;
 
 	private int companyId;
