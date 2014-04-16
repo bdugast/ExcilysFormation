@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.excilys.dto.ComputerDto;
-import com.excilys.service.impl.ComputerServiceImpl;
+import com.excilys.mapper.ComputerMapper;
+import com.excilys.service.ComputerService;
 import com.excilys.wrapper.PageWrapper;
 
 @Controller
@@ -21,7 +22,9 @@ import com.excilys.wrapper.PageWrapper;
 public class DashboardController{
 	
 	@Autowired
-	ComputerServiceImpl computerService;
+	ComputerService computerService;
+	@Autowired
+	ComputerMapper computerMapper;
 	
 	@RequestMapping(method = RequestMethod.GET)
 	protected String doGet(HttpServletRequest req, ModelMap map)
@@ -51,7 +54,7 @@ public class DashboardController{
 		if(wrap.getCurrentPage()<1) wrap.setCurrentPage(1);
 		
 		//Get 20 ordinateurs en fonction de la page with fucking limit and search
-		List<ComputerDto> computers = computerService.getRangeSearchOrderComputers(wrap);
+		List<ComputerDto> computers = computerMapper.toListCompDto(computerService.getRangeSearchOrderComputers(wrap));
 		
 		if(req.getParameter("msg")!=null){
 			if(req.getParameter("msg").equals("successAdd")) req.setAttribute("valide", "Computer successfully add");

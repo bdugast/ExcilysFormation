@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.excilys.domain.Company;
 import com.excilys.dto.ComputerDto;
 import com.excilys.mapper.ComputerMapper;
-import com.excilys.service.impl.CompanyServiceImpl;
-import com.excilys.service.impl.ComputerServiceImpl;
+import com.excilys.service.CompanyService;
+import com.excilys.service.ComputerService;
 import com.excilys.validator.ComputerValidator;
 
 @Controller
@@ -31,11 +31,11 @@ public class UpdateComputerController {
 	
 	static final Logger LOG = LoggerFactory.getLogger(UpdateComputerController.class);
 	@Autowired
-	ComputerServiceImpl computerService;
+	ComputerService computerService;
+	@Autowired
+	CompanyService companyService;
 	@Autowired
 	ComputerMapper computerMapper;
-	@Autowired
-	CompanyServiceImpl companyService;
 	@Autowired
 	ComputerValidator compVal;
 	
@@ -64,7 +64,10 @@ public class UpdateComputerController {
 		LOG.debug("compDto " + compDto.getId() + " " + compDto.getName() + compDto.getIntroduced() + compDto.getDiscontinued() + compDto.getCompanyId());
 		
 		if(!result.hasErrors()){
-			computerService.updateComputer(computerMapper.fromDto(compDto));
+			Company company;
+			if(companyService.getOneCompany(compDto.getCompanyId()) != null) company = companyService.getOneCompany(compDto.getCompanyId());
+			else company = null;
+			computerService.updateComputer(computerMapper.fromDto(compDto, company));
 			return "redirect:dashboard?msg=successUp";
 		}else{
 			List<Company> companies = companyService.getAllCompanies();

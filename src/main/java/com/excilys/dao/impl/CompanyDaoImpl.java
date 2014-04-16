@@ -11,23 +11,25 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.dao.CompanyDao;
 import com.excilys.domain.Company;
 import com.excilys.exception.CustomException;
+import com.jolbox.bonecp.BoneCPDataSource;
 
 @Repository
 public class CompanyDaoImpl implements CompanyDao {
 
 	static final Logger LOG = LoggerFactory.getLogger(CompanyDaoImpl.class);
 	@Autowired
-	private ConnectionManager connectionManager;
+	BoneCPDataSource boneCP;
 	
 	@Override
 	public Company getOneCompany(int id){
 		Company comp = null;
-		Connection conn = connectionManager.getConnection();
+		Connection conn = DataSourceUtils.getConnection(boneCP);
 		ResultSet rs = null;
 		PreparedStatement stmt = null;
 		try{
@@ -45,7 +47,7 @@ public class CompanyDaoImpl implements CompanyDao {
 		}catch(SQLException e){
 			throw new CustomException("erreur SQL", e.getMessage());
 		}finally{
-			connectionManager.closeDAO(rs, stmt);			
+			ConnectionManager.closeDAO(rs, stmt);			
 		}
 		return comp;
 	}
@@ -53,7 +55,7 @@ public class CompanyDaoImpl implements CompanyDao {
 	@Override
 	public List<Company> getAllCompany(){
 		List<Company> comps = new ArrayList<Company>();
-		Connection conn = connectionManager.getConnection();
+		Connection conn = DataSourceUtils.getConnection(boneCP);
 		ResultSet rs = null;
 		Statement stmt = null;
 		try{
@@ -67,14 +69,14 @@ public class CompanyDaoImpl implements CompanyDao {
 		}catch(SQLException e){
 			throw new CustomException("erreur SQL", e.getMessage());
 		}finally{
-			connectionManager.closeDAO(rs, stmt);			
+			ConnectionManager.closeDAO(rs, stmt);			
 		}
 		return comps;
 	}
 
 	@Override
 	public void updateCompany(Company comp){
-		Connection conn = connectionManager.getConnection();
+		Connection conn =  DataSourceUtils.getConnection(boneCP);
 		PreparedStatement stmt = null;
 		
 		try{
@@ -85,30 +87,29 @@ public class CompanyDaoImpl implements CompanyDao {
 		}catch(SQLException e){
 			throw new CustomException("erreur SQL", e.getMessage());
 		}finally{
-			connectionManager.closeDAO(null, stmt);			
+			ConnectionManager.closeDAO(null, stmt);			
 		}
 	}
 	
 	@Override
 	public void createCompany(Company comp){
-		Connection conn = connectionManager.getConnection();
+		Connection conn =  DataSourceUtils.getConnection(boneCP);
 		PreparedStatement stmt = null;
 
 		try{
 			stmt = conn.prepareStatement("insert into company values(null,?)");
 			stmt.setString(1, comp.getName());
 			stmt.executeUpdate();
-			connectionManager.closeDAO(null, stmt);
 		}catch(SQLException e){
 			throw new CustomException("erreur SQL", e.getMessage());
 		}finally{
-			connectionManager.closeDAO(null, stmt);			
+			ConnectionManager.closeDAO(null, stmt);			
 		}
 	}
 	
 	@Override
 	public void deleteCompany(int id){
-		Connection conn = connectionManager.getConnection();
+		Connection conn =  DataSourceUtils.getConnection(boneCP);
 		PreparedStatement stmt = null;
 		try{
 			stmt = conn.prepareStatement("delete from company where id=?)");
@@ -117,7 +118,7 @@ public class CompanyDaoImpl implements CompanyDao {
 		}catch(SQLException e){
 			throw new CustomException("erreur SQL", e.getMessage());
 		}finally{
-			connectionManager.closeDAO(null, stmt);			
+			ConnectionManager.closeDAO(null, stmt);			
 		}
 	}
 }

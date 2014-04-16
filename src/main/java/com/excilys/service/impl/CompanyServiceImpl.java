@@ -6,22 +6,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.excilys.dao.impl.CompanyDaoImpl;
-import com.excilys.dao.impl.ConnectionManager;
+import com.excilys.dao.CompanyDao;
 import com.excilys.domain.Company;
 import com.excilys.exception.CustomException;
 import com.excilys.service.CompanyService;
 
 @Service
+@Transactional
 public class CompanyServiceImpl implements CompanyService {
 	static final Logger LOG = LoggerFactory.getLogger(CompanyServiceImpl.class);
 	
 	@Autowired
-	public CompanyDaoImpl companyDao;
-	
-	@Autowired
-	private ConnectionManager connectionManager;
+	public CompanyDao companyDao;
 	
 	public List<Company> getAllCompanies() {
 		List<Company> compList = null;
@@ -29,9 +27,7 @@ public class CompanyServiceImpl implements CompanyService {
 			 compList = companyDao.getAllCompany();
 		} catch (CustomException e) {
 			throw e;
-		} finally {
-			connectionManager.closeConnection();
-		}
+		} 
 		return compList;
 	}
 
@@ -41,8 +37,6 @@ public class CompanyServiceImpl implements CompanyService {
 			comp = companyDao.getOneCompany(id);
 		} catch (CustomException e) {
 			throw e;
-		} finally {
-			connectionManager.closeConnection();
 		}
 		return comp;
 	}

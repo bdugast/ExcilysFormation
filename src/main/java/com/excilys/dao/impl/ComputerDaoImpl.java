@@ -16,25 +16,27 @@ import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.dao.ComputerDao;
 import com.excilys.domain.Company;
 import com.excilys.domain.Computer;
 import com.excilys.exception.CustomException;
+import com.jolbox.bonecp.BoneCPDataSource;
 
 @Repository
 public class ComputerDaoImpl implements ComputerDao {
 	static final Logger LOG = LoggerFactory.getLogger(ComputerDaoImpl.class);
 	
-	@Autowired 
-	private ConnectionManager connectionManager;
+	@Autowired
+	BoneCPDataSource boneCP;
 
 	@Override
 	public Computer getOneComputer(int id) {
 		LOG.trace("start getOneComputer id=" + id);
 		Computer comp = null;
-		Connection conn = connectionManager.getConnection();
+		Connection conn =  DataSourceUtils.getConnection(boneCP);
 		DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.S");
 		ResultSet rs = null;
 		PreparedStatement stmt = null;
@@ -61,7 +63,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		}catch(SQLException e){
 			throw new CustomException("erreur SQL", e.getMessage());
 		}finally{
-			connectionManager.closeDAO(rs, stmt);			
+			ConnectionManager.closeDAO(rs, stmt);			
 		}
 		return comp;
 	}
@@ -76,7 +78,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		try{
 			String req = "insert into computer values(null,?,?,?,?)";
 			LOG.debug("requete SQL : " + req);
-			stmt = connectionManager.getConnection().prepareStatement(req, Statement.RETURN_GENERATED_KEYS);
+			stmt =  DataSourceUtils.getConnection(boneCP).prepareStatement(req, Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, comp.getName());
 			
 			if (comp.getIntroduced() == null)
@@ -104,7 +106,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		}catch(SQLException e){
 			throw new CustomException("erreur SQL", e.getMessage());
 		}finally{
-			connectionManager.closeDAO(rs, stmt);			
+			ConnectionManager.closeDAO(rs, stmt);			
 		}
 		return key;
 	}
@@ -117,7 +119,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		try{
 			String req = "update computer set name=?, introduced=?, discontinued=?, company_id=? where computer.id=?";
 			LOG.debug("requete SQL : " + req);
-			stmt = connectionManager.getConnection().prepareStatement(req);
+			stmt =  DataSourceUtils.getConnection(boneCP).prepareStatement(req);
 			stmt.setString(1, comp.getName());
 			if (comp.getIntroduced() == null)
 				stmt.setNull(2, Types.NULL);
@@ -138,7 +140,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		}catch(SQLException e){
 			throw new CustomException("erreur SQL", e.getMessage());
 		}finally{
-			connectionManager.closeDAO(null, stmt);			
+			ConnectionManager.closeDAO(null, stmt);			
 		}
 	}
 
@@ -149,14 +151,14 @@ public class ComputerDaoImpl implements ComputerDao {
 		try{
 			String req = "delete from computer where id=?";
 			LOG.debug("requete SQL : " + req);
-			stmt = connectionManager.getConnection().prepareStatement(req);
+			stmt =  DataSourceUtils.getConnection(boneCP).prepareStatement(req);
 			stmt.setInt(1, id);
 			LOG.debug("requete stmt : " + stmt);
 			stmt.executeUpdate();
 		}catch(SQLException e){
 			throw new CustomException("erreur SQL", e.getMessage());
 		}finally{
-			connectionManager.closeDAO(null, stmt);			
+			ConnectionManager.closeDAO(null, stmt);			
 		}
 	}
 
@@ -164,7 +166,7 @@ public class ComputerDaoImpl implements ComputerDao {
 	public List<Computer> getRangeSearchOrderComputers(int start, int nb,	String search, String orderby){
 		LOG.trace("Start getRangeSearchOrderComputers");
 		List<Computer> comps = new ArrayList<Computer>();
-		Connection conn = connectionManager.getConnection();
+		Connection conn =  DataSourceUtils.getConnection(boneCP);
 		ResultSet rs = null;
 		PreparedStatement stmt = null;
 		StringBuilder searchWord = new StringBuilder("%" + search + "%");
@@ -194,7 +196,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		}catch(SQLException e){
 			throw new CustomException("erreur SQL", e.getMessage());
 		}finally{
-			connectionManager.closeDAO(rs, stmt);			
+			ConnectionManager.closeDAO(rs, stmt);			
 		}
 
 		return comps;
@@ -203,7 +205,7 @@ public class ComputerDaoImpl implements ComputerDao {
 	@Override
 	public int getCountComputerSearch(String search){
 		int count = 0;
-		Connection conn = connectionManager.getConnection();
+		Connection conn =  DataSourceUtils.getConnection(boneCP);
 		ResultSet rs = null;
 		PreparedStatement stmt = null;
 		StringBuilder searchWord = new StringBuilder("%" + search + "%");
@@ -221,7 +223,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		}catch(SQLException e){
 			throw new CustomException("erreur SQL", e.getMessage());
 		}finally{
-			connectionManager.closeDAO(rs, stmt);			
+			ConnectionManager.closeDAO(rs, stmt);			
 		}
 		return count;
 	}

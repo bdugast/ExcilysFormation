@@ -10,7 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.excilys.service.impl.ComputerServiceImpl;
+import com.excilys.service.ComputerService;
 import com.excilys.validator.ComputerValidator;
 
 @Controller
@@ -18,7 +18,7 @@ import com.excilys.validator.ComputerValidator;
 public class DeleteComputerController {
 
 	@Autowired
-	ComputerServiceImpl computerService;
+	ComputerService computerService;
 	@Autowired
 	ComputerValidator computerValidator;
 

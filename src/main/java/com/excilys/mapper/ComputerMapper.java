@@ -15,24 +15,20 @@ import org.springframework.stereotype.Component;
 import com.excilys.domain.Company;
 import com.excilys.domain.Computer;
 import com.excilys.dto.ComputerDto;
-import com.excilys.service.impl.CompanyServiceImpl;
 
 @Component
 public class ComputerMapper {
 	
 	@Autowired
-	CompanyServiceImpl companyService;
-	@Autowired
 	private ResourceBundleMessageSource messageSource;
 
-	public Computer fromDto(ComputerDto compDto) {
+	public Computer fromDto(ComputerDto compDto, Company company) {
 		Locale locale = LocaleContextHolder.getLocale();
 		
 		int id;
 		String name;
 		DateTime introduced;
 		DateTime discontinued;
-		Company company;
 		
 		DateTimeFormatter dtf = DateTimeFormat.forPattern(messageSource.getMessage("date.format.joda", null, locale));
 		
@@ -42,8 +38,6 @@ public class ComputerMapper {
 		else introduced = null;
 		if(compDto.getDiscontinued()!="") discontinued = new DateTime(dtf.parseDateTime(compDto.getDiscontinued()));
 		else discontinued = null;
-		if(companyService.getOneCompany(compDto.getCompanyId()) != null) company = companyService.getOneCompany(compDto.getCompanyId());
-		else company = null;
 		
 		return new Computer(id, name, introduced, discontinued, company);
 	}

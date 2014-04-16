@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.excilys.domain.Company;
 import com.excilys.dto.ComputerDto;
 import com.excilys.mapper.ComputerMapper;
-import com.excilys.service.impl.CompanyServiceImpl;
-import com.excilys.service.impl.ComputerServiceImpl;
+import com.excilys.service.CompanyService;
+import com.excilys.service.ComputerService;
 import com.excilys.validator.ComputerValidator;
 
 @Controller
@@ -29,11 +29,11 @@ public class AddComputerController{
 	
 	static final Logger LOG = LoggerFactory.getLogger(AddComputerController.class);
 	@Autowired
-	ComputerServiceImpl computerService;
+	ComputerService computerService;
+	@Autowired
+	CompanyService companyService;
 	@Autowired
 	ComputerMapper computerMapper;
-	@Autowired
-	CompanyServiceImpl companyService;
 	@Autowired
 	ComputerValidator computerValidator;
 	
@@ -53,8 +53,11 @@ public class AddComputerController{
 			throws ServletException, IOException {
 		
 		if(!result.hasErrors()){
+			Company company;
+			if(companyService.getOneCompany(compDto.getCompanyId()) != null) company = companyService.getOneCompany(compDto.getCompanyId());
+			else company = null;
 			LOG.debug("successAdd");
-			computerService.createComputer(computerMapper.fromDto(compDto));
+			computerService.createComputer(computerMapper.fromDto(compDto,company));
 			return "redirect:dashboard?msg=successAdd";
 		}else{
 			LOG.debug("failAdd");
