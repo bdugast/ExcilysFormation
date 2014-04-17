@@ -1,6 +1,12 @@
 package com.excilys.domain;
 
-
+/**
+ * @author bdugast
+ * @param id
+ * 		id of the company
+ * @param name
+ * 		name of the company	
+ */
 public class Company {
 	
 	private int id;

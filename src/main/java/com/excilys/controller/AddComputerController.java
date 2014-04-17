@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.excilys.domain.Company;
 import com.excilys.dto.ComputerDto;
@@ -39,6 +38,10 @@ public class AddComputerController{
 	@Autowired
 	ComputerValidator computerValidator;
 	
+	
+	/**
+	 * When the page "add" is called, this method is called and show addComputer.jsp with information that are needed
+	 */
 	@RequestMapping(method = RequestMethod.GET)
 	protected String doGet(ModelMap map)
 			throws ServletException, IOException {
@@ -50,6 +53,17 @@ public class AddComputerController{
 		return "addComputer";
 	}
 	
+	
+	/**
+	 * This method doPost is called when we push the button "add" in the "add" page, this button start
+	 * the process to add a computer into the database, it check if there is error, and redirect to the 
+	 * dashboard if the computer is well added or to the same page if there is a problem in the check on the back
+	 * 
+	 * @param compDto
+	 * 		the computer to add in the database, the computer is check thanks to annotation in the class compDto.
+	 * @param result
+	 * 		get all return errors from the check
+	 */
 	@RequestMapping(method = RequestMethod.POST)
 	protected String doPost(@Valid @ModelAttribute("compDto") ComputerDto compDto, BindingResult result, ModelMap map)
 			throws ServletException, IOException {
@@ -73,6 +87,9 @@ public class AddComputerController{
 		}
 	}
 	
+	/**
+	 * ExceptionHandler that redirect any error catch to a custom error page
+	 */
 	@ExceptionHandler(Exception.class)
 	public String handleAllException(Exception ex) {
 		return "error";

@@ -163,7 +163,7 @@ public class ComputerDaoImpl implements ComputerDao {
 	}
 
 	@Override
-	public List<Computer> getRangeSearchOrderComputers(int start, int nb,	String search, String orderby){
+	public List<Computer> getRangeComputers(int start, int nb,	String search, String orderby){
 		LOG.trace("Start getRangeSearchOrderComputers");
 		List<Computer> comps = new ArrayList<Computer>();
 		Connection conn =  DataSourceUtils.getConnection(boneCP);
@@ -203,7 +203,7 @@ public class ComputerDaoImpl implements ComputerDao {
 	}
 
 	@Override
-	public int getCountComputerSearch(String search){
+	public int getCountComputers(String search){
 		int count = 0;
 		Connection conn =  DataSourceUtils.getConnection(boneCP);
 		ResultSet rs = null;

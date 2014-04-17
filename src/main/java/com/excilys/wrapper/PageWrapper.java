@@ -1,5 +1,20 @@
 package com.excilys.wrapper;
 
+/**
+ * @author bdugast
+ * @param order
+ * 		order desc or asc
+ * @param orderField
+ * 		field to order
+ * @param search
+ * 		field of search
+ * @param count
+ * 		count of computers in the DB
+ * @param countPages
+ * 		number of pages needed
+ * @param currentPage
+ * 		current page number
+ */
 public class PageWrapper {
 	public final int NB_COMPUTER_BY_PAGE = 20;
 	private boolean order;

@@ -23,6 +23,15 @@ public class DeleteComputerController {
 	@Autowired
 	ComputerValidator computerValidator;
 
+	
+	/**
+	 * method called when we push delete button, if the id is correct, it delete the computer and return a success message,
+	 * if not, we return to the dashboard with a fail message.
+	 * @param req
+	 * 		req allow to get fields in the address bar
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	@RequestMapping(method = RequestMethod.GET)
 	protected String doGet(HttpServletRequest req)
 			throws ServletException, IOException {
@@ -35,6 +44,9 @@ public class DeleteComputerController {
 		}
 	}
 	
+	/**
+	 * ExceptionHandler that redirect any error catch to a custom error page
+	 */
 	@ExceptionHandler(Exception.class)
 	public String handleAllException(Exception ex) {
 		return "error";

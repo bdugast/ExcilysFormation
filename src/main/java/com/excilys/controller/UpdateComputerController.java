@@ -40,6 +40,18 @@ public class UpdateComputerController {
 	@Autowired
 	ComputerValidator compVal;
 	
+	/**
+	 * method called when we push modify button, if the id is correct, it called the updateComputer page,
+	 * if not, we return to the dashboard with a fail message.
+	 * @param req
+	 * 		req allow to get fields in the address bar
+	 * @param map
+	 * 		preparation of the return
+	 * @return 
+	 * 		string of the good jsp page.
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	@RequestMapping(method = RequestMethod.GET)
 	protected String doGet(HttpServletRequest req, ModelMap map)
 			throws ServletException, IOException {
@@ -58,6 +70,18 @@ public class UpdateComputerController {
 		}
 	}
 	
+	/**
+	 * Update of a company in the database, if there is no error on the check in compDto, 
+	 * else, we return to the same page with everything that was set before
+	 * @param compDto
+	 * 		the computer to add in the database, the computer is check thanks to annotation in the class compDto.
+	 * @param result
+	 * 		get all return errors from the check
+	 * @return 
+	 * 		string of the good jsp page.
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	@RequestMapping(method = RequestMethod.POST)
 	protected String doPost(@Valid @ModelAttribute("compDto") ComputerDto compDto, BindingResult result, ModelMap map)
 			throws ServletException, IOException {
@@ -80,6 +104,9 @@ public class UpdateComputerController {
 		}
 	}
 	
+	/**
+	 * ExceptionHandler that redirect any error catch to a custom error page
+	 */
 	@ExceptionHandler(Exception.class)
 	public String handleAllException(Exception ex) {
 		return "error";

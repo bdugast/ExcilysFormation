@@ -2,6 +2,19 @@ package com.excilys.domain;
 
 import org.joda.time.DateTime;
 
+/**
+ * @author bdugast
+ * @param id
+ * 		id of the computer
+ * @param name
+ * 		name of the computer
+ * @param introduced
+ * 		introduced date of the computer
+ * @param discontinued
+ * 		discontinued date of the computer
+ * @param company
+ * 		company of the computer
+ */
 public class Computer {
 	private int id;
 	private String name;

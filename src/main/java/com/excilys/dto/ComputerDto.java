@@ -6,7 +6,19 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import com.excilys.validator.DateValidator;
 
-
+/**
+ * @author bdugast
+ * @param id
+ * 		id of the computer
+ * @param name
+ * 		name of the computer (not empty, and length of 2 characters min)
+ * @param introduced
+ * 		string of the introduced date (must check the custom annotation)
+ * @param discontinued
+ * 		string of the discontinued date (must check the custom annotation)
+ * @param companyId
+ * 		id of the company
+ */
 public class ComputerDto {
 	private int id;
 	

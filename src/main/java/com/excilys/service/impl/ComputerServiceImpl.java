@@ -71,10 +71,10 @@ public class ComputerServiceImpl implements ComputerService {
 	}
 
 	@Transactional(readOnly = false)
-	public int getCountComputerSearch(String search) {
+	public int getCountComputers(String search) {
 		int count = 0;
 		try {
-			count = computerDao.getCountComputerSearch(search);
+			count = computerDao.getCountComputers(search);
 		} catch (CustomException e) {
 			throw e;
 		}
@@ -82,7 +82,7 @@ public class ComputerServiceImpl implements ComputerService {
 	}
 
 	@Transactional(readOnly = false)
-	public List<Computer> getRangeSearchOrderComputers(PageWrapper wrap) {
+	public List<Computer> getRangeComputers(PageWrapper wrap) {
 
 		List<Computer> compList = null;
 
@@ -113,7 +113,7 @@ public class ComputerServiceImpl implements ComputerService {
 			orderby.append("DESC");
 
 		try {
-			compList = computerDao.getRangeSearchOrderComputers(
+			compList = computerDao.getRangeComputers(
 					((wrap.getCurrentPage() - 1) * wrap.NB_COMPUTER_BY_PAGE),
 					wrap.NB_COMPUTER_BY_PAGE, wrap.getSearch(),
 					orderby.toString());

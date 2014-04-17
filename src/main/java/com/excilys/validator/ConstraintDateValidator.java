@@ -14,6 +14,10 @@ public class ConstraintDateValidator implements
 	public void initialize(DateValidator arg0) {
 	}
 
+	
+	/**
+	 * Checking the date that is send as a string and return true if this one is ok.
+	 */
 	@Override
 	public boolean isValid(String arg0, ConstraintValidatorContext arg1) {
 		String country = LocaleContextHolder.getLocale().getLanguage();

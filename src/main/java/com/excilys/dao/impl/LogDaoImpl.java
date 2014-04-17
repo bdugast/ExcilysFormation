@@ -20,6 +20,9 @@ public class LogDaoImpl implements LogDao {
 	@Autowired
 	BoneCPDataSource boneCP;
 	
+	/**
+	 * insert a row in the log database with the id of the computer, the message and the current date.
+	 */
 	@Override
 	public void insertMessageLog(String message, int id) {
 		LOG.trace("Start createComputer");

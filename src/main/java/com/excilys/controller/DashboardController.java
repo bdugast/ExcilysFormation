@@ -18,6 +18,12 @@ import com.excilys.mapper.ComputerMapper;
 import com.excilys.service.ComputerService;
 import com.excilys.wrapper.PageWrapper;
 
+
+/**
+ * @author bdugast
+ *  
+ *
+ */
 @Controller
 @RequestMapping("/dashboard")
 public class DashboardController{
@@ -27,42 +33,53 @@ public class DashboardController{
 	@Autowired
 	ComputerMapper computerMapper;
 	
+	/**
+	 * This doGet method get all informations in the wrap in order to show the good computers on the screen
+	 * get the order field, the order, the current page, the search string, and get the count of computer
+	 * to show the good number of page in the pagination, and a list of computerDto
+	 * @param req
+	 * 		req allow to get fields in the address bar
+	 * @param map
+	 * 		preparation of the return
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	@RequestMapping(method = RequestMethod.GET)
 	protected String doGet(HttpServletRequest req, ModelMap map)
 			throws ServletException, IOException {
 		PageWrapper wrap = new PageWrapper();
 		
-		//Order field
+		//get order field
 		if(req.getParameter("orderField")!=null) wrap.setOrderField(req.getParameter("orderField"));
 		
-		//Order
+		//get order
 		if(req.getParameter("order")!=null) wrap.setOrder(Boolean.valueOf(req.getParameter("order")));
 				
-		//Récupérer la page actuelle
+		//get current page
 		if(req.getParameter("page")!=null) wrap.setCurrentPage(Integer.valueOf(req.getParameter("page")));
 		
-		//Récupérer le champ recherche
+		//get search field
 		if(req.getParameter("search")!=null) wrap.setSearch(req.getParameter("search"));
 		
-		//Compter le nombre d'objet
-		wrap.setCount(computerService.getCountComputerSearch(wrap.getSearch()));
+		//get the number of computer
+		wrap.setCount(computerService.getCountComputers(wrap.getSearch()));
 
-		//Savoir le nombre de pages
+		//get the number of pages
 		wrap.setCountPages((int) (Math.ceil((double)wrap.getCount()/(double)20)));
 		
-		//On modifie la page si la current page est trop haute ou trop basse
+		//change the current page if this one is too high or too low
 		if(wrap.getCurrentPage()>wrap.getCountPages()) wrap.setCurrentPage(wrap.getCountPages());
 		if(wrap.getCurrentPage()<1) wrap.setCurrentPage(1);
 		
-		//Get 20 ordinateurs en fonction de la page with fucking limit and search
-		List<ComputerDto> computers = computerMapper.toListCompDto(computerService.getRangeSearchOrderComputers(wrap));
+		//get 20 computer with the search, the order field, the order, and the limit
+		List<ComputerDto> computers = computerMapper.toListCompDto(computerService.getRangeComputers(wrap));
 		
 		if(req.getParameter("msg")!=null){
-			if(req.getParameter("msg").equals("successAdd")) req.setAttribute("valide", "Computer successfully add");
-			if(req.getParameter("msg").equals("successUp")) req.setAttribute("valide", "Computer successfully update");
-			if(req.getParameter("msg").equals("successDel")) req.setAttribute("valide", "Computer successfully delete");
-			if(req.getParameter("msg").equals("failUp")) req.setAttribute("fail", "FAIL!!! Invalid computer!!!");
-			if(req.getParameter("msg").equals("failDel")) req.setAttribute("fail", "FAIL!!! Invalid computer!!!");
+			if(req.getParameter("msg").equals("successAdd")) map.addAttribute("valide", "Computer successfully add");
+			if(req.getParameter("msg").equals("successUp")) map.addAttribute("valide", "Computer successfully update");
+			if(req.getParameter("msg").equals("successDel")) map.addAttribute("valide", "Computer successfully delete");
+			if(req.getParameter("msg").equals("failUp")) map.addAttribute("fail", "FAIL!!! Invalid computer!!!");
+			if(req.getParameter("msg").equals("failDel")) map.addAttribute("fail", "FAIL!!! Invalid computer!!!");
 		}
 		
 		map.addAttribute("wrap", wrap);
@@ -71,6 +88,10 @@ public class DashboardController{
 		return "dashboard";
 		}
 	
+	
+	/**
+	 * ExceptionHandler that redirect any error catch to a custom error page
+	 */
 	@ExceptionHandler(Exception.class)
 	public String handleAllException(Exception ex) {
 		return "error";

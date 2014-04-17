@@ -11,6 +11,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class ConnectionManager {
 	
+	/**
+	 * Method to close result set and statement in all request.
+	 * @param rs
+	 * 		rs of the dao
+	 * @param stmt
+	 * 		stmt of the dao
+	 */
 	public static void closeDAO(ResultSet rs, Statement stmt) {
 		Logger LOG = LoggerFactory.getLogger(ConnectionManager.class);
 		try {
