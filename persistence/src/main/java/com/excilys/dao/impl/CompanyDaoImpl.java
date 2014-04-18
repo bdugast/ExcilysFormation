@@ -2,7 +2,6 @@ package com.excilys.dao.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,10 +23,12 @@ public class CompanyDaoImpl implements CompanyDao {
 	@Override
 	public Company getOneCompany(int id){
 		Company comp = null;
-		String req = "select id, name from company where id=?";
-		JdbcTemplate jdbctemp = new JdbcTemplate(boneCP);
-		
-		comp = jdbctemp.queryForObject(req, new Object[] { id }, new CompanyRowMapper());
+		LOG.debug("id " + id);
+		if(id!=-1){
+			String req = "select id, name from company where id=?";
+			JdbcTemplate jdbctemp = new JdbcTemplate(boneCP);
+			comp = jdbctemp.queryForObject(req, new Object[] { id }, new CompanyRowMapper());
+		}
 		return comp;
 	}
 	
