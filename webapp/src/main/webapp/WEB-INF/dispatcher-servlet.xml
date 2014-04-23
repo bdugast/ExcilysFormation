@@ -11,7 +11,6 @@
         http://www.springframework.org/schema/context 
         http://www.springframework.org/schema/context/spring-context-4.0.xsd">
      
-    <context:annotation-config />  
 	<context:component-scan base-package="com.excilys.controller" />
 
 	<bean id="viewResolver"
@@ -25,11 +24,6 @@
 	</bean>
 
 	<mvc:annotation-driven validator="validator"/>
-
-	<bean id="messageSource"
-		class="org.springframework.context.support.ResourceBundleMessageSource">
-		<property name="basename" value="messages" />
-	</bean>
 	
 	<bean id="localeChangeInterceptor"
 		class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">

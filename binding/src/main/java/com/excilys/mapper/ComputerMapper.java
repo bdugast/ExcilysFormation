@@ -73,7 +73,8 @@ public class ComputerMapper {
                 .name(comp.getName())
                 .introduced(introduced)
                 .discontinued(discontinued)
-                .companyId(comp.getCompany().getId()).build();
+                .companyId(comp.getCompany().getId())
+                .companyName(comp.getCompany().getName()).build();
 		
 		return compDto;
 	}

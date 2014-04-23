@@ -106,17 +106,13 @@ public class ComputerServiceImpl implements ComputerService {
 			break;
 		}
 		orderby.append(orderb);
-		orderby.append(" ");
 		if (wrap.getOrder())
-			orderby.append("ASC");
+			orderby.append(" ASC");
 		else
-			orderby.append("DESC");
+			orderby.append(" DESC");
 
 		try {
-			compList = computerDao.getRangeComputers(
-					((wrap.getCurrentPage() - 1) * wrap.NB_COMPUTER_BY_PAGE),
-					wrap.NB_COMPUTER_BY_PAGE, wrap.getSearch(),
-					orderby.toString());
+			compList = computerDao.getRangeComputers(wrap, orderby.toString());
 		} catch (CustomException e) {
 			throw e;
 		}

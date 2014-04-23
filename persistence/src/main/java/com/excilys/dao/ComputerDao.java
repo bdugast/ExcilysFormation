@@ -3,6 +3,7 @@ package com.excilys.dao;
 import java.util.List;
 
 import com.excilys.domain.Computer;
+import com.excilys.wrapper.PageWrapper;
 
 public interface ComputerDao {
 	/**
@@ -27,7 +28,7 @@ public interface ComputerDao {
 	 * @return
 	 * 		return a list of computer
 	 */
-	public List<Computer> getRangeComputers(int start, int nb, String search, String orderby);
+	public List<Computer> getRangeComputers(PageWrapper wrap, String orderby);
 	
 	/**
 	 * update a computer based on the new computer send to the method

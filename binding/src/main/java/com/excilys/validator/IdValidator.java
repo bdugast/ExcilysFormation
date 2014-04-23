@@ -26,15 +26,15 @@ public class IdValidator{
 						LOG.debug("validateID : Good Computer");
 						return true;
 					}else{
-						LOG.debug("validateID : erreur get");
+						LOG.debug("validateID : error get");
 						return false;			
 					}
 				}else{
-					LOG.debug("validateID : erreur parseInt");
+					LOG.debug("validateID : error parseInt");
 					return false;
 				}
 			}else{
-				LOG.debug("validateID : erreur regex");
+				LOG.debug("validateID : error regex");
 				return false;
 			}
 		}

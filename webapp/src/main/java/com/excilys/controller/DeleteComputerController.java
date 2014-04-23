@@ -3,13 +3,12 @@ package com.excilys.controller;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.excilys.service.ComputerService;
 import com.excilys.validator.IdValidator;
@@ -33,11 +32,11 @@ public class DeleteComputerController {
 	 * @throws IOException
 	 */
 	@RequestMapping(method = RequestMethod.GET)
-	protected String doGet(HttpServletRequest req)
+	protected String doGet(@RequestParam("id") String id)
 			throws ServletException, IOException {
 
-		if (idValidator.validateId(req.getParameter("id"))) {
-			computerService.deleteComputer(Integer.valueOf(req.getParameter("id")));
+		if (idValidator.validateId(id)) {
+			computerService.deleteComputer(Integer.valueOf(id));
 			return "redirect:/dashboard?msg=successDel";
 		} else {
 			return "redirect:/dashboard?msg=failDel";

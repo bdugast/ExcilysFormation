@@ -33,6 +33,7 @@ public class ComputerDto {
 	private String discontinued;
 
 	private int companyId;
+	private String companyName;
 	
 	public static class Builder {
 
@@ -65,6 +66,10 @@ public class ComputerDto {
 
         public Builder companyId(Integer companyId) {
             this.computer.companyId = companyId;
+            return this;
+        }
+        public Builder companyName(String companyName) {
+            this.computer.companyName = companyName;
             return this;
         }
 
@@ -108,4 +113,10 @@ public class ComputerDto {
 	public void setCompanyId(int companyId) {
 		this.companyId = companyId;
 	}	
+	public String getCompanyName() {
+		return companyName;
+	}
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
 }

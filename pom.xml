@@ -8,77 +8,149 @@
 	<name>ExcilysFormation Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 	<properties>
-		<spring-version>4.0.3.RELEASE</spring-version>
-		<joda-version>2.3</joda-version>
-		<logback-version>1.1.1</logback-version>
-		<jslt-version>1.2</jslt-version>
-		<bonecp-version>0.8.0.RELEASE</bonecp-version>
-		<hibernate-version>5.0.1.Final</hibernate-version>
-		<project-version>2.0.0-SNAPSHOT</project-version>
+		<springVersion>4.0.3.RELEASE</springVersion>
+		<jodaVersion>2.3</jodaVersion>
+		<logbackVersion>1.1.1</logbackVersion>
+		<jsltVersion>1.2</jsltVersion>
+		<bonecpVersion>0.8.0.RELEASE</bonecpVersion>
+		<hibernateValidatorVersion>5.0.1.Final</hibernateValidatorVersion>
+		<projectVersion>2.0.0-SNAPSHOT</projectVersion>
+		<hibernateVersion>4.5.1.Final</hibernateVersion>
+		<slf4jVersion>1.7.7</slf4jVersion>
 	</properties>
+
 	<dependencies>
+		<!-- LogBack in all modules -->
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<version>${logback-version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
+			<version>${logbackVersion}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4jVersion}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
+			<version>${slf4jVersion}</version>
 		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
+			<!-- JodaTime -->
 			<dependency>
 				<groupId>joda-time</groupId>
 				<artifactId>joda-time</artifactId>
-				<version>${joda-version}</version>
+				<version>${jodaVersion}</version>
 			</dependency>
+
+			<!-- JSTL -->
 			<dependency>
 				<groupId>jstl</groupId>
 				<artifactId>jstl</artifactId>
-				<version>${jslt-version}</version>
+				<version>${jsltVersion}</version>
 			</dependency>
+
+			<!-- BoneCP -->
 			<dependency>
 				<groupId>com.jolbox</groupId>
 				<artifactId>bonecp</artifactId>
-				<version>${bonecp-version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.slf4j</groupId>
+						<artifactId>slf4j-api</artifactId>
+					</exclusion>
+				</exclusions>
+				<version>${bonecpVersion}</version>
 			</dependency>
+
+			<!-- spring WebMVC -->
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-webmvc</artifactId>
-				<version>${spring-version}</version>
+				<exclusions>
+					<exclusion>
+						<artifactId>commons-logging</artifactId>
+						<groupId>commons-logging</groupId>
+					</exclusion>
+				</exclusions>
+				<version>${springVersion}</version>
 			</dependency>
+			
+			<!-- spring Web -->
 			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-validator</artifactId>
-				<version>${hibernate-version}</version>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-web</artifactId>
+				<exclusions>
+					<exclusion>
+						<artifactId>commons-logging</artifactId>
+						<groupId>commons-logging</groupId>
+					</exclusion>
+				</exclusions>
+				<version>${springVersion}</version>
 			</dependency>
+
+			<!-- Spring JDBC -->
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-jdbc</artifactId>
-				<version>${spring-version}</version>
+				<exclusions>
+					<exclusion>
+						<artifactId>commons-logging</artifactId>
+						<groupId>commons-logging</groupId>
+					</exclusion>
+				</exclusions>
+				<version>${springVersion}</version>
 			</dependency>
+
+			<!-- Hibernate Validator -->
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-validator</artifactId>
+				<version>${hibernateValidatorVersion}</version>
+			</dependency>
+
+			<!-- All modules -->
 			<dependency>
 				<groupId>com.excilys</groupId>
 				<artifactId>core</artifactId>
-				<version>${project-version}</version>
+				<version>${projectVersion}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.excilys</groupId>
 				<artifactId>persistence</artifactId>
-				<version>${project-version}</version>
+				<version>${projectVersion}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.excilys</groupId>
 				<artifactId>service</artifactId>
-				<version>${project-version}</version>
+				<version>${projectVersion}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.excilys</groupId>
 				<artifactId>binding</artifactId>
-				<version>${project-version}</version>
+				<version>${projectVersion}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.excilys</groupId>
 				<artifactId>webapp</artifactId>
-				<version>${project-version}</version>
+				<version>${projectVersion}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

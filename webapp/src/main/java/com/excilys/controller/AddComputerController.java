@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -69,9 +68,8 @@ public class AddComputerController{
 			throws ServletException, IOException {
 		
 		if(!result.hasErrors()){
-			Company company;
+			Company company = null;
 			if(companyService.getOneCompany(compDto.getCompanyId()) != null) company = companyService.getOneCompany(compDto.getCompanyId());
-			else company = null;
 			LOG.debug("successAdd");
 			computerService.createComputer(computerMapper.fromDto(compDto,company));
 			return "redirect:dashboard?msg=successAdd";
