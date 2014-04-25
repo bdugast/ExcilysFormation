@@ -28,7 +28,7 @@ public interface ComputerDao {
 	 * @return
 	 * 		return a list of computer
 	 */
-	public List<Computer> getRangeComputers(PageWrapper wrap, String orderField, String orderby);
+	public List<Computer> getRangeComputers(PageWrapper wrap);
 	
 	/**
 	 * update a computer based on the new computer send to the method

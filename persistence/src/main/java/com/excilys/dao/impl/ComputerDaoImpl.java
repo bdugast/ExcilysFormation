@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
@@ -16,12 +15,17 @@ import org.springframework.stereotype.Repository;
 
 import com.excilys.dao.ComputerDao;
 import com.excilys.domain.Computer;
+import com.excilys.domain.QCompany;
+import com.excilys.domain.QComputer;
 import com.excilys.wrapper.PageWrapper;
+import com.mysema.query.jpa.JPQLQuery;
+import com.mysema.query.jpa.hibernate.HibernateQuery;
+import com.mysema.query.types.OrderSpecifier;
 
 @Repository
 public class ComputerDaoImpl implements ComputerDao {
 	static final Logger LOG = LoggerFactory.getLogger(ComputerDaoImpl.class);
-	
+
 	@Autowired
 	SessionFactory sf;
 
@@ -31,8 +35,10 @@ public class ComputerDaoImpl implements ComputerDao {
 		Computer comp = null;
 
 		Session session = sf.getCurrentSession();
-		comp = (Computer) session.createCriteria(Computer.class).add(Restrictions.idEq(id)).uniqueResult();
-		
+		QComputer computer = QComputer.computer;
+		JPQLQuery query = new HibernateQuery(session);
+		comp = query.from(computer).where(computer.id.eq(id)).uniqueResult(computer);
+
 		return comp;
 	}
 
@@ -55,7 +61,7 @@ public class ComputerDaoImpl implements ComputerDao {
 	}
 
 	@Override
-	public List<Computer> getRangeComputers(PageWrapper wrap, String orderField, String order){
+	public List<Computer> getRangeComputers(PageWrapper wrap){
 		LOG.trace("Start getRangeSearchOrderComputers");
 
 		List<Computer> comps = new ArrayList<Computer>();
@@ -64,34 +70,65 @@ public class ComputerDaoImpl implements ComputerDao {
 
 		StringBuilder searchExpr = new StringBuilder();
 		searchExpr.append("%").append(wrap.getSearch()).append("%");
-		
-		Order orderby;
-		
-		if(order.equals("ASC")){
-			orderby = Order.asc(orderField);
-		}else{
-			orderby = Order.desc(orderField);
+
+		QComputer computer = QComputer.computer;
+		QCompany company = QCompany.company;
+		JPQLQuery query = new HibernateQuery(session);
+		OrderSpecifier<?> order;
+		switch (wrap.getOrderField()) {
+		case "COMPUTER":
+			if (wrap.getOrder())
+				order = computer.name.asc();
+			else
+				order = computer.name.desc();
+			break;
+		case "COMPANY":
+			if (wrap.getOrder())
+				order = company.name.asc();
+			else
+				order = company.name.desc();				
+			break;
+		case "INTRODUCED":
+			if (wrap.getOrder())
+				order = computer.introduced.asc();
+			else
+				order = computer.introduced.desc();
+			break;
+		case "DISCONTINUED":
+			if (wrap.getOrder())
+				order = computer.discontinued.asc();
+			else
+				order = computer.discontinued.desc();
+			break;
+		default:
+			order = computer.id.desc();
+			break;
 		}
 
-		LOG.debug("order" + order + " orderby " + orderby);
-		
-		comps =  session.createCriteria(Computer.class)
-				.createAlias("company", "ca", JoinType.LEFT_OUTER_JOIN)
-				.add(Restrictions.or((Restrictions.ilike("name", searchExpr.toString())),((Restrictions.ilike("ca.name", searchExpr.toString())))))
-				.setFirstResult(start).setMaxResults(wrap.NB_COMPUTER_BY_PAGE).addOrder(orderby).list();
-		
+		comps = query.from(computer)
+				.leftJoin(computer.company, company)
+				.where(computer.name.like(searchExpr.toString()).or(company.name.like(searchExpr.toString())))
+				.orderBy(order)
+				.offset(start)
+				.limit(wrap.NB_COMPUTER_BY_PAGE)
+				.list(computer);
+
 		return comps;
 	}
 
 	@Override
 	public int getCountComputers(String search){
-		int count = 0;
+		Long count;
 		Session session = sf.getCurrentSession();
 		StringBuilder searchExpr = new StringBuilder("%").append(search).append("%");
-		count = ((Long) session.createCriteria(Computer.class)
-				.createAlias("company", "company", JoinType.LEFT_OUTER_JOIN)
-				.add(Restrictions.or((Restrictions.ilike("name", searchExpr.toString())),((Restrictions.ilike("company.name", searchExpr.toString())))))
-				.setProjection(Projections.rowCount()).uniqueResult()).intValue();
-		return count;
+		
+		QComputer computer = QComputer.computer;
+		QCompany company = QCompany.company;
+		JPQLQuery query = new HibernateQuery(session);
+		count = query.from(computer)
+				.leftJoin(computer.company, company)
+				.where(computer.name.like(searchExpr.toString()).or(company.name.like(searchExpr.toString())))
+				.count();
+		return count.intValue();
 	}
 }

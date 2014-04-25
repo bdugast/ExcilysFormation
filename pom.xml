@@ -18,6 +18,7 @@
 		<hibernateVersion>4.3.5.Final</hibernateVersion>
 		<slf4jVersion>1.7.7</slf4jVersion>
 		<jadiraVersion>3.1.0.GA</jadiraVersion>
+		<queryDslVersion>3.3.2</queryDslVersion>
 	</properties>
 
 	<dependencies>
@@ -150,6 +151,19 @@
 				<version>${hibernateVersion}</version>
 			</dependency>
 
+			<!-- QueryDSL -->
+			<dependency>
+				<groupId>com.mysema.querydsl</groupId>
+				<artifactId>querydsl-apt</artifactId>
+				<version>${queryDslVersion}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.mysema.querydsl</groupId>
+				<artifactId>querydsl-jpa</artifactId>
+				<version>${queryDslVersion}</version>
+			</dependency>
+
 			<!-- All modules -->
 			<dependency>
 				<groupId>com.excilys</groupId>
@@ -179,7 +193,7 @@
 		</dependencies>
 	</dependencyManagement>
 	<build>
-		<plugins>
+		<plugins>			
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.0</version>

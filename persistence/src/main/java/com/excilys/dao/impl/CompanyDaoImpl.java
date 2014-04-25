@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +12,9 @@ import org.springframework.stereotype.Repository;
 
 import com.excilys.dao.CompanyDao;
 import com.excilys.domain.Company;
+import com.excilys.domain.QCompany;
+import com.mysema.query.jpa.JPQLQuery;
+import com.mysema.query.jpa.hibernate.HibernateQuery;
 
 @Repository
 public class CompanyDaoImpl implements CompanyDao {
@@ -26,9 +28,12 @@ public class CompanyDaoImpl implements CompanyDao {
 	@Override
 	public Company getOneCompany(int id){
 		Company comp = null;
+		
 		if(id!=-1){
 			Session session = sf.getCurrentSession();
-			comp = (Company) session.createCriteria(Company.class).add(Restrictions.idEq(id)).uniqueResult();
+			QCompany company = QCompany.company;
+			JPQLQuery query = new HibernateQuery(session);
+			comp = query.from(company).where(company.id.eq(id)).uniqueResult(company);
 		}
 		
 		return comp;
@@ -36,11 +41,13 @@ public class CompanyDaoImpl implements CompanyDao {
 	
 	@Override
 	public List<Company> getAllCompany(){
+		List<Company> comps = new ArrayList<Company>();
 
 		Session session = sf.getCurrentSession();
-		List<Company> comps = new ArrayList<Company>();
+		QCompany company = QCompany.company;
+		JPQLQuery query = new HibernateQuery(session);
 		
-		comps = session.createCriteria(Company.class).list();
+		comps = query.from(company).list(company);
 		return comps;
 	}
 }

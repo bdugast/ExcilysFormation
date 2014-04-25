@@ -8,7 +8,7 @@
 <title>ERROR</title>
 </head>
 <body>
-<h1>BIG ERROR NOOB!!!</h1>
+<h1 style="text-align: center;">STOP USING THE WEBSITE LIKE AN ASSHOLE</h1>
 </body>
 </html>
 <jsp:include page="include/footer.jsp" />
