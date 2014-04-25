@@ -99,33 +99,32 @@ public class ComputerServiceImpl implements ComputerService {
 
 		List<Computer> compList = null;
 
-		StringBuilder orderby = new StringBuilder();
-		String orderb;
+		String orderField;
 		switch (wrap.getOrderField()) {
 		case "COMPUTER":
-			orderb = "cu.name";
+			orderField = "name";
 			break;
 		case "COMPANY":
-			orderb = "ca.name";
+			orderField = "ca.name";
 			break;
 		case "INTRODUCED":
-			orderb = "cu.introduced";
+			orderField = "introduced";
 			break;
 		case "DISCONTINUED":
-			orderb = "cu.discontinued";
+			orderField = "discontinued";
 			break;
 		default:
-			orderb = "cu.id";
+			orderField = "id";
 			break;
 		}
-		orderby.append(orderb);
+		String orderby;
 		if (wrap.getOrder())
-			orderby.append(" ASC");
+			orderby="ASC";
 		else
-			orderby.append(" DESC");
+			orderby="DESC";
 
 		try {
-			compList = computerDao.getRangeComputers(wrap, orderby.toString());
+			compList = computerDao.getRangeComputers(wrap, orderField, orderby);
 		} catch (CustomException e) {
 			throw e;
 		}

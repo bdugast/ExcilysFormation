@@ -3,9 +3,12 @@ package com.excilys.dao.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,13 +31,8 @@ public class ComputerDaoImpl implements ComputerDao {
 		Computer comp = null;
 
 		Session session = sf.getCurrentSession();
-
-		StringBuilder req = new StringBuilder("select cu from Computer cu left join cu.company ca where cu.id=:id");
-		Query q1 = session.createQuery(req.toString());
-		q1.setInteger("id", id);
-		comp = (Computer) q1.list().get(0);
+		comp = (Computer) session.createCriteria(Computer.class).add(Restrictions.idEq(id)).uniqueResult();
 		
-		LOG.debug(" requete : " + req);	
 		return comp;
 	}
 
@@ -57,26 +55,31 @@ public class ComputerDaoImpl implements ComputerDao {
 	}
 
 	@Override
-	public List<Computer> getRangeComputers(PageWrapper wrap, String orderby){
+	public List<Computer> getRangeComputers(PageWrapper wrap, String orderField, String order){
 		LOG.trace("Start getRangeSearchOrderComputers");
 
 		List<Computer> comps = new ArrayList<Computer>();
-		StringBuilder searchExpr = new StringBuilder();
 		Session session = sf.getCurrentSession();
 		int start = (wrap.getCurrentPage() - 1) * wrap.NB_COMPUTER_BY_PAGE;
 
-		StringBuilder req = new StringBuilder("select cu from Computer cu left join cu.company ca ");
-		if((wrap.getSearch()!=null)&&(!wrap.getSearch().isEmpty())){
-			searchExpr.append("%").append(wrap.getSearch()).append("%");
-			req.append("where cu.name like :search or ca.name like :search ");
+		StringBuilder searchExpr = new StringBuilder();
+		searchExpr.append("%").append(wrap.getSearch()).append("%");
+		
+		Order orderby;
+		
+		if(order.equals("ASC")){
+			orderby = Order.asc(orderField);
+		}else{
+			orderby = Order.desc(orderField);
 		}
-		req.append("order by ").append(orderby);
 
-		Query q1 = session.createQuery(req.toString()).setFirstResult(start).setMaxResults(wrap.NB_COMPUTER_BY_PAGE);
-		if((wrap.getSearch()!=null)&&(!wrap.getSearch().isEmpty()))
-			q1.setString("search", searchExpr.toString());
-		comps = q1.list();
-		LOG.debug(" requete : " + req.toString());	
+		LOG.debug("order" + order + " orderby " + orderby);
+		
+		comps =  session.createCriteria(Computer.class)
+				.createAlias("company", "ca", JoinType.LEFT_OUTER_JOIN)
+				.add(Restrictions.or((Restrictions.ilike("name", searchExpr.toString())),((Restrictions.ilike("ca.name", searchExpr.toString())))))
+				.setFirstResult(start).setMaxResults(wrap.NB_COMPUTER_BY_PAGE).addOrder(orderby).list();
+		
 		return comps;
 	}
 
@@ -85,13 +88,10 @@ public class ComputerDaoImpl implements ComputerDao {
 		int count = 0;
 		Session session = sf.getCurrentSession();
 		StringBuilder searchExpr = new StringBuilder("%").append(search).append("%");
-		String req = "select count(*) from Computer cu left join cu.company ca where cu.name like :search or ca.name like :search";
-		
-		Query q1 = session.createQuery(req);
-		q1.setString("search", searchExpr.toString());
-		List result = q1.list();
-		Long nb = (Long) result.get(0);
-		count =  nb.intValue();
+		count = ((Long) session.createCriteria(Computer.class)
+				.createAlias("company", "company", JoinType.LEFT_OUTER_JOIN)
+				.add(Restrictions.or((Restrictions.ilike("name", searchExpr.toString())),((Restrictions.ilike("company.name", searchExpr.toString())))))
+				.setProjection(Projections.rowCount()).uniqueResult()).intValue();
 		return count;
 	}
 }

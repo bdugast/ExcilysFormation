@@ -3,9 +3,9 @@ package com.excilys.dao.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +28,7 @@ public class CompanyDaoImpl implements CompanyDao {
 		Company comp = null;
 		if(id!=-1){
 			Session session = sf.getCurrentSession();
-			Query q1 = session.createQuery("from Company where id=:id");
-			q1.setInteger("id", id);
-			comp = (Company) q1.list().get(0);
+			comp = (Company) session.createCriteria(Company.class).add(Restrictions.idEq(id)).uniqueResult();
 		}
 		
 		return comp;
@@ -42,7 +40,7 @@ public class CompanyDaoImpl implements CompanyDao {
 		Session session = sf.getCurrentSession();
 		List<Company> comps = new ArrayList<Company>();
 		
-		comps = session.createQuery("from Company").list();
+		comps = session.createCriteria(Company.class).list();
 		return comps;
 	}
 }
