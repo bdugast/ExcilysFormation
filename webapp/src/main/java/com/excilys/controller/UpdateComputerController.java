@@ -89,7 +89,8 @@ public class UpdateComputerController {
 		
 		if(!result.hasErrors()){
 			Company company;
-			if(companyService.getOneCompany(compDto.getCompanyId()) != null) company = companyService.getOneCompany(compDto.getCompanyId());
+			int companyId = Integer.valueOf(compDto.getCompanyId());
+			if(companyService.getOneCompany(companyId) != null) company = companyService.getOneCompany(companyId);
 			else company = null;
 			computerService.updateComputer(computerMapper.fromDto(compDto, company));
 			return "redirect:dashboard?msg=successUp";

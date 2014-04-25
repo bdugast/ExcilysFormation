@@ -44,14 +44,14 @@ public interface ComputerDao {
 	 * @return
 	 * 		return the generated key from the computer added to put it in the log base
 	 */
-	public int createComputer(Computer comp);
+	public void createComputer(Computer comp);
 	
 	/**
 	 * Delete a computer in the database depending on the id
 	 * @param id
 	 * 		id of the computer to delete
 	 */
-	public void deleteComputer(int id);
+	public void deleteComputer(Computer comp);
 	
 	/**
 	 * Get the number of computer in the database and return it

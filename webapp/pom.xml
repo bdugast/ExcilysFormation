@@ -46,12 +46,6 @@
 		<dependency>
 			<groupId>com.excilys</groupId>
 			<artifactId>persistence</artifactId>
-			<!-- <exclusions>
-				<exclusion>
-					<groupId>*</groupId>
-					<artifactId>*</artifactId>
-				</exclusion>
-			</exclusions> -->
 		</dependency>
 		<dependency>
 			<groupId>jstl</groupId>

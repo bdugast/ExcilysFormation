@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.excilys.domain.Computer;
 import com.excilys.service.ComputerService;
 import com.excilys.validator.IdValidator;
 
@@ -36,7 +37,8 @@ public class DeleteComputerController {
 			throws ServletException, IOException {
 
 		if (idValidator.validateId(id)) {
-			computerService.deleteComputer(Integer.valueOf(id));
+			Computer comp = computerService.getOneComputer(Integer.valueOf(id));
+			computerService.deleteComputer(comp);
 			return "redirect:/dashboard?msg=successDel";
 		} else {
 			return "redirect:/dashboard?msg=failDel";

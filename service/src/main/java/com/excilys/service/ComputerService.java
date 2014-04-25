@@ -52,7 +52,7 @@ public interface ComputerService {
 	 * @param id
 	 * 		id of the computer to delete
 	 */
-	public void deleteComputer(int id);
+	public void deleteComputer(Computer comp);
 	
 	/**
 	 * call the method in the dao to get the number of computer in the database and return it

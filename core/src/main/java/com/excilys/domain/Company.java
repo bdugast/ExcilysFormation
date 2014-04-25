@@ -1,5 +1,11 @@
 package com.excilys.domain;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+
 /**
  * @author bdugast
  * @param id
@@ -7,9 +13,15 @@ package com.excilys.domain;
  * @param name
  * 		name of the company	
  */
+@Entity
+@Table(name="company")
 public class Company {
 	
+	@Id
+	@Column(name="id")
 	private int id;
+	
+	@Column(name="name")
 	private String name;
 		
 	public Company() {

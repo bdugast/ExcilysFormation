@@ -21,6 +21,8 @@ public class CompanyServiceImpl implements CompanyService {
 	@Autowired
 	public CompanyDao companyDao;
 	
+	@Override
+	@Transactional(readOnly = true)
 	public List<Company> getAllCompanies() {
 		List<Company> compList = null;
 		try {
@@ -31,6 +33,8 @@ public class CompanyServiceImpl implements CompanyService {
 		return compList;
 	}
 
+	@Override
+	@Transactional(readOnly = true)
 	public Company getOneCompany(int id) {
 		Company comp = null;
 		try {

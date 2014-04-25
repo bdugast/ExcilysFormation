@@ -20,7 +20,7 @@ import com.excilys.validator.DateValidator;
  * 		id of the company
  */
 public class ComputerDto {
-	private int id;
+	private String id;
 	
 	@NotEmpty(message="{NotEmpty.computerDto.name}")
 	@Size(min=2, message="{Size.computerDto.name}") 
@@ -32,7 +32,7 @@ public class ComputerDto {
 	@DateValidator
 	private String discontinued;
 
-	private int companyId;
+	private String companyId;
 	private String companyName;
 	
 	public static class Builder {
@@ -43,7 +43,7 @@ public class ComputerDto {
             computer = new ComputerDto();
         }
 
-        public Builder id(Integer id) {
+        public Builder id(String id) {
             if(id != null)
                 this.computer.id = id;
             return this;
@@ -64,7 +64,7 @@ public class ComputerDto {
             return this;
         }
 
-        public Builder companyId(Integer companyId) {
+        public Builder companyId(String companyId) {
             this.computer.companyId = companyId;
             return this;
         }
@@ -83,10 +83,10 @@ public class ComputerDto {
         return new Builder();
     }
 	
-	public int getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getName() {
@@ -107,10 +107,10 @@ public class ComputerDto {
 	public void setDiscontinued(String discontinued) {
 		this.discontinued = discontinued;
 	}
-	public int getCompanyId() {
+	public String getCompanyId() {
 		return companyId;
 	}
-	public void setCompanyId(int companyId) {
+	public void setCompanyId(String companyId) {
 		this.companyId = companyId;
 	}	
 	public String getCompanyName() {

@@ -15,8 +15,9 @@
 		<bonecpVersion>0.8.0.RELEASE</bonecpVersion>
 		<hibernateValidatorVersion>5.0.1.Final</hibernateValidatorVersion>
 		<projectVersion>2.0.0-SNAPSHOT</projectVersion>
-		<hibernateVersion>4.5.1.Final</hibernateVersion>
+		<hibernateVersion>4.3.5.Final</hibernateVersion>
 		<slf4jVersion>1.7.7</slf4jVersion>
+		<jadiraVersion>3.1.0.GA</jadiraVersion>
 	</properties>
 
 	<dependencies>
@@ -51,13 +52,23 @@
 			<version>${slf4jVersion}</version>
 		</dependency>
 	</dependencies>
+
+	<!-- Dependencies for modules -->
 	<dependencyManagement>
 		<dependencies>
+
 			<!-- JodaTime -->
 			<dependency>
 				<groupId>joda-time</groupId>
 				<artifactId>joda-time</artifactId>
 				<version>${jodaVersion}</version>
+			</dependency>
+
+			<!-- jadira type domain -->
+			<dependency>
+				<groupId>org.jadira.usertype</groupId>
+				<artifactId>usertype.core</artifactId>
+				<version>${jadiraVersion}</version>
 			</dependency>
 
 			<!-- JSTL -->
@@ -86,21 +97,21 @@
 				<artifactId>spring-webmvc</artifactId>
 				<exclusions>
 					<exclusion>
-						<artifactId>commons-logging</artifactId>
 						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
 					</exclusion>
 				</exclusions>
 				<version>${springVersion}</version>
 			</dependency>
-			
+
 			<!-- spring Web -->
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-web</artifactId>
 				<exclusions>
 					<exclusion>
-						<artifactId>commons-logging</artifactId>
 						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
 					</exclusion>
 				</exclusions>
 				<version>${springVersion}</version>
@@ -112,10 +123,16 @@
 				<artifactId>spring-jdbc</artifactId>
 				<exclusions>
 					<exclusion>
-						<artifactId>commons-logging</artifactId>
 						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
 					</exclusion>
 				</exclusions>
+				<version>${springVersion}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-orm</artifactId>
 				<version>${springVersion}</version>
 			</dependency>
 
@@ -124,6 +141,13 @@
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-validator</artifactId>
 				<version>${hibernateValidatorVersion}</version>
+			</dependency>
+
+			<!-- hibernate -->
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-core</artifactId>
+				<version>${hibernateVersion}</version>
 			</dependency>
 
 			<!-- All modules -->

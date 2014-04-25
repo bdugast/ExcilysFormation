@@ -7,6 +7,8 @@ import java.util.Locale;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.ResourceBundleMessageSource;
@@ -18,6 +20,7 @@ import com.excilys.dto.ComputerDto;
 
 @Component
 public class ComputerMapper {
+	static final Logger LOG = LoggerFactory.getLogger(ComputerMapper.class);
 	
 	@Autowired
 	private ResourceBundleMessageSource messageSource;
@@ -34,21 +37,24 @@ public class ComputerMapper {
 	public Computer fromDto(ComputerDto compDto, Company company) {
 		Locale locale = LocaleContextHolder.getLocale();
 		
-		int id;
 		String name;
 		DateTime introduced;
 		DateTime discontinued;
 		
 		DateTimeFormatter dtf = DateTimeFormat.forPattern(messageSource.getMessage("date.format.joda", null, locale));
 		
-		id = compDto.getId();
 		name = compDto.getName();
 		if(compDto.getIntroduced()!="") introduced = new DateTime(dtf.parseDateTime(compDto.getIntroduced()));
 		else introduced = null;
 		if(compDto.getDiscontinued()!="") discontinued = new DateTime(dtf.parseDateTime(compDto.getDiscontinued()));
 		else discontinued = null;
 		
-		return new Computer(id, name, introduced, discontinued, company);
+		Computer comp = new Computer(name, introduced, discontinued, company);
+		
+		if(compDto.getId()!=null)
+			comp.setId(Integer.valueOf(compDto.getId()));
+		
+		return comp;
 	}
 	
 	/**
@@ -65,16 +71,22 @@ public class ComputerMapper {
 		
 		String introduced = null;
 		String discontinued = null;
+		String companyId = null;
+		String companyName = null;
 		if(comp.getIntroduced()!=null) introduced = dtf.print(comp.getIntroduced());
 		if(comp.getDiscontinued()!=null) discontinued = dtf.print(comp.getDiscontinued());
+		if(comp.getCompany()!=null){
+			companyId = String.valueOf(comp.getCompany().getId());
+			companyName = comp.getCompany().getName();
+		}
 		
 		ComputerDto compDto = ComputerDto.builder()
-				.id(comp.getId())
+				.id(String.valueOf(comp.getId()))
                 .name(comp.getName())
                 .introduced(introduced)
                 .discontinued(discontinued)
-                .companyId(comp.getCompany().getId())
-                .companyName(comp.getCompany().getName()).build();
+                .companyId(companyId)
+                .companyName(companyName).build();
 		
 		return compDto;
 	}

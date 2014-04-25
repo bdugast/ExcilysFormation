@@ -1,5 +1,15 @@
 package com.excilys.domain;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
 /**
@@ -15,16 +25,34 @@ import org.joda.time.DateTime;
  * @param company
  * 		company of the computer
  */
+
+@Entity
+@Table(name="computer")
 public class Computer {
+
+	@Id
+	@GeneratedValue
+	@Column(name="id")
 	private int id;
+
+	@Column(name="name")
 	private String name;
+
+	@Column(name="introduced")
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime introduced;
+
+	@Column(name="discontinued")
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime discontinued;
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="company_id", referencedColumnName="id")
 	private Company company;	 
-	 
+
 	public Computer() {
-		super();
 	}
+	
 	public Computer(int id, String name, DateTime introduced, DateTime discontinued,
 			Company company) {
 		super();
@@ -34,7 +62,7 @@ public class Computer {
 		this.discontinued = discontinued;
 		this.company = company;
 	}
-	
+
 	public Computer(String name, DateTime introduced, DateTime discontinued,
 			Company company) {
 		super();
@@ -43,7 +71,7 @@ public class Computer {
 		this.discontinued = discontinued;
 		this.company = company;
 	}
-	
+
 	public int getId() {
 		return id;
 	}

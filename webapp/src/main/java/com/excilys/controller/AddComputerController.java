@@ -69,7 +69,8 @@ public class AddComputerController{
 		
 		if(!result.hasErrors()){
 			Company company = null;
-			if(companyService.getOneCompany(compDto.getCompanyId()) != null) company = companyService.getOneCompany(compDto.getCompanyId());
+			int companyId = Integer.valueOf(compDto.getCompanyId());
+			if(companyService.getOneCompany(companyId) != null) company = companyService.getOneCompany(companyId);
 			LOG.debug("successAdd");
 			computerService.createComputer(computerMapper.fromDto(compDto,company));
 			return "redirect:dashboard?msg=successAdd";
