@@ -19,6 +19,7 @@
 		<slf4jVersion>1.7.7</slf4jVersion>
 		<jadiraVersion>3.1.0.GA</jadiraVersion>
 		<queryDslVersion>3.3.2</queryDslVersion>
+		<dataJpaVersion>1.5.2.RELEASE</dataJpaVersion>
 	</properties>
 
 	<dependencies>
@@ -163,6 +164,13 @@
 				<artifactId>querydsl-jpa</artifactId>
 				<version>${queryDslVersion}</version>
 			</dependency>
+			
+			<!-- Spring data JPA -->
+			<dependency>
+				<groupId>org.springframework.data</groupId>
+				<artifactId>spring-data-jpa</artifactId>
+				<version>${dataJpaVersion}</version>
+			</dependency>
 
 			<!-- All modules -->
 			<dependency>
@@ -193,7 +201,7 @@
 		</dependencies>
 	</dependencyManagement>
 	<build>
-		<plugins>			
+		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.0</version>

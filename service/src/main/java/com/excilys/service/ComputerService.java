@@ -29,7 +29,7 @@ public interface ComputerService {
 	 * @return
 	 * 		return a list of computer
 	 */
-	public List<Computer> getRangeComputers(PageWrapper wrap);
+	public PageWrapper getPage(String orderField, Boolean order, Integer page, String search);
 	
 	/**
 	 * call the method in the dao to update a computer based on the new computer send to the method
@@ -53,13 +53,5 @@ public interface ComputerService {
 	 * 		id of the computer to delete
 	 */
 	public void deleteComputer(Computer comp);
-	
-	/**
-	 * call the method in the dao to get the number of computer in the database and return it
-	 * @param search
-	 * 		search depending on the string of the search
-	 * @return
-	 * 		return the number of computer
-	 */
-	public int getCountComputers(String name);
+
 }

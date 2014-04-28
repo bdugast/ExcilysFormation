@@ -51,38 +51,11 @@ public class DashboardController{
 			@RequestParam(value="msg", required=false) String msg
 			)
 			throws IOException {
-		PageWrapper wrap = new PageWrapper();
 		
-		//get order field
-		if(orderField!=null) 
-			wrap.setOrderField(orderField);
-		
-		//get order
-		if(order!=null) 
-			wrap.setOrder(order);
-				
-		//get current page
-		if(page!=null) 
-			wrap.setCurrentPage(page);
-		
-		//get search field
-		if(search!=null) 
-			wrap.setSearch(search);
-		
-		//get the number of computer
-		wrap.setCount(computerService.getCountComputers(wrap.getSearch()));
-
-		//get the number of pages
-		wrap.setCountPages((int) (Math.ceil((double)wrap.getCount()/(double)20)));
-		
-		//change the current page if this one is too high or too low
-		if(wrap.getCurrentPage()>wrap.getCountPages()) 
-			wrap.setCurrentPage(wrap.getCountPages());
-		if(wrap.getCurrentPage()<1) 
-			wrap.setCurrentPage(1);
+		PageWrapper wrap = computerService.getPage(orderField, order, page, search);
 		
 		//get 20 computer with the search, the order field, the order, and the limit
-		List<ComputerDto> computers = computerMapper.toListCompDto(computerService.getRangeComputers(wrap));
+		List<ComputerDto> computers = computerMapper.toListCompDto(wrap.getComputers());
 		
 		if(msg!=null){
 			if(msg.equals("successAdd")) map.addAttribute("valide", "Computer successfully add");

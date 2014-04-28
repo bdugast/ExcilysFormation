@@ -1,5 +1,9 @@
 package com.excilys.wrapper;
 
+import java.util.List;
+
+import com.excilys.domain.Computer;
+
 /**
  * @author bdugast
  * @param order
@@ -23,6 +27,7 @@ public class PageWrapper {
 	private int count;
     private int countPages;
     private int currentPage;
+    private List<Computer> computers;
        
 	public PageWrapper() {
 		this.order = false; 
@@ -78,5 +83,11 @@ public class PageWrapper {
 	}
 	public void setCurrentPage(int currentPage) {
 		this.currentPage = currentPage;
+	}
+	public List<Computer> getComputers() {
+		return computers;
+	}
+	public void setComputers(List<Computer> computers) {
+		this.computers = computers;
 	}    
 }

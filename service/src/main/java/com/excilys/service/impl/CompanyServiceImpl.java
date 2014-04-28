@@ -26,7 +26,7 @@ public class CompanyServiceImpl implements CompanyService {
 	public List<Company> getAllCompanies() {
 		List<Company> compList = null;
 		try {
-			 compList = companyDao.getAllCompany();
+			 compList = (List<Company>) companyDao.findAll();
 		} catch (CustomException e) {
 			throw e;
 		} 
@@ -38,7 +38,7 @@ public class CompanyServiceImpl implements CompanyService {
 	public Company getOneCompany(int id) {
 		Company comp = null;
 		try {
-			comp = companyDao.getOneCompany(id);
+			comp = companyDao.findOne(id);
 		} catch (CustomException e) {
 			throw e;
 		}

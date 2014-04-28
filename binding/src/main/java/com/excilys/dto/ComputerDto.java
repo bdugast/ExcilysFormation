@@ -42,28 +42,23 @@ public class ComputerDto {
         private Builder() {
             computer = new ComputerDto();
         }
-
         public Builder id(String id) {
             if(id != null)
                 this.computer.id = id;
             return this;
         }
-
         public Builder name(String name) {
             this.computer.name = name;
             return this;
         }
-
         public Builder introduced(String introduced) {
            this.computer.introduced = introduced;
             return this;
         }
-
         public Builder discontinued(String discontinued) {
             this.computer.discontinued = discontinued;
             return this;
         }
-
         public Builder companyId(String companyId) {
             this.computer.companyId = companyId;
             return this;
@@ -72,11 +67,9 @@ public class ComputerDto {
             this.computer.companyName = companyName;
             return this;
         }
-
         public ComputerDto build() {
             return this.computer;
         }
-
     }
 
     public static Builder builder() {
