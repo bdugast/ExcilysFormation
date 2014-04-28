@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.excilys.dto.ComputerDto;
+import com.excilys.domain.Computer;
 import com.excilys.mapper.ComputerMapper;
 import com.excilys.service.ComputerService;
 import com.excilys.wrapper.PageWrapper;
@@ -51,11 +51,41 @@ public class DashboardController{
 			@RequestParam(value="msg", required=false) String msg
 			)
 			throws IOException {
-		
-		PageWrapper wrap = computerService.getPage(orderField, order, page, search);
+		PageWrapper wrap = new PageWrapper();
+
+		//get order field
+		if(orderField!=null)
+			wrap.setOrderField(orderField);
+
+		//get order
+		if(order!=null)
+			wrap.setOrder(order);
+
+		//get current page
+		if(page!=null)
+			wrap.setCurrentPage(page);
+
+		//get search field
+		if(search!=null)
+			wrap.setSearch(search);
+
+		//get the number of computer
+		wrap.setCount(computerService.getCountComputers(wrap.getSearch()));
+
+		//get the number of pages
+		wrap.setCountPages((int) (Math.ceil((double)wrap.getCount()/(double)20)));
+
+		//change the current page if this one is too high or too low
+		if(wrap.getCurrentPage()>wrap.getCountPages())
+			wrap.setCurrentPage(wrap.getCountPages());
+		if(wrap.getCurrentPage()<1)
+			wrap.setCurrentPage(1);
 		
 		//get 20 computer with the search, the order field, the order, and the limit
-		List<ComputerDto> computers = computerMapper.toListCompDto(wrap.getComputers());
+		List<Computer> comps = computerService.getListComputer(wrap.getOrderField(), wrap.getOrder(), wrap.getCurrentPage(), wrap.getSearch(), wrap.NB_COMPUTER_BY_PAGE);
+		System.out.println("coucou " + comps);
+		wrap.setComputers(computerMapper.toListCompDto(comps));
+		
 		
 		if(msg!=null){
 			if(msg.equals("successAdd")) map.addAttribute("valide", "Computer successfully add");
@@ -66,10 +96,9 @@ public class DashboardController{
 		}
 		
 		map.addAttribute("wrap", wrap);
-		map.addAttribute("computers", computers);
 		
 		return "dashboard";
-		}
+	}
 	
 	
 	/**

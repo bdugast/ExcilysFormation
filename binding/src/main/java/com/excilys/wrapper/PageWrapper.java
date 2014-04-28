@@ -2,7 +2,7 @@ package com.excilys.wrapper;
 
 import java.util.List;
 
-import com.excilys.domain.Computer;
+import com.excilys.dto.ComputerDto;
 
 /**
  * @author bdugast
@@ -27,7 +27,7 @@ public class PageWrapper {
 	private int count;
     private int countPages;
     private int currentPage;
-    private List<Computer> computers;
+    private List<ComputerDto> computers;
        
 	public PageWrapper() {
 		this.order = false; 
@@ -84,10 +84,10 @@ public class PageWrapper {
 	public void setCurrentPage(int currentPage) {
 		this.currentPage = currentPage;
 	}
-	public List<Computer> getComputers() {
+	public List<ComputerDto> getComputers() {
 		return computers;
 	}
-	public void setComputers(List<Computer> computers) {
+	public void setComputers(List<ComputerDto> computers) {
 		this.computers = computers;
 	}    
 }

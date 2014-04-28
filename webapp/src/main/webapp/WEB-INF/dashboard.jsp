@@ -41,7 +41,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach items="${computers}" var="computer">
+			<c:forEach items="${wrap.computers}" var="computer">
 				<tr>
 					<td>${computer.name}</td>
 					<td>${computer.introduced}</td>

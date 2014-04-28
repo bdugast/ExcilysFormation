@@ -1,5 +1,7 @@
 package com.excilys.service.impl;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,6 @@ import com.excilys.domain.Computer;
 import com.excilys.domain.Log;
 import com.excilys.exception.CustomException;
 import com.excilys.service.ComputerService;
-import com.excilys.wrapper.PageWrapper;
 
 @Service
 @Transactional
@@ -81,33 +82,25 @@ public class ComputerServiceImpl implements ComputerService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public PageWrapper getPage(String orderField, Boolean order, Integer page, String search) {
+	public int getCountComputers(String search) {
+		int count = 0;
+		try {
+			count = computerDao.countByNameContainingOrCompanyNameContaining(search, search);
+		} catch (CustomException e) {
+			throw e;
+		}
+		return count;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Computer> getListComputer(String orderField, Boolean order, Integer page, String search, int NB_COMPUTER_BY_PAGE) {
 		LOG.debug("start du service rangeComputer");
-		PageWrapper wrap = new PageWrapper();
-		
-		//get order field
-		if(orderField!=null) 
-			wrap.setOrderField(orderField);
-		
-		//get order
-		if(order!=null) 
-			wrap.setOrder(order);
-				
-		//get current page
-		if(page!=null) 
-			wrap.setCurrentPage(page);
-		
-		//get search field
-		if(search!=null) 
-			wrap.setSearch(search);
-		
-		//change the current page if this one is too low
-		if(wrap.getCurrentPage()<1) 
-			wrap.setCurrentPage(1);	
+		Page<Computer> pageComputer;
 		
 		try {
 			String orderby = null;
-			switch (wrap.getOrderField()) {
+			switch (orderField) {
 			case "COMPUTER":
 				orderby = "name";
 				break;
@@ -124,20 +117,15 @@ public class ComputerServiceImpl implements ComputerService {
 				orderby = "id";
 				break;
 			}
-			Sort sort = new Sort(wrap.getOrder()?Sort.Direction.ASC : Sort.Direction.DESC, orderby);
+			Sort sort = new Sort(order?Sort.Direction.ASC : Sort.Direction.DESC, orderby);
 
-			PageRequest pr = new PageRequest(wrap.getCurrentPage()-1, wrap.NB_COMPUTER_BY_PAGE, sort);
-			Page<Computer> pageComputer = computerDao.findByNameContainingOrCompanyNameContaining(wrap.getSearch(), wrap.getSearch(), pr);
-			
-			//get the number of pages
-			wrap.setComputers(pageComputer.getContent());
-			wrap.setCount((int) pageComputer.getTotalElements());
-			wrap.setCountPages((int) (Math.ceil((double)wrap.getCount()/(double)20)));
+			PageRequest pr = new PageRequest(page-1, NB_COMPUTER_BY_PAGE, sort);
+			pageComputer = computerDao.findByNameContainingOrCompanyNameContaining(search, search, pr);
 
-			
+
 		} catch (CustomException e) {
 			throw e;
 		}
-		return wrap;
+		return pageComputer.getContent();
 	}
 }

@@ -8,5 +8,6 @@ import com.excilys.domain.Computer;
 
 public interface ComputerDao extends CrudRepository<Computer, Integer>{
 	
+	int countByNameContainingOrCompanyNameContaining(String name, String companyName);
 	Page<Computer> findByNameContainingOrCompanyNameContaining(String name, String companyName, Pageable pageable);
 }
