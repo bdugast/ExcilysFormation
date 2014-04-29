@@ -83,7 +83,6 @@ public class DashboardController{
 		
 		//get 20 computer with the search, the order field, the order, and the limit
 		List<Computer> comps = computerService.getListComputer(wrap.getOrderField(), wrap.getOrder(), wrap.getCurrentPage(), wrap.getSearch(), wrap.NB_COMPUTER_BY_PAGE);
-		System.out.println("coucou " + comps);
 		wrap.setComputers(computerMapper.toListCompDto(comps));
 		
 		
@@ -91,6 +90,7 @@ public class DashboardController{
 			if(msg.equals("successAdd")) map.addAttribute("valide", "Computer successfully add");
 			if(msg.equals("successUp")) map.addAttribute("valide", "Computer successfully update");
 			if(msg.equals("successDel")) map.addAttribute("valide", "Computer successfully delete");
+			if(msg.equals("successLog")) map.addAttribute("valide", "You've been logged out successfully.");
 			if(msg.equals("failUp")) map.addAttribute("fail", "FAIL!!! Invalid computer!!!");
 			if(msg.equals("failDel")) map.addAttribute("fail", "FAIL!!! Invalid computer!!!");
 		}

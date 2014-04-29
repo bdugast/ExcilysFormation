@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix = "spring" uri = "http://www.springframework.org/tags" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 	<c:if test="${valide !=null}">
 		<div class="alert alert-success"><c:out value="${valide}" /></div>
@@ -20,10 +21,13 @@
 				<button type="submit" id="searchsubmit" class="btn btn-primary"><spring:message code="form.searchbutton" /></button>
 			</div>
 		</form>
-	<div class="form-group col-md-1">
-			<a type="button" id="add" class="btn btn-success"
-				href="add"><spring:message code="form.addcomputer" /></a>
-	</div>
+		
+	<sec:authorize access="hasRole('ROLE_ADMIN')">
+		<div class="form-group col-md-1">
+				<a type="button" id="add" class="btn btn-success"
+					href="add"><spring:message code="form.addcomputer" /></a>
+		</div>
+	</sec:authorize>
 	<div class="form-group col-md-12">
      	<tags:pagination wrap="${wrap}"></tags:pagination>
      	</div>
@@ -36,19 +40,23 @@
 				<th class="col-md-2"><a	href="dashboard?page=${wrap.currentPage}&search=${wrap.search}&orderField=INTRODUCED&order=${wrap.orderField=='INTRODUCED' ? !wrap.order : 'true' }"><spring:message code="form.introduced" /></a></th>
 				<th class="col-md-2"><a	href="dashboard?page=${wrap.currentPage}&search=${wrap.search}&orderField=DISCONTINUED&order=${wrap.orderField=='DISCONTINUED' ? !wrap.order : 'true' }"><spring:message code="form.discontinued" /></a></th>
 				<th class="col-md-2"><a	href="dashboard?page=${wrap.currentPage}&search=${wrap.search}&orderField=COMPANY&order=${wrap.orderField=='COMPANY' ? !wrap.order : 'true' }"><spring:message code="form.company" /></a></th>
-				<th class="col-md-1"></th>
-				<th class="col-md-1"></th>
+				<sec:authorize access="hasRole('ROLE_ADMIN')">
+					<th class="col-md-1"></th>
+					<th class="col-md-1"></th>
+				</sec:authorize>
 			</tr>
 		</thead>
 		<tbody>
 			<c:forEach items="${wrap.computers}" var="computer">
-				<tr>
+				<tr></html>
 					<td>${computer.name}</td>
 					<td>${computer.introduced}</td>
 					<td>${computer.discontinued}</td>
 					<td>${computer.companyName}</td>
-					<td><a type="button" class="btn btn-warning" href="update?id=${computer.id}"><spring:message code="form.updatecomputer" /></a></td>
-					<td><a type="button" class="btn btn-danger" href="delete?id=${computer.id}" onclick="return confirm('<spring:message code="form.deletemsg" />')"><spring:message code="form.delete" /></a></td>
+					<sec:authorize access="hasRole('ROLE_ADMIN')">
+						<td><a type="button" class="btn btn-warning" href="update?id=${computer.id}"><spring:message code="form.updatecomputer" /></a></td>
+						<td><a type="button" class="btn btn-danger" href="delete?id=${computer.id}" onclick="return confirm('<spring:message code="form.deletemsg" />')"><spring:message code="form.delete" /></a></td>
+					</sec:authorize>
 				</tr>
 			</c:forEach>
 		</tbody>

@@ -20,6 +20,7 @@
 		<jadiraVersion>3.1.0.GA</jadiraVersion>
 		<queryDslVersion>3.3.2</queryDslVersion>
 		<dataJpaVersion>1.5.2.RELEASE</dataJpaVersion>
+		<springSecuVersion>3.2.3.RELEASE</springSecuVersion>
 	</properties>
 
 	<dependencies>
@@ -92,6 +93,33 @@
 				</exclusions>
 				<version>${bonecpVersion}</version>
 			</dependency>
+			
+			<!-- Hibernate Validator -->
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-validator</artifactId>
+				<version>${hibernateValidatorVersion}</version>
+			</dependency>
+
+			<!-- hibernate -->
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-core</artifactId>
+				<version>${hibernateVersion}</version>
+			</dependency>
+
+			<!-- QueryDSL -->
+			<dependency>
+				<groupId>com.mysema.querydsl</groupId>
+				<artifactId>querydsl-apt</artifactId>
+				<version>${queryDslVersion}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.mysema.querydsl</groupId>
+				<artifactId>querydsl-jpa</artifactId>
+				<version>${queryDslVersion}</version>
+			</dependency>
 
 			<!-- spring WebMVC -->
 			<dependency>
@@ -138,38 +166,28 @@
 				<version>${springVersion}</version>
 			</dependency>
 
-			<!-- Hibernate Validator -->
-			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-validator</artifactId>
-				<version>${hibernateValidatorVersion}</version>
-			</dependency>
-
-			<!-- hibernate -->
-			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-core</artifactId>
-				<version>${hibernateVersion}</version>
-			</dependency>
-
-			<!-- QueryDSL -->
-			<dependency>
-				<groupId>com.mysema.querydsl</groupId>
-				<artifactId>querydsl-apt</artifactId>
-				<version>${queryDslVersion}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.mysema.querydsl</groupId>
-				<artifactId>querydsl-jpa</artifactId>
-				<version>${queryDslVersion}</version>
-			</dependency>
-			
 			<!-- Spring data JPA -->
 			<dependency>
 				<groupId>org.springframework.data</groupId>
 				<artifactId>spring-data-jpa</artifactId>
 				<version>${dataJpaVersion}</version>
+			</dependency>
+			
+			<!-- Spring security -->
+			<dependency>
+		        <groupId>org.springframework.security</groupId>
+		        <artifactId>spring-security-web</artifactId>
+		        <version>${springSecuVersion}</version>
+		    </dependency>
+		    <dependency>
+		        <groupId>org.springframework.security</groupId>
+		        <artifactId>spring-security-config</artifactId>
+		        <version>${springSecuVersion}</version>
+		    </dependency>
+		    <dependency>
+			    <groupId>org.springframework.security</groupId>
+			    <artifactId>spring-security-taglibs</artifactId>
+			    <version>${springSecuVersion}</version>
 			</dependency>
 
 			<!-- All modules -->
