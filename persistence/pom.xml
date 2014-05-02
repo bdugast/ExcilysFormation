@@ -18,12 +18,12 @@
 		<dependency>
 			<groupId>com.excilys</groupId>
 			<artifactId>core</artifactId>
-			<exclusions>
+			<!-- <exclusions>
 				<exclusion>
 					<groupId>*</groupId>
 					<artifactId>*</artifactId>
 				</exclusion>
-			</exclusions>
+			</exclusions> -->
 		</dependency>
 		<dependency>
 			<groupId>joda-time</groupId>

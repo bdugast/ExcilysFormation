@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
@@ -21,6 +22,7 @@
 		<queryDslVersion>3.3.2</queryDslVersion>
 		<dataJpaVersion>1.5.2.RELEASE</dataJpaVersion>
 		<springSecuVersion>3.2.3.RELEASE</springSecuVersion>
+		<cxfVersion>3.0.0-milestone2</cxfVersion>
 	</properties>
 
 	<dependencies>
@@ -93,7 +95,7 @@
 				</exclusions>
 				<version>${bonecpVersion}</version>
 			</dependency>
-			
+
 			<!-- Hibernate Validator -->
 			<dependency>
 				<groupId>org.hibernate</groupId>
@@ -172,22 +174,34 @@
 				<artifactId>spring-data-jpa</artifactId>
 				<version>${dataJpaVersion}</version>
 			</dependency>
-			
+
 			<!-- Spring security -->
 			<dependency>
-		        <groupId>org.springframework.security</groupId>
-		        <artifactId>spring-security-web</artifactId>
-		        <version>${springSecuVersion}</version>
-		    </dependency>
-		    <dependency>
-		        <groupId>org.springframework.security</groupId>
-		        <artifactId>spring-security-config</artifactId>
-		        <version>${springSecuVersion}</version>
-		    </dependency>
-		    <dependency>
-			    <groupId>org.springframework.security</groupId>
-			    <artifactId>spring-security-taglibs</artifactId>
-			    <version>${springSecuVersion}</version>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-web</artifactId>
+				<version>${springSecuVersion}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-config</artifactId>
+				<version>${springSecuVersion}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-taglibs</artifactId>
+				<version>${springSecuVersion}</version>
+			</dependency>
+
+			<!-- CXF -->
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-frontend-jaxws</artifactId>
+				<version>${cxfVersion}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-transports-http</artifactId>
+				<version>${cxfVersion}</version>
 			</dependency>
 
 			<!-- All modules -->
@@ -237,5 +251,6 @@
 		<module>binding</module>
 		<module>webapp</module>
 		<module>core</module>
+		<module>webservice</module>
 	</modules>
 </project>

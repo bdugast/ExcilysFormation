@@ -1,9 +1,12 @@
 package com.excilys.controller;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 
 import javax.servlet.ServletException;
+import javax.xml.namespace.QName;
+import javax.xml.ws.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +20,7 @@ import com.excilys.domain.Computer;
 import com.excilys.mapper.ComputerMapper;
 import com.excilys.service.ComputerService;
 import com.excilys.wrapper.PageWrapper;
+import com.excilys.ws.WsComputerService;
 
 
 /**
@@ -29,9 +33,10 @@ import com.excilys.wrapper.PageWrapper;
 public class DashboardController{
 	
 	@Autowired
-	ComputerService computerService;
-	@Autowired
 	ComputerMapper computerMapper;
+	
+	@Autowired
+	ComputerService computerService;
 	
 	/**
 	 * This doGet method get all informations in the wrap in order to show the good computers on the screen
@@ -51,6 +56,7 @@ public class DashboardController{
 			@RequestParam(value="msg", required=false) String msg
 			)
 			throws IOException {
+        
 		PageWrapper wrap = new PageWrapper();
 
 		//get order field
@@ -83,6 +89,7 @@ public class DashboardController{
 		
 		//get 20 computer with the search, the order field, the order, and the limit
 		List<Computer> comps = computerService.getListComputer(wrap.getOrderField(), wrap.getOrder(), wrap.getCurrentPage(), wrap.getSearch(), wrap.NB_COMPUTER_BY_PAGE);
+		System.out.println(comps);
 		wrap.setComputers(computerMapper.toListCompDto(comps));
 		
 		
@@ -104,8 +111,8 @@ public class DashboardController{
 	/**
 	 * ExceptionHandler that redirect any error catch to a custom error page
 	 */
-	@ExceptionHandler(Exception.class)
-	public String handleAllException(Exception ex) {
-		return "error";
-	}
+//	@ExceptionHandler(Exception.class)
+//	public String handleAllException(Exception ex) {
+//		return "error";
+//	}
 }
