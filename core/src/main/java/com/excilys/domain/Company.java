@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 
 
 /**
@@ -15,6 +16,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="company")
+@XmlRootElement
 public class Company {
 	
 	@Id

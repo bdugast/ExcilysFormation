@@ -30,37 +30,41 @@
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-api</artifactId>
-				</exclusion>
-			</exclusions>
-			<version>${logbackVersion}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>${slf4jVersion}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-api</artifactId>
-				</exclusion>
-			</exclusions>
-			<version>${slf4jVersion}</version>
 		</dependency>
 	</dependencies>
 
 	<!-- Dependencies for modules -->
 	<dependencyManagement>
 		<dependencies>
+		
+			<!-- LogBack -->
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-classic</artifactId>
+				<version>${logbackVersion}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>jcl-over-slf4j</artifactId>
+				<version>${slf4jVersion}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${slf4jVersion}</version>
+			</dependency>
 
 			<!-- JodaTime -->
 			<dependency>
@@ -200,6 +204,11 @@
 			</dependency>
 			<dependency>
 				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-frontend-jaxrs</artifactId>
+				<version>${cxfVersion}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
 				<artifactId>cxf-rt-transports-http</artifactId>
 				<version>${cxfVersion}</version>
 			</dependency>
@@ -252,5 +261,6 @@
 		<module>webapp</module>
 		<module>core</module>
 		<module>webservice</module>
+		<module>webservice-JAXRS</module>
 	</modules>
 </project>

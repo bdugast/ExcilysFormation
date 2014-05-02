@@ -1,12 +1,9 @@
 package com.excilys.controller;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.List;
 
 import javax.servlet.ServletException;
-import javax.xml.namespace.QName;
-import javax.xml.ws.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,7 +17,6 @@ import com.excilys.domain.Computer;
 import com.excilys.mapper.ComputerMapper;
 import com.excilys.service.ComputerService;
 import com.excilys.wrapper.PageWrapper;
-import com.excilys.ws.WsComputerService;
 
 
 /**
@@ -34,7 +30,6 @@ public class DashboardController{
 	
 	@Autowired
 	ComputerMapper computerMapper;
-	
 	@Autowired
 	ComputerService computerService;
 	
@@ -104,15 +99,15 @@ public class DashboardController{
 		
 		map.addAttribute("wrap", wrap);
 		
-		return "dashboard";
+		return "view/dashboard";
 	}
 	
 	
 	/**
 	 * ExceptionHandler that redirect any error catch to a custom error page
 	 */
-//	@ExceptionHandler(Exception.class)
-//	public String handleAllException(Exception ex) {
-//		return "error";
-//	}
+	@ExceptionHandler(Exception.class)
+	public String handleAllException(Exception ex) {
+		return "view/error";
+	}
 }

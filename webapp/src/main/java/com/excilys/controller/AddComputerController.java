@@ -50,7 +50,7 @@ public class AddComputerController{
 		map.addAttribute("companies", companies);
 		map.addAttribute("compDto", new ComputerDto());
 		
-		return "addComputer";
+		return "view/addComputer";
 	}
 	
 	
@@ -82,7 +82,7 @@ public class AddComputerController{
 			map.put("result", result);
 			map.put("companies", companies);
 			map.put("compDto", compDto);
-	        return "addComputer";
+	        return "view/addComputer";
 			
 		}
 	}
@@ -92,6 +92,6 @@ public class AddComputerController{
 	 */
 	@ExceptionHandler(Exception.class)
 	public String handleAllException(Exception ex) {
-		return "error";
+		return "view/error";
 	}
 }

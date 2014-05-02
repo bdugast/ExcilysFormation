@@ -24,6 +24,6 @@ public class LoginController
 	 		map.addAttribute("msg", "You've been logged out successfully.");
 	 	}
 	 	
-		return "login";
+		return "view/login";
 	}
 }

@@ -64,7 +64,7 @@ public class UpdateComputerController {
 			map.addAttribute("companies", companies);
 			map.addAttribute("compDto", compDto);
 			
-			return "updateComputer";
+			return "view/updateComputer";
 		}else{
 			return "redirect:/dashboard?msg=failUp";
 		}
@@ -101,7 +101,7 @@ public class UpdateComputerController {
 			map.put("result", result);
 			map.put("companies", companies);
 			map.put("compDto", compDto);
-	        return "updateComputer";
+	        return "view/updateComputer";
 		}
 	}
 	
@@ -110,6 +110,6 @@ public class UpdateComputerController {
 	 */
 	@ExceptionHandler(Exception.class)
 	public String handleAllException(Exception ex) {
-		return "error";
+		return "view/error";
 	}
 }

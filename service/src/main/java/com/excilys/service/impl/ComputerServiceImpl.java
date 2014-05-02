@@ -20,7 +20,7 @@ import com.excilys.exception.CustomException;
 import com.excilys.service.ComputerService;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class ComputerServiceImpl implements ComputerService {
 	static final Logger LOG = LoggerFactory.getLogger(ComputerServiceImpl.class);
 
@@ -32,7 +32,6 @@ public class ComputerServiceImpl implements ComputerService {
 	private LogDao logDao;
 
 	@Override
-	@Transactional(readOnly = true)
 	public Computer getOneComputer(int id) {
 		Computer comp = null;
 		try {
@@ -81,7 +80,6 @@ public class ComputerServiceImpl implements ComputerService {
 	}
 
 	@Override
-	@Transactional(readOnly = true)
 	public int getCountComputers(String search) {
 		int count = 0;
 		try {
@@ -93,7 +91,6 @@ public class ComputerServiceImpl implements ComputerService {
 	}
 
 	@Override
-	@Transactional(readOnly = true)
 	public List<Computer> getListComputer(String orderField, Boolean order, Integer page, String search, int NB_COMPUTER_BY_PAGE) {
 		LOG.debug("start du service rangeComputer");
 		Page<Computer> pageComputer;

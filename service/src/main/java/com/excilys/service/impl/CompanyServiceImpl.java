@@ -14,7 +14,7 @@ import com.excilys.exception.CustomException;
 import com.excilys.service.CompanyService;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class CompanyServiceImpl implements CompanyService {
 	static final Logger LOG = LoggerFactory.getLogger(CompanyServiceImpl.class);
 	
@@ -22,7 +22,6 @@ public class CompanyServiceImpl implements CompanyService {
 	public CompanyDao companyDao;
 	
 	@Override
-	@Transactional(readOnly = true)
 	public List<Company> getAllCompanies() {
 		List<Company> compList = null;
 		try {
@@ -34,7 +33,6 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	@Override
-	@Transactional(readOnly = true)
 	public Company getOneCompany(int id) {
 		Company comp = null;
 		try {

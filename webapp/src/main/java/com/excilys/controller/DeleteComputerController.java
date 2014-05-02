@@ -51,6 +51,6 @@ public class DeleteComputerController {
 	 */
 	@ExceptionHandler(Exception.class)
 	public String handleAllException(Exception ex) {
-		return "error";
+		return "view/error";
 	}
 }
